@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16/06/2017 12:59:59 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.Investigacion" table="Investigacion" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <id name="idInvestigacion" type="string">
+            <column name="IdInvestigacion" length="10" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="patrocinadorCro" class="com.comiteetica.hibernate.model.PatrocinadorCro" fetch="select">
+            <column name="IdPatrocinador" length="10" />
+            <column name="IdCro" length="10" />
+        </many-to-one>
+        <property name="protocolo" type="string">
+            <column name="Protocolo" length="150" />
+        </property>
+        <property name="titulo" type="string">
+            <column name="Titulo" length="1000" />
+        </property>
+        <property name="paramEspecialidad" type="string">
+            <column name="ParamEspecialidad" length="4" />
+        </property>
+        <property name="paramFase" type="string">
+            <column name="ParamFase" length="4" />
+        </property>
+        <property name="paramTipoInvestigacion" type="string">
+            <column name="ParamTipoInvestigacion" length="4" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+        <set name="investigacionMonitors" table="InvestigacionMonitor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdInvestigacion" length="10" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.InvestigacionMonitor" />
+        </set>
+        <set name="investigacionCoordinadors" table="InvestigacionCoordinador" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdInvestigacion" length="10" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.InvestigacionCoordinador" />
+        </set>
+        <set name="investigacionInvestigadors" table="InvestigacionInvestigador" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdInvestigacion" length="10" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.InvestigacionInvestigador" />
+        </set>
+        <set name="registros" table="Registro" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdInvestigacion" length="10" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.Registro" />
+        </set>
+        <set name="investigacionSedes" table="InvestigacionSede" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdInvestigacion" length="10" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.InvestigacionSede" />
+        </set>
+    </class>
+</hibernate-mapping>

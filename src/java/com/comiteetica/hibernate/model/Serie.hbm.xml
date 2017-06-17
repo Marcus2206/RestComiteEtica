@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16/06/2017 12:59:59 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.Serie" table="Serie" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <id name="idSerie" type="string">
+            <column name="IdSerie" length="3" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="Descripcion" length="50" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+        <set name="serieCorrelativos" table="SerieCorrelativo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdSerie" length="3" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.SerieCorrelativo" />
+        </set>
+    </class>
+</hibernate-mapping>

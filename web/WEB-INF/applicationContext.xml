@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- was: <?xml version="1.0" encoding="UTF-8"?> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <!--bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/jdbc.properties" />
+
+<bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+    p:driverClassName="${jdbc.driverClassName}"
+    p:url="${jdbc.url}"
+    p:username="${jdbc.username}"
+    p:password="${jdbc.password}" /-->
+
+    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+
+    <context:annotation-config/>
+    <bean name="JsonTransformerImplJackson"  class="com.comiteetica.json.impl.JsonTransformerImplJackson" />
+    
+    <bean name="CoordinadorDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CoordinadorDaoImpl" />
+    <bean name="CoordinadorServiceImpl"  class="com.comiteetica.hibernate.service.impl.CoordinadorServiceImpl" />
+    
+    <bean name="CroDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CroDaoImpl" />
+    <bean name="CroServiceImpl"  class="com.comiteetica.hibernate.service.impl.CroServiceImpl" />
+    
+    <bean name="InvestigacionDaoImpl"  class="com.comiteetica.hibernate.dao.impl.InvestigacionDaoImpl" />
+    <bean name="InvestigacionServiceImpl"  class="com.comiteetica.hibernate.service.impl.InvestigacionServiceImpl" />
+    
+    <bean name="InvestigacionCoordinadorDaoImpl"  class="com.comiteetica.hibernate.dao.impl.InvestigacionCoordinadorDaoImpl" />
+    <bean name="InvestigacionCoordinadorServiceImpl"  class="com.comiteetica.hibernate.service.impl.InvestigacionCoordinadorServiceImpl" />
+    
+    <bean name="InvestigadorDaoImpl"  class="com.comiteetica.hibernate.dao.impl.InvestigadorDaoImpl" />
+    <bean name="InvestigadorServiceImpl"  class="com.comiteetica.hibernate.service.impl.InvestigadorServiceImpl" />
+    
+    <bean name="MonitorDaoImpl"  class="com.comiteetica.hibernate.dao.impl.MonitorDaoImpl" />
+    <bean name="MonitorServiceImpl"  class="com.comiteetica.hibernate.service.impl.MonitorServiceImpl" />
+     
+    <bean name="ParametroDaoImpl"  class="com.comiteetica.hibernate.dao.impl.ParametroDaoImpl" />
+    <bean name="ParametroServiceImpl"  class="com.comiteetica.hibernate.service.impl.ParametroServiceImpl" />
+    
+    <bean name="ParametroDetalleDaoImpl"  class="com.comiteetica.hibernate.dao.impl.ParametroDetalleDaoImpl" />
+    <bean name="ParametroDetalleServiceImpl"  class="com.comiteetica.hibernate.service.impl.ParametroDetalleServiceImpl" />
+    
+    <bean name="PatrocinadorDaoImpl"  class="com.comiteetica.hibernate.dao.impl.PatrocinadorDaoImpl" />
+    <bean name="PatrocinadorServiceImpl"  class="com.comiteetica.hibernate.service.impl.PatrocinadorServiceImpl" />
+    
+    <bean name="SedeDaoImpl"  class="com.comiteetica.hibernate.dao.impl.SedeDaoImpl" />
+    <bean name="SedeServiceImpl"  class="com.comiteetica.hibernate.service.impl.SedeServiceImpl" />
+    
+    <bean name="SerieDaoImpl"  class="com.comiteetica.hibernate.dao.impl.SerieDaoImpl" />
+    <bean name="SerieServiceImpl"  class="com.comiteetica.hibernate.service.impl.SerieServiceImpl" />
+    
+    <bean name="SerieCorrelativoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.SerieCorrelativoDaoImpl" />
+    <bean name="SerieCorrelativoServiceImpl"  class="com.comiteetica.hibernate.service.impl.SerieCorrelativoServiceImpl" />
+    
+    <bean name="CorrespondenciaDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CorrespondenciaDaoImpl" />
+    <bean name="CorrespondenciaServiceImpl"  class="com.comiteetica.hibernate.service.impl.CorrespondenciaServiceImpl" />
+    
+    <bean name="CorrespondenciaFileDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CorrespondenciaFileDaoImpl" />
+    <bean name="CorrespondenciaFileServiceImpl"  class="com.comiteetica.hibernate.service.impl.CorrespondenciaFileServiceImpl" />
+    
+    <bean name="RegistroDaoImpl"  class="com.comiteetica.hibernate.dao.impl.RegistroDaoImpl" />
+    <bean name="RegistroServiceImpl"  class="com.comiteetica.hibernate.service.impl.RegistroServiceImpl" />
+    
+    <bean name="InvestigacionInvestigadorDaoImpl"  class="com.comiteetica.hibernate.dao.impl.InvestigacionInvestigadorDaoImpl" />
+    <bean name="InvestigacionInvestigadorServiceImpl"  class="com.comiteetica.hibernate.service.impl.InvestigacionInvestigadorServiceImpl" />
+    
+    <bean name="InvestigacionMonitorDaoImpl"  class="com.comiteetica.hibernate.dao.impl.InvestigacionMonitorDaoImpl" />
+    <bean name="InvestigacionMonitorServiceImpl"  class="com.comiteetica.hibernate.service.impl.InvestigacionMonitorServiceImpl" />
+    
+    <bean name="InvestigacionSedeDaoImpl"  class="com.comiteetica.hibernate.dao.impl.InvestigacionSedeDaoImpl" />
+    <bean name="InvestigacionSedeServiceImpl"  class="com.comiteetica.hibernate.service.impl.InvestigacionSedeServiceImpl" />
+    
+    
+</beans>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16/06/2017 12:59:59 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.PatrocinadorCro" table="PatrocinadorCro" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <composite-id name="id" class="com.comiteetica.hibernate.model.PatrocinadorCroId">
+            <key-property name="idPatrocinador" type="string">
+                <column name="IdPatrocinador" length="10" />
+            </key-property>
+            <key-property name="idCro" type="string">
+                <column name="IdCro" length="10" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="cro" class="com.comiteetica.hibernate.model.Cro" update="false" insert="false" fetch="select">
+            <column name="IdCro" length="10" not-null="true" />
+        </many-to-one>
+        <many-to-one name="patrocinador" class="com.comiteetica.hibernate.model.Patrocinador" update="false" insert="false" fetch="select">
+            <column name="IdPatrocinador" length="10" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="string">
+            <column name="Descripcion" length="250" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="Observacion" length="500" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+        <set name="investigacions" table="Investigacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdPatrocinador" length="10" />
+                <column name="IdCro" length="10" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.Investigacion" />
+        </set>
+    </class>
+</hibernate-mapping>

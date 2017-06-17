@@ -1,0 +1,57 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.comiteetica.hibernate.service.impl;
+
+import com.comiteetica.hibernate.dao.RegistroDao;
+import com.comiteetica.hibernate.model.Registro;
+import com.comiteetica.hibernate.service.RegistroService;
+import com.comiteetica.persistencia.BussinessException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author rasec
+ */
+@Service
+public class RegistroServiceImpl implements RegistroService{
+
+    @Autowired
+    private RegistroDao registroDao;
+    
+    @Transactional
+    @Override
+    public void create(Registro registro) throws BussinessException {
+        registroDao.create(registro);
+    }
+
+    @Transactional
+    @Override
+    public Registro read(String idRegistro) throws BussinessException {
+        return registroDao.read(idRegistro);
+    }
+
+    @Transactional
+    @Override
+    public void update(Registro registro) throws BussinessException {
+        registroDao.update(registro);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Registro registro) throws BussinessException {
+        registroDao.delete(registro);
+    }
+
+    @Transactional
+    @Override
+    public List<Registro> getAllRegistro() throws BussinessException {
+        return registroDao.getAllRegistro();
+    }
+    
+}
