@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 16/06/2017 12:59:59 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 17-jun-2017 14:55:22 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.comiteetica.hibernate.model.Provincia" table="Provincia" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+    <class name="com.comiteetica.hibernate.model.Provincia" table="Provincia" schema="dbo" catalog="ComiteEtica">
         <composite-id name="id" class="com.comiteetica.hibernate.model.ProvinciaId">
             <key-property name="idDepartamento" type="string">
                 <column name="IdDepartamento" length="2" />

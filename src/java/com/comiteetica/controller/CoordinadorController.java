@@ -7,7 +7,6 @@ package com.comiteetica.controller;
 
 import com.comiteetica.hibernate.model.Coordinador;
 import com.comiteetica.hibernate.service.CoordinadorService;
-import com.comiteetica.hibernate.service.InvestigadorService;
 import com.comiteetica.json.JsonTransformer;
 import com.comiteetica.persistencia.BussinessException;
 import com.comiteetica.persistencia.BussinessMessage;
@@ -20,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -68,45 +68,45 @@ public class CoordinadorController {
     }
 //    
 //    
-//    @RequestMapping(value = "/Producto", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-//    public void insert(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
-//        
-//        try {
-//            Producto producto = (Producto) jsonTransformer.fromJson(jsonEntrada, Producto.class);
-//            producto.setIdProducto( productoService.getNextIdProducto());
-//            productoService.create(producto);
-//            String jsonSalida = jsonTransformer.toJson(producto);
-//            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            httpServletResponse.getWriter().println(jsonSalida);
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//            } catch (IOException ex1) {
-//                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex1);
-//            }
-//            System.out.println("catch 1"+ex.getMessage());
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            httpServletResponse.setContentType("text/plain; charset=UTF-8");
-//            try {
-//                ex.printStackTrace(httpServletResponse.getWriter());
-//                System.out.println("try 3"+ex.getMessage());
-//            } catch (IOException ex1) {
-//                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex1);
-//                System.out.println("catch 4"+ex1.getMessage());
-//            }
-//            System.out.println("catch 3"+ex.getMessage());
-//        }
-//        
-//        System.out.println("final");
-//    }
+    @RequestMapping(value = "/CoordinadorInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public void insertCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+        
+        try {
+            Coordinador coordinador = (Coordinador) jsonTransformer.fromJson(jsonEntrada, Coordinador.class);
+            coordinador.setIdCoordinador("sadasd");
+            coordinadorService.create(coordinador);
+            String jsonSalida = jsonTransformer.toJson(coordinador);
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+            } catch (IOException ex1) {
+                Logger.getLogger(CoordinadorController.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            System.out.println("catch 1"+ex.getMessage());
+            
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                System.out.println("try 3"+ex.getMessage());
+            } catch (IOException ex1) {
+                Logger.getLogger(CoordinadorController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("catch 4"+ex1.getMessage());
+            }
+            System.out.println("catch 3"+ex.getMessage());
+        }
+        
+        System.out.println("final");
+    }
 //
 //    
 //    @RequestMapping(value = "/Producto", method = RequestMethod.GET, produces = "application/json")

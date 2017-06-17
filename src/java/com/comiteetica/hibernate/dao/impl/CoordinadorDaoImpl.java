@@ -8,6 +8,8 @@ package com.comiteetica.hibernate.dao.impl;
 import com.comiteetica.hibernate.dao.CoordinadorDao;
 import com.comiteetica.hibernate.model.Coordinador;
 import com.comiteetica.hibernate.model.HibernateUtil;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;
@@ -26,11 +28,34 @@ public class CoordinadorDaoImpl implements CoordinadorDao{
     public void create(Coordinador coordinador) {
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
         sessionFactory.getCurrentSession().beginTransaction();
+        coordinador.setIdCoordinador(getNextId());
         sessionFactory.getCurrentSession().save(coordinador);
         sessionFactory.getCurrentSession().getTransaction().commit();
         sessionFactory.getCurrentSession().close(); 
     }
 
+    @Override
+    public String getNextId() {
+        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+        //sessionFactory.getCurrentSession().beginTransaction();
+        
+        String serie="COD";
+        java.util.Date date = Date.from(Instant.now());
+        java.sql.Timestamp param = new java.sql.Timestamp(date.getTime());
+        Query query = sessionFactory.getCurrentSession()
+                .createSQLQuery("select dbo.fneGetSerieCorrelativo(?,?) from fecha" )
+                .setString(0, serie)
+                .setDate(1, param);
+        String nextId="-1";        
+        List result = query.list();
+        for(int i=0; i<result.size(); i++){
+                nextId=result.get(i).toString();
+        }
+
+        //sessionFactory.getCurrentSession().getTransaction().commit();
+        //sessionFactory.getCurrentSession().close(); 
+        return nextId;
+    }
     @Override
     public Coordinador read(String idCoordinador) {
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();

@@ -69,5 +69,6 @@ Contributor(s):
     <mapping resource="com/comiteetica/hibernate/model/Departamento.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/RegistroBitacora.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Serie.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/Fecha.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

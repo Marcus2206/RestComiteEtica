@@ -13,6 +13,7 @@ import java.util.List;
  */
 public interface CoordinadorDao {
     public void create(Coordinador coordinador);
+    public String getNextId();
     public Coordinador read(String idCoordinador);
     public void update(Coordinador coordinador);
     public void delete(Coordinador coordinador);

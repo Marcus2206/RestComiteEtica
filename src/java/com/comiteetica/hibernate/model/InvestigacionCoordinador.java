@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 16/06/2017 12:59:54 PM by Hibernate Tools 4.3.1
+// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -28,10 +28,13 @@ public class InvestigacionCoordinador  implements java.io.Serializable {
 
 
      private InvestigacionCoordinadorId id;
-     @JsonBackReference
+     
+     @JsonBackReference("CoordinadorInvestigacion")
      private Coordinador coordinador;
-     @JsonBackReference
+     
+     @JsonBackReference("InvestigacionCoordinador")
      private Investigacion investigacion;
+     
      private String observacion;
      private String usuarioIngresa;
      private Date fechaIngreso;

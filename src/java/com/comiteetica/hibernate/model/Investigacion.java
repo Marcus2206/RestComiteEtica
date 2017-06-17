@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 16/06/2017 12:59:54 PM by Hibernate Tools 4.3.1
+// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -41,8 +41,10 @@ public class Investigacion  implements java.io.Serializable {
      private String usuarioModifica;
      private Date fechaModificacion;
      private Set<InvestigacionMonitor> investigacionMonitors = new HashSet<InvestigacionMonitor>(0);
-     @JsonManagedReference
+     
+     @JsonManagedReference("InvestigacionCoordinador")
      private Set<InvestigacionCoordinador> investigacionCoordinadors = new HashSet<InvestigacionCoordinador>(0);
+     
      private Set<InvestigacionInvestigador> investigacionInvestigadors = new HashSet<InvestigacionInvestigador>(0);
      private Set<Registro> registros = new HashSet<Registro>(0);
      private Set<InvestigacionSede> investigacionSedes = new HashSet<InvestigacionSede>(0);
@@ -76,7 +78,7 @@ public class Investigacion  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdInvestigacion", unique=true, nullable=false, length=10)
+    @Column(name="IdInvestigacion", nullable=false, length=10)
     public String getIdInvestigacion() {
         return this.idInvestigacion;
     }

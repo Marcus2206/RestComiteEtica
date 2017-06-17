@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 16/06/2017 12:59:54 PM by Hibernate Tools 4.3.1
+// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -53,7 +53,7 @@ public class Parametro  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdParametro", unique=true, nullable=false, length=4)
+    @Column(name="IdParametro", nullable=false, length=4)
     public String getIdParametro() {
         return this.idParametro;
     }

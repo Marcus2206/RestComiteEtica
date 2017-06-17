@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 16/06/2017 12:59:59 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 17-jun-2017 14:55:22 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.comiteetica.hibernate.model.Investigacion" table="Investigacion" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+    <class name="com.comiteetica.hibernate.model.Investigacion" table="Investigacion" schema="dbo" catalog="ComiteEtica">
         <id name="idInvestigacion" type="string">
             <column name="IdInvestigacion" length="10" />
-            <generator class="assigned" />
+            <generator class="assigned"></generator>
         </id>
         <many-to-one name="patrocinadorCro" class="com.comiteetica.hibernate.model.PatrocinadorCro" fetch="select">
             <column name="IdPatrocinador" length="10" />
