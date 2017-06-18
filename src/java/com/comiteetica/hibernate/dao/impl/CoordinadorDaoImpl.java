@@ -33,7 +33,7 @@ public class CoordinadorDaoImpl implements CoordinadorDao{
         sessionFactory.getCurrentSession().getTransaction().commit();
         sessionFactory.getCurrentSession().close(); 
     }
-
+    /*Falta la actualización desúés de la confirmación de insercción*/
     @Override
     public String getNextId() {
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
