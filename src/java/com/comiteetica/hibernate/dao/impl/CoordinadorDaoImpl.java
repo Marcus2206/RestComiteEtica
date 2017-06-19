@@ -26,97 +26,134 @@ public class CoordinadorDaoImpl implements CoordinadorDao{
 
     @Override
     public void create(Coordinador coordinador) {
+        
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+        try{
         sessionFactory.getCurrentSession().beginTransaction();
-        //coordinador.setIdCoordinador(getNextId());
         sessionFactory.getCurrentSession().save(coordinador);
         sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close(); 
-    }
-    /*Falta la actualización desúés de la confirmación de insercción
-    Push Felix Verificacion*/
-    @Override
-    public String getNextId() {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        //sessionFactory.getCurrentSession().beginTransaction();
-        
-        String serie="COD";
-        java.util.Date date = Date.from(Instant.now());
-        java.sql.Timestamp param = new java.sql.Timestamp(date.getTime());
-        Query query = sessionFactory.getCurrentSession()
-                .createSQLQuery("select dbo.fneGetSerieCorrelativo(?,?) from fecha" )
-                .setString(0, serie)
-                .setDate(1, param);
-        String nextId="-1";        
-        List result = query.list();
-        for(int i=0; i<result.size(); i++){
-                nextId=result.get(i).toString();
+        }catch(Exception e){
+            sessionFactory.getCurrentSession().getTransaction().rollback();
+            System.out.println("Error en: CoordinadorDaoImpl - create. "+e.getMessage());
         }
-
-        //sessionFactory.getCurrentSession().getTransaction().commit();
-        //sessionFactory.getCurrentSession().close(); 
-        return nextId;
+        finally{
+            try{
+                sessionFactory.getCurrentSession().close(); 
+            }catch(Exception e1){
+                System.out.println("Error en: CoordinadorDaoImpl - create - finally. "+e1.getMessage());
+            }
+        }
+        
     }
+
     @Override
     public Coordinador read(String idCoordinador) {
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.openSession();
+        Coordinador investigador=null;
+        try{
         sessionFactory.getCurrentSession().beginTransaction();
-        Coordinador investigador=(Coordinador)sessionFactory.getCurrentSession().get(Coordinador.class,idCoordinador);
-        Hibernate.initialize(investigador.getInvestigacionCoordinadors());
+        investigador=(Coordinador)sessionFactory.getCurrentSession().get(Coordinador.class,idCoordinador);
+        //Hibernate.initialize(investigador.getInvestigacionCoordinadors());
         sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
+        }catch(Exception e){
+            sessionFactory.getCurrentSession().getTransaction().rollback();
+            System.out.println("Error en: CoordinadorDaoImpl - read. "+e.getMessage());
+        }finally{
+            try{
+                sessionFactory.getCurrentSession().close();
+            }catch(Exception e1){
+                System.out.println("Error en: CoordinadorDaoImpl - read - finally. "+e1.getMessage());
+            }
+        }
+        
         return investigador;
     }
 
     @Override
     public void update(Coordinador coordinador) {
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+        try{
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().update(coordinador);
         sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
+        }catch(Exception e){
+            sessionFactory.getCurrentSession().getTransaction().rollback();
+            System.out.println("Error en: CoordinadorDaoImpl - update. "+e.getMessage());
+        }finally{
+            try{
+                sessionFactory.getCurrentSession().close();
+            }catch(Exception e1){
+                System.out.println("Error en: CoordinadorDaoImpl - update - finally. "+e1.getMessage());
+            }
+        }
+        
+        
     }
 
     @Override
     public void delete(Coordinador coordinador) {
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+        try{
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().delete(coordinador);
         sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
+        }catch(Exception e){
+            sessionFactory.getCurrentSession().getTransaction().rollback();
+            System.out.println("Error en: CoordinadorDaoImpl - delete. "+e.getMessage());
+        }finally{
+            try{
+                sessionFactory.getCurrentSession().close();
+            }catch(Exception e1){
+                System.out.println("Error en: CoordinadorDaoImpl - delete - finally. "+e1.getMessage());
+            }
+        }
+        
     }
 
     @Override
     public List<Coordinador> getAllCoordinador() {
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+        List<Coordinador> coordinadors=new ArrayList<>();
+        try{
         sessionFactory.getCurrentSession().beginTransaction();
 
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
                                 .createQuery("select "
-                                                    +"idProducto, " 
-                                                    +"nombre, " 
-                                                    +"descripcion "  
-                                            +"from    Producto p" );
+                                                    +"idCoordinador, " 
+                                                    +"apePaterno, " 
+                                                    +"apeMaterno,"
+                                                    +"nombres "  
+                                            +"from    Coordinador" );
         //query.setFirstResult(ini);
         //query.setMaxResults(fin);
         /*Crea Objeto contenedor*/
-        List<Coordinador> coordinadors=new ArrayList<>();
+        
         /*Realiza consulta y devuelve Object[]*/
         List<Object[]> list=query.list();
         /*Itera en cada fila*/
         list.stream().forEach((coordinador)->{
             Coordinador coor=new Coordinador();
             coor.setIdCoordinador(coordinador[0].toString());
-            coor.setNombres(coordinador[1].toString());
-            coor.setApePaterno(coordinador[2].toString());
+            coor.setApePaterno(coordinador[1].toString());
+            coor.setApeMaterno(coordinador[2].toString());
+            coor.setNombres(coordinador[3].toString());
             coordinadors.add(coor);
         });
         
         //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
         sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
+        }catch(Exception e){
+            sessionFactory.getCurrentSession().getTransaction().rollback();
+            System.out.println("Error en: CoordinadorDaoImpl - getAllCoordinador. "+e.getMessage());
+        }finally{
+            try{
+                sessionFactory.getCurrentSession().close();
+            }catch(Exception e1){
+                System.out.println("Error en: CoordinadorDaoImpl - getAllCoordinador - finally. "+e1.getMessage());
+            }
+        }
+        
         
         return coordinadors;
     }

@@ -74,8 +74,7 @@ public class CoordinadorController {
         }
 
     }
-//    
-//    
+      
     @RequestMapping(value = "/CoordinadorInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insertCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         
@@ -128,59 +127,47 @@ public class CoordinadorController {
         
         System.out.println("final");
     }
-//
-//    
-//    @RequestMapping(value = "/Producto", method = RequestMethod.GET, produces = "application/json")
-//    public void find(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
-//        //Product prod=new Product();
-//        try {
-//            
-//            /* esto sí funcionó
-//            System.out.println("antes de listar");
-//            List<Producto> productos = prod.getProductos();
-//            System.out.println("terminó");
-//            */
-//            //ArrayList list = (ArrayList)jsonTransformer.fromJson(jsonEntrada, ArrayList.class);
-//            
-////            System.out.println("antes de listar ini ::"+list.get(0).toString());
-////            System.out.println("antes de listar fin ::"+list.get(1).toString());
-//            System.out.println("jsonEntrada "+jsonEntrada);
-//           
-//            List<Producto> productos = productoService.getAllProducto(0,25);
-//            System.out.println("terminó");
-//            //System.out.println("Listó"+productos.get(0).getMarca().getDescripcion());
-//
-//            String jsonSalida = jsonTransformer.toJson(productos);
-//            System.out.println("transformó lista completa: "+jsonSalida);
-//            //httpServletRequest.
-//            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
-//            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            httpServletResponse.getWriter().println(jsonSalida);
-//            
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//                System.out.println("2do try ");
-//            } catch (IOException ex1) {
-//                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex1);
-//                System.out.println("2do catch "+ex1.getMessage());
-//            }
-//            
-//            System.out.println("1er catch "+ex.getMessage());
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            System.out.println("3er catch "+ex.getMessage());
-//        }
-//
-//    }
-//    
+
+    
+    @RequestMapping(value = "/CoordinadorFindAll", method = RequestMethod.GET, produces = "application/json")
+    public void findAllCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
+        try {
+            System.out.println("jsonEntrada "+jsonEntrada);
+            List<Coordinador> coordinadors = coordinadorService.getAllCoordinador();
+            System.out.println("terminó");
+            //System.out.println("Listó"+productos.get(0).getMarca().getDescripcion());
+
+            String jsonSalida = jsonTransformer.toJson(coordinadors);
+            System.out.println("transformó lista completa: "+jsonSalida);
+            //httpServletRequest.
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+            
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                System.out.println("2do try ");
+            } catch (IOException ex1) {
+                Logger.getLogger(CoordinadorController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("2do catch "+ex1.getMessage());
+            }
+            
+            System.out.println("1er catch "+ex.getMessage());
+            
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            System.out.println("3er catch "+ex.getMessage());
+        }
+
+    }
+    
 //    @RequestMapping(value = "/ProductoByStep", method = RequestMethod.PUT, produces = "application/json",consumes = "application/json")
 //    public void findProductoByStep(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@RequestBody String jsonEntrada) {
 //        //Product prod=new Product();
