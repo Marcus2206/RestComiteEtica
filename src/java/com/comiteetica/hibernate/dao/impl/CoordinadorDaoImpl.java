@@ -28,7 +28,7 @@ public class CoordinadorDaoImpl implements CoordinadorDao{
     public void create(Coordinador coordinador) {
         SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
         sessionFactory.getCurrentSession().beginTransaction();
-        coordinador.setIdCoordinador(getNextId());
+        //coordinador.setIdCoordinador(getNextId());
         sessionFactory.getCurrentSession().save(coordinador);
         sessionFactory.getCurrentSession().getTransaction().commit();
         sessionFactory.getCurrentSession().close(); 

@@ -10,7 +10,9 @@ import com.comiteetica.hibernate.model.SerieCorrelativo;
 import com.comiteetica.hibernate.model.SerieCorrelativoId;
 import com.comiteetica.hibernate.service.SerieCorrelativoService;
 import com.comiteetica.persistencia.BussinessException;
+import java.util.Date;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SerieCorrelativoServiceImpl implements SerieCorrelativoService{
 
+    @Autowired
     private SerieCorrelativoDao serieCorrelativoDao;
     
     @Transactional
@@ -33,6 +36,12 @@ public class SerieCorrelativoServiceImpl implements SerieCorrelativoService{
     @Override
     public SerieCorrelativo read(SerieCorrelativoId serieCorrelativoId) throws BussinessException {
         return serieCorrelativoDao.read(serieCorrelativoId);
+    }
+    
+    @Transactional
+    @Override
+    public SerieCorrelativo readNextSerieCorrelativo(String serieId,Date fechaTrabajo)throws BussinessException {
+        return serieCorrelativoDao.readNextSerieCorrelativo(serieId, fechaTrabajo);
     }
 
     @Transactional

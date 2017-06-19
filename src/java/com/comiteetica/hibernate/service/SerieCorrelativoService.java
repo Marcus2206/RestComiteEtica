@@ -8,6 +8,7 @@ package com.comiteetica.hibernate.service;
 import com.comiteetica.hibernate.model.SerieCorrelativo;
 import com.comiteetica.hibernate.model.SerieCorrelativoId;
 import com.comiteetica.persistencia.BussinessException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,4 +21,5 @@ public interface SerieCorrelativoService {
     public void update(SerieCorrelativo serieCorrelativo)throws BussinessException;
     public void delete(SerieCorrelativo serieCorrelativo)throws BussinessException;
     public List<SerieCorrelativo> getAllSerieCorrelativo()throws BussinessException;
+    public SerieCorrelativo readNextSerieCorrelativo(String serieId,Date fechaTrabajo)throws BussinessException;
 }

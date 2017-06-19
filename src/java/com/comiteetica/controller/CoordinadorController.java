@@ -6,11 +6,16 @@
 package com.comiteetica.controller;
 
 import com.comiteetica.hibernate.model.Coordinador;
+import com.comiteetica.hibernate.model.SerieCorrelativo;
+import com.comiteetica.hibernate.model.SerieCorrelativoId;
 import com.comiteetica.hibernate.service.CoordinadorService;
+import com.comiteetica.hibernate.service.SerieCorrelativoService;
 import com.comiteetica.json.JsonTransformer;
 import com.comiteetica.persistencia.BussinessException;
 import com.comiteetica.persistencia.BussinessMessage;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +36,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CoordinadorController {
     @Autowired
     JsonTransformer jsonTransformer;
+    
+    @Autowired
+    SerieCorrelativoService serieCorrelativoService;
     
     @Autowired
     CoordinadorService coordinadorService;
@@ -72,10 +80,23 @@ public class CoordinadorController {
     public void insertCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         
         try {
+            
             Coordinador coordinador = (Coordinador) jsonTransformer.fromJson(jsonEntrada, Coordinador.class);
-            coordinador.setIdCoordinador("sadasd");
+            System.out.println("Coordinador coordinador");
+            java.util.Date date = Date.from(Instant.now());
+            System.out.println("java.util.Date date"+date.toString());
+            SerieCorrelativo seriecorrelativo=serieCorrelativoService.readNextSerieCorrelativo("COD", date);
+            System.out.println("SerieCorrelativo seriecorrelativo=serieCorrelativoService.readNextSerieCorrelativo(\"COD\", date);");
+            coordinador.setIdCoordinador(seriecorrelativo.getId().getIdSerie()+seriecorrelativo.getUltimoUsado());
+            System.out.println("coordinador.setIdCoordinador(seriecorrelativo.getSerie()+seriecorrelativo.getUltimoUsado());"+coordinador.getIdCoordinador());
             coordinadorService.create(coordinador);
+            System.out.println("coordinadorService.create(coordinador);");            
+            seriecorrelativo.setFechaModificacion(date);
+            System.out.println("seriecorrelativo.setFechaModificacion(date);");
+            serieCorrelativoService.update(seriecorrelativo);
+            System.out.println("serieCorrelativoService.update(seriecorrelativo);");
             String jsonSalida = jsonTransformer.toJson(coordinador);
+            System.out.println("String jsonSalida = jsonTransformer.toJson(coordinador);");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);

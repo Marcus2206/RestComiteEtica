@@ -7,6 +7,7 @@ package com.comiteetica.hibernate.dao;
 
 import com.comiteetica.hibernate.model.SerieCorrelativo;
 import com.comiteetica.hibernate.model.SerieCorrelativoId;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,4 +20,5 @@ public interface SerieCorrelativoDao {
     public void update(SerieCorrelativo serieCorrelativo);
     public void delete(SerieCorrelativo serieCorrelativo);
     public List<SerieCorrelativo> getAllSerieCorrelativo(); 
+    public SerieCorrelativo readNextSerieCorrelativo(String serieId,Date fechaTrabajo);
 }
