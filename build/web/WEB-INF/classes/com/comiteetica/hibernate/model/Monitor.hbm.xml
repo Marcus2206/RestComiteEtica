@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-jun-2017 14:55:22 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.Monitor" table="Monitor" schema="dbo" catalog="ComiteEtica">
+        <id name="idMonitor" type="string">
+            <column name="IdMonitor" length="10" />
+            <generator class="assigned"></generator>
+        </id>
+        <property name="apePaterno" type="string">
+            <column name="ApePaterno" length="50" />
+        </property>
+        <property name="apeMaterno" type="string">
+            <column name="ApeMaterno" length="50" />
+        </property>
+        <property name="nombres" type="string">
+            <column name="Nombres" length="100" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+        <set name="investigacionMonitors" table="InvestigacionMonitor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdMonitor" length="10" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.InvestigacionMonitor" />
+        </set>
+    </class>
+</hibernate-mapping>

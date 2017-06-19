@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-jun-2017 14:55:22 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.Parametro" table="Parametro" schema="dbo" catalog="ComiteEtica">
+        <id name="idParametro" type="string">
+            <column name="IdParametro" length="4" />
+            <generator class="assigned"></generator>
+        </id>
+        <property name="descripcion" type="string">
+            <column name="Descripcion" length="250" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+        <set name="parametroDetalles" table="ParametroDetalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdParametro" length="4" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.ParametroDetalle" />
+        </set>
+    </class>
+</hibernate-mapping>

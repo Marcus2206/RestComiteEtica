@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-jun-2017 14:55:22 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.CorrespondenciaFile" table="CorrespondenciaFile" schema="dbo" catalog="ComiteEtica">
+        <composite-id name="id" class="com.comiteetica.hibernate.model.CorrespondenciaFileId">
+            <key-property name="idCorrespondencia" type="string">
+                <column name="IdCorrespondencia" length="10" />
+            </key-property>
+            <key-property name="idRegistro" type="string">
+                <column name="IdRegistro" length="10" />
+            </key-property>
+            <key-property name="fileDetalle" type="int">
+                <column name="FileDetalle" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="correspondencia" class="com.comiteetica.hibernate.model.Correspondencia" update="false" insert="false" fetch="select">
+            <column name="IdCorrespondencia" length="10" not-null="true" />
+        </many-to-one>
+        <property name="nombreArchivo" type="string">
+            <column name="NombreArchivo" length="1000" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="Direccion" length="1000" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>
