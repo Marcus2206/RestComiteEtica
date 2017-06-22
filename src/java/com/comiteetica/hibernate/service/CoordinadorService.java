@@ -19,4 +19,9 @@ public interface CoordinadorService {
     public void update(Coordinador coordinador) throws BussinessException;
     public void delete(Coordinador coordinador) throws BussinessException;
     public List<Coordinador> getAllCoordinador() throws BussinessException;
+    public void beginTransaction() throws BussinessException;
+    public void commit() throws BussinessException;
+    public void close() throws BussinessException;
+    public void rollback() throws BussinessException;
+    public List<Coordinador> getCoordinadorSinIdInvestigacion(String idInvestigacion)  throws BussinessException;
 }

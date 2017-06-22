@@ -16,7 +16,12 @@ import java.util.List;
 public interface InvestigacionService {
     public void create(Investigacion investigacion) throws BussinessException;
     public Investigacion read(String idInvestigacion) throws BussinessException;
+    public Investigacion readInvestigacion(String idInvestigacion)throws BussinessException;
     public void update(Investigacion investigacion) throws BussinessException;
     public void delete(Investigacion investigacion) throws BussinessException;
     public List<Investigacion> getAllInvestigacion() throws BussinessException;
+    public void beginTransaction()  throws BussinessException;
+    public void commit()  throws BussinessException;
+    public void close()  throws BussinessException;
+    public void rollback()  throws BussinessException;
 }

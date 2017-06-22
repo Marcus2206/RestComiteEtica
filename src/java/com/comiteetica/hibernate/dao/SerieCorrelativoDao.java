@@ -21,4 +21,8 @@ public interface SerieCorrelativoDao {
     public void delete(SerieCorrelativo serieCorrelativo);
     public List<SerieCorrelativo> getAllSerieCorrelativo(); 
     public SerieCorrelativo readNextSerieCorrelativo(String serieId,Date fechaTrabajo);
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
 }

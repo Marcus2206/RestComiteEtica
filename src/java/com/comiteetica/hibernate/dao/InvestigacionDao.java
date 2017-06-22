@@ -15,7 +15,12 @@ import java.util.List;
 public interface InvestigacionDao {
     public void create(Investigacion investigacion);
     public Investigacion read(String idInvestigacion);
+    public Investigacion readInvestigacion(String idInvestigacion);
     public void update(Investigacion investigacion);
     public void delete(Investigacion investigacion);
     public List<Investigacion> getAllInvestigacion();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
 }

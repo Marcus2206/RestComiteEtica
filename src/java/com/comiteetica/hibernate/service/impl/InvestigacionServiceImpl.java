@@ -26,6 +26,30 @@ public class InvestigacionServiceImpl implements InvestigacionService{
     
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        investigacionDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        investigacionDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        investigacionDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        investigacionDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(Investigacion investigacion) throws BussinessException {
         investigacionDao.create(investigacion);
     }
@@ -34,6 +58,12 @@ public class InvestigacionServiceImpl implements InvestigacionService{
     @Override
     public Investigacion read(String idInvestigacion) throws BussinessException {
         return investigacionDao.read(idInvestigacion);
+    }
+    
+    @Transactional
+    @Override
+    public Investigacion readInvestigacion(String idInvestigacion) throws BussinessException {
+        return investigacionDao.readInvestigacion(idInvestigacion);
     }
 
     @Transactional

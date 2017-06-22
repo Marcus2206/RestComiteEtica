@@ -29,9 +29,9 @@ public class JsonTransformerImplJackson implements JsonTransformer {
 
     @Override
     public String toJson(Object data) {
-        try {
+        try {//Feature.WRAP_ROOT_VALUE
             ObjectMapper objectMapper = new ObjectMapper();
-
+            //objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException ex) {
             throw new RuntimeException(ex);
@@ -42,8 +42,10 @@ public class JsonTransformerImplJackson implements JsonTransformer {
     public Object fromJson(String json, Class clazz) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            //objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+            objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+            //objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
 //            mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 //            // do various things, perhaps:
 //            String someJsonString = mapper.writeValueAsString(someClassInstance);

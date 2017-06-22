@@ -17,4 +17,9 @@ public interface CoordinadorDao {
     public void update(Coordinador coordinador);
     public void delete(Coordinador coordinador);
     public List<Coordinador> getAllCoordinador();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
+    public List<Coordinador> getCoordinadorSinIdInvestigacion(String idInvestigacion);
 }

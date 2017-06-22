@@ -22,4 +22,8 @@ public interface SerieCorrelativoService {
     public void delete(SerieCorrelativo serieCorrelativo)throws BussinessException;
     public List<SerieCorrelativo> getAllSerieCorrelativo()throws BussinessException;
     public SerieCorrelativo readNextSerieCorrelativo(String serieId,Date fechaTrabajo)throws BussinessException;
+    public void beginTransaction() throws BussinessException;
+    public void commit() throws BussinessException;
+    public void close() throws BussinessException;
+    public void rollback() throws BussinessException;
 }

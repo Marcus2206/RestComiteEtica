@@ -19,4 +19,9 @@ public interface InvestigacionCoordinadorDao {
     public void update(InvestigacionCoordinador investigacionCoordinador);
     public void delete(InvestigacionCoordinador investigacionCoordinador);
     public List<InvestigacionCoordinador> getAllInvestigacionCoordinador();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
+    public List<Object> getInvestigacionCoordinadorByIdInvestigacion(String idInvestigacion);
 }

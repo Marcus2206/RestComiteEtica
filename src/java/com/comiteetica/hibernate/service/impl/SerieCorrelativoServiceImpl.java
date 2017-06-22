@@ -28,6 +28,30 @@ public class SerieCorrelativoServiceImpl implements SerieCorrelativoService{
     
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        serieCorrelativoDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        serieCorrelativoDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        serieCorrelativoDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        serieCorrelativoDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(SerieCorrelativo serieCorrelativo) throws BussinessException {
         serieCorrelativoDao.create(serieCorrelativo);
     }

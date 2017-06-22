@@ -3,6 +3,11 @@ package com.comiteetica.hibernate.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -24,6 +29,9 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class, 
+  property = "id")
 public class InvestigacionCoordinador  implements java.io.Serializable {
 
 
@@ -75,7 +83,7 @@ public class InvestigacionCoordinador  implements java.io.Serializable {
         this.id = id;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="IdCoordinador", nullable=false, insertable=false, updatable=false)
     public Coordinador getCoordinador() {
         return this.coordinador;
@@ -85,7 +93,7 @@ public class InvestigacionCoordinador  implements java.io.Serializable {
         this.coordinador = coordinador;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="IdInvestigacion", nullable=false, insertable=false, updatable=false)
     public Investigacion getInvestigacion() {
         return this.investigacion;

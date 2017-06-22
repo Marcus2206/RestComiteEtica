@@ -26,6 +26,30 @@ public class CoordinadorServiceImpl implements CoordinadorService{
     
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        coordinadorDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        coordinadorDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        coordinadorDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        coordinadorDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(Coordinador coordinador) throws BussinessException {
         coordinadorDao.create(coordinador);
     }
@@ -54,4 +78,9 @@ public class CoordinadorServiceImpl implements CoordinadorService{
         return coordinadorDao.getAllCoordinador();
     }
     
+    @Transactional
+    @Override
+    public List<Coordinador> getCoordinadorSinIdInvestigacion(String idInvestigacion){
+        return coordinadorDao.getCoordinadorSinIdInvestigacion(idInvestigacion);
+    }
 }

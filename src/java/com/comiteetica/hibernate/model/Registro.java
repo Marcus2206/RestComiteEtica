@@ -2,6 +2,10 @@ package com.comiteetica.hibernate.model;
 // Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,13 +29,22 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class, 
+  property = "idRegistro")
 public class Registro  implements java.io.Serializable {
 
 
      private String idRegistro;
+     
+     @JsonBackReference("InvestigacionRegistro")
      private Investigacion investigacion;
+     
      private InvestigacionInvestigador investigacionInvestigador;
+     
+     //@JsonManagedReference("SedeRegistro")
      private InvestigacionSede investigacionSede;
+     
      private Date fechaAprobacion;
      private String paramEstado;
      private String observacion;

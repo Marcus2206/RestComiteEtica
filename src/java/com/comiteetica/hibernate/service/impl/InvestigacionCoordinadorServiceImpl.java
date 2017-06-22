@@ -27,6 +27,30 @@ public class InvestigacionCoordinadorServiceImpl implements InvestigacionCoordin
     
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        investigacionCoordinadorDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        investigacionCoordinadorDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        investigacionCoordinadorDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        investigacionCoordinadorDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(InvestigacionCoordinador investigacionCoordinador) throws BussinessException {
         investigacionCoordinadorDao.create(investigacionCoordinador);
     }
@@ -55,4 +79,9 @@ public class InvestigacionCoordinadorServiceImpl implements InvestigacionCoordin
         return investigacionCoordinadorDao.getAllInvestigacionCoordinador();
     }
     
+    @Transactional
+    @Override
+    public List<Object> getInvestigacionCoordinadorByIdInvestigacion(String idInvestigacion){
+        return investigacionCoordinadorDao.getInvestigacionCoordinadorByIdInvestigacion(idInvestigacion);
+    } 
 }

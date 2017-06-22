@@ -2,7 +2,11 @@ package com.comiteetica.hibernate.model;
 // Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +30,9 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class, 
+  property = "idInvestigacion")
 public class Investigacion  implements java.io.Serializable {
 
 
@@ -40,19 +47,25 @@ public class Investigacion  implements java.io.Serializable {
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
+     
+     @JsonManagedReference("InvestigacionMonitor")
      private Set<InvestigacionMonitor> investigacionMonitors = new HashSet<InvestigacionMonitor>(0);
      
      @JsonManagedReference("InvestigacionCoordinador")
      private Set<InvestigacionCoordinador> investigacionCoordinadors = new HashSet<InvestigacionCoordinador>(0);
-     
+
+     @JsonManagedReference("InvestigacionInvestigador")
      private Set<InvestigacionInvestigador> investigacionInvestigadors = new HashSet<InvestigacionInvestigador>(0);
+
+     @JsonManagedReference("InvestigacionRegistro")
      private Set<Registro> registros = new HashSet<Registro>(0);
+
+     @JsonManagedReference("InvestigacionSede")
      private Set<InvestigacionSede> investigacionSedes = new HashSet<InvestigacionSede>(0);
 
     public Investigacion() {
     }
 
-	
     public Investigacion(String idInvestigacion) {
         this.idInvestigacion = idInvestigacion;
     }
@@ -189,7 +202,8 @@ public class Investigacion  implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
     public Set<InvestigacionMonitor> getInvestigacionMonitors() {
         return this.investigacionMonitors;
     }
@@ -198,7 +212,8 @@ public class Investigacion  implements java.io.Serializable {
         this.investigacionMonitors = investigacionMonitors;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
     public Set<InvestigacionCoordinador> getInvestigacionCoordinadors() {
         return this.investigacionCoordinadors;
     }
@@ -207,7 +222,8 @@ public class Investigacion  implements java.io.Serializable {
         this.investigacionCoordinadors = investigacionCoordinadors;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
     public Set<InvestigacionInvestigador> getInvestigacionInvestigadors() {
         return this.investigacionInvestigadors;
     }
@@ -216,7 +232,8 @@ public class Investigacion  implements java.io.Serializable {
         this.investigacionInvestigadors = investigacionInvestigadors;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
     public Set<Registro> getRegistros() {
         return this.registros;
     }
@@ -225,7 +242,8 @@ public class Investigacion  implements java.io.Serializable {
         this.registros = registros;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="investigacion")
     public Set<InvestigacionSede> getInvestigacionSedes() {
         return this.investigacionSedes;
     }
