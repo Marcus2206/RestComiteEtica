@@ -7,7 +7,6 @@ package com.comiteetica.controller;
 
 import com.comiteetica.hibernate.model.Coordinador;
 import com.comiteetica.hibernate.model.SerieCorrelativo;
-import com.comiteetica.hibernate.model.SerieCorrelativoId;
 import com.comiteetica.hibernate.service.CoordinadorService;
 import com.comiteetica.hibernate.service.SerieCorrelativoService;
 import com.comiteetica.json.JsonTransformer;

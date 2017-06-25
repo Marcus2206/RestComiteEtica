@@ -26,6 +26,30 @@ public class ParametroServiceImpl implements ParametroService{
 
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        parametroDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        parametroDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        parametroDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        parametroDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(Parametro parametro) throws BussinessException {
         parametroDao.create(parametro);
     }

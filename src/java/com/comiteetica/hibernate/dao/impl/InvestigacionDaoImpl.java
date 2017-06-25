@@ -92,7 +92,7 @@ public class InvestigacionDaoImpl implements InvestigacionDao{
                                                     +"paramTipoInvestigacion " 
                                             + "from    Investigacion "
                                             + " where idInvestigacion=:idInvestigacion" )
-                                .setParameter("idInvestigacion", idInvestigacion);
+                                .setString("idInvestigacion", idInvestigacion);
 
         /*Crea Objeto contenedor*/
         List<Investigacion> investigacions=new ArrayList<>();

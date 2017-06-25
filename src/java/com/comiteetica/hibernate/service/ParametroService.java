@@ -19,4 +19,8 @@ public interface ParametroService {
     public void update(Parametro parametro)throws BussinessException;
     public void delete(Parametro parametro)throws BussinessException;
     public List<Parametro> getAllParametro() throws BussinessException;
+    public void beginTransaction() throws BussinessException;
+    public void commit() throws BussinessException;
+    public void close() throws BussinessException;
+    public void rollback() throws BussinessException;
 }

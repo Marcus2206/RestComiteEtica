@@ -35,12 +35,14 @@ public class ParametroController {
     @Autowired
     private JsonTransformer jsonTransformer;
     
-    @RequestMapping(value = "/Parametro/{idParametro}", method = RequestMethod.GET, produces = "application/json")
-    public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idParametro") String idParametro) {
+    @RequestMapping(value = "/ParametroRead/{idParametro}", method = RequestMethod.GET, produces = "application/json")
+    public void readParametro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idParametro") String idParametro) {
         try {
+            parametroService.beginTransaction();
             System.out.println("antes de cargar");
             Parametro parametro = parametroService.read(idParametro);
             System.out.println("cargó parametro");
+            parametroService.commit();
             String jsonSalida = jsonTransformer.toJson(parametro);
             System.out.println(jsonSalida);
             
@@ -56,13 +58,27 @@ public class ParametroController {
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
                 httpServletResponse.getWriter().println(jsonSalida);
+                parametroService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(InvestigadorController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception e){
+                
             }
             
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             System.out.println("catch "+ex.getMessage());
+            try{
+                parametroService.rollback();
+            }catch(Exception e){
+                
+            }
+        }finally{
+            try{
+                parametroService.close();
+            }catch (Exception e){
+                
+            }
         }
 
     }
@@ -108,58 +124,59 @@ public class ParametroController {
 //        System.out.println("final");
 //    }
 //
-//    
-//    @RequestMapping(value = "/Producto", method = RequestMethod.GET, produces = "application/json")
-//    public void find(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
-//        //Product prod=new Product();
-//        try {
-//            
-//            /* esto sí funcionó
-//            System.out.println("antes de listar");
-//            List<Producto> productos = prod.getProductos();
-//            System.out.println("terminó");
-//            */
-//            //ArrayList list = (ArrayList)jsonTransformer.fromJson(jsonEntrada, ArrayList.class);
-//            
-////            System.out.println("antes de listar ini ::"+list.get(0).toString());
-////            System.out.println("antes de listar fin ::"+list.get(1).toString());
-//            System.out.println("jsonEntrada "+jsonEntrada);
-//           
-//            List<Producto> productos = productoService.getAllProducto(0,25);
-//            System.out.println("terminó");
-//            //System.out.println("Listó"+productos.get(0).getMarca().getDescripcion());
-//
-//            String jsonSalida = jsonTransformer.toJson(productos);
-//            System.out.println("transformó lista completa: "+jsonSalida);
-//            //httpServletRequest.
-//            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
-//            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            httpServletResponse.getWriter().println(jsonSalida);
-//            
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//                System.out.println("2do try ");
-//            } catch (IOException ex1) {
-//                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex1);
-//                System.out.println("2do catch "+ex1.getMessage());
-//            }
-//            
-//            System.out.println("1er catch "+ex.getMessage());
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            System.out.println("3er catch "+ex.getMessage());
-//        }
-//
-//    }
-//    
+    
+    @RequestMapping(value = "/ParametroFindAll", method = RequestMethod.GET, produces = "application/json")
+    public void findAllParametro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
+        try {           
+            parametroService.beginTransaction();
+            List<Parametro> parametros = parametroService.getAllParametro();
+            parametroService.commit();
+            //System.out.println("Listó"+productos.get(0).getMarca().getDescripcion());
+
+            String jsonSalida = jsonTransformer.toJson(parametros);
+            //httpServletRequest.
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+            
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                parametroService.rollback();
+                System.out.println("2do try ");
+            } catch (IOException ex1) {
+                Logger.getLogger(ParametroController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("2do catch "+ex1.getMessage());
+            } catch(Exception e){
+                
+            }
+            
+            System.out.println("1er catch "+ex.getMessage());
+            
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            try{
+                parametroService.rollback();
+            }catch(Exception e){
+                
+            }
+            System.out.println("3er catch "+ex.getMessage());
+        }finally{
+            try{
+                parametroService.close();
+            }catch(Exception e){
+                
+            }
+        }
+
+    }
+    
 //    @RequestMapping(value = "/ProductoByStep", method = RequestMethod.PUT, produces = "application/json",consumes = "application/json")
 //    public void findProductoByStep(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@RequestBody String jsonEntrada) {
 //        //Product prod=new Product();

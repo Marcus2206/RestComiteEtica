@@ -22,49 +22,51 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ParametroDetalleDaoImpl implements ParametroDetalleDao{
     
+    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+    
+    @Override
+    public void beginTransaction(){
+        sessionFactory.getCurrentSession().beginTransaction();
+    }
+    
+    @Override
+    public void commit(){
+        sessionFactory.getCurrentSession().getTransaction().commit();
+    }
+    
+    @Override
+    public void close(){
+        sessionFactory.getCurrentSession().close();
+    }
+    
+    @Override
+    public void rollback(){
+        sessionFactory.getCurrentSession().getTransaction().rollback();
+    }
+    
     @Override
     public void create(ParametroDetalle parametroDetalle) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(parametroDetalle);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close(); 
     }
 
     @Override
     public ParametroDetalle read(ParametroDetalleId parametroDetalleId) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.openSession();
-        sessionFactory.getCurrentSession().beginTransaction();
         ParametroDetalle parametroDetalle=(ParametroDetalle)sessionFactory.getCurrentSession().get(ParametroDetalle.class,parametroDetalleId);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
         return parametroDetalle;
     }
 
     @Override
     public void update(ParametroDetalle parametroDetalle) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().update(parametroDetalle);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public void delete(ParametroDetalle parametroDetalle) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().delete(parametroDetalle);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public List<ParametroDetalle> getAllParametroDetalle() {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
-
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
                                 .createQuery("select "
@@ -86,11 +88,32 @@ public class ParametroDetalleDaoImpl implements ParametroDetalleDao{
             parametroDetalles.add(paramDetalle);
         });
         
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
-        
+        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
         return parametroDetalles;
     }
     
+    @Override
+    public List<ParametroDetalle> getParametroDetalleByIdParametro(String idParametro) {
+        /*Fabrica Query*/
+        Query query=sessionFactory.getCurrentSession()
+                                .createQuery("select pd "
+                                            + "from ParametroDetalle pd "
+                                            + "where pd.id.idParametro=:idParametro" )
+                                .setString("idParametro", idParametro);
+
+        /*Crea Objeto contenedor*/
+        List<ParametroDetalle> parametroDetalles=new ArrayList<>();
+        /*Realiza consulta y devuelve Object[]*/
+        List<Object[]> list=query.list();
+        /*Itera en cada fila*/
+        list.stream().forEach((parametroDetalle)->{
+            ParametroDetalle paramDetalle=new ParametroDetalle();
+            paramDetalle.setId((ParametroDetalleId)parametroDetalle[0]);
+            paramDetalle.setDescripcion(parametroDetalle[1].toString());
+            parametroDetalles.add(paramDetalle);
+        });
+        
+        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
+        return parametroDetalles;
+    }
 }

@@ -18,4 +18,8 @@ public interface ParametroDao {
     public void update(Parametro parametro);
     public void delete(Parametro parametro);
     public List<Parametro> getAllParametro();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
 }

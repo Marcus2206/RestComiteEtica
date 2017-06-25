@@ -27,6 +27,30 @@ public class ParametroDetalleServiceImpl implements ParametroDetalleService{
     
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        parametroDetalleDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        parametroDetalleDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        parametroDetalleDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        parametroDetalleDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(ParametroDetalle parametroDetalle) throws BussinessException {
         parametroDetalleDao.create(parametroDetalle);
     }
@@ -55,4 +79,9 @@ public class ParametroDetalleServiceImpl implements ParametroDetalleService{
         return parametroDetalleDao.getAllParametroDetalle();
     }
     
+    @Transactional
+    @Override
+    public List<ParametroDetalle> getParametroDetalleByIdParametro(String idParametro) throws BussinessException {
+        return parametroDetalleDao.getParametroDetalleByIdParametro(idParametro);
+    }
 }

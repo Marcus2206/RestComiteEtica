@@ -2,6 +2,7 @@ package com.comiteetica.hibernate.model;
 // Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.Date;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -27,7 +28,10 @@ public class ParametroDetalle  implements java.io.Serializable {
 
 
      private ParametroDetalleId id;
+     
+     @JsonBackReference("ParametroDetalle")
      private Parametro parametro;
+     
      private String descripcion;
      private String usuarioIngresa;
      private Date fechaIngreso;

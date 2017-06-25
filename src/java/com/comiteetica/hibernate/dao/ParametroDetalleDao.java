@@ -19,4 +19,9 @@ public interface ParametroDetalleDao {
     public void update(ParametroDetalle parametroDetalle);
     public void delete(ParametroDetalle parametroDetalle);
     public List<ParametroDetalle> getAllParametroDetalle();
+    public List<ParametroDetalle> getParametroDetalleByIdParametro(String idParametro);
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
 }
