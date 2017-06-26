@@ -225,42 +225,6 @@ public class InvestigacionCoordinadorController {
 
     }
     
-//    @RequestMapping(value = "/ProductoTotalCount", method = RequestMethod.GET, produces = "application/json")
-//    public void findProductoTotalCount(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-//        try {
-//            System.out.println("antes de listar findProductoTotalCount ::");
-//
-//            int productosCount = productoService.getProductoCount();
-//            System.out.println("terminó "+productosCount);
-//            
-//            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
-//            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            httpServletResponse.getWriter().println(productosCount);
-//            
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//                System.out.println("2do try ");
-//            } catch (IOException ex1) {
-//                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex1);
-//                System.out.println("2do catch "+ex1.getMessage());
-//            }
-//            
-//            System.out.println("1er catch "+ex.getMessage());
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            System.out.println("3er catch "+ex.getMessage());
-//        }
-//
-//    }
-    
     @RequestMapping(value = "/InvestigacionCoordinadorUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public void updateInvestigacionCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {

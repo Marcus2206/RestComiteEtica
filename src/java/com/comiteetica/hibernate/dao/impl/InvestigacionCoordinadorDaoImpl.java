@@ -135,13 +135,9 @@ public class InvestigacionCoordinadorDaoImpl implements InvestigacionCoordinador
         List<Object[]> list=query.list();
         /*Itera en cada fila*/
         list.stream().forEach((objeto)->{
-            InvestigacionCoordinador inv=new InvestigacionCoordinador();
-            Coordinador cord=new Coordinador();
             Object[] o=new Object[2];
-            inv=(InvestigacionCoordinador)objeto[0];
-            cord=(Coordinador)objeto[1];
-            o[0]=inv;
-            o[1]=cord;
+            o[0]=(InvestigacionCoordinador)objeto[0];
+            o[1]=(Coordinador)objeto[1];
             objetos.add(o);
         });
    
