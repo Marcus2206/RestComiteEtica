@@ -2,6 +2,11 @@ package com.comiteetica.hibernate.model;
 // Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,17 +31,27 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Provincia  implements java.io.Serializable {
 
 
      private ProvinciaId id;
+     
+     @JsonBackReference("DepartamentoProvincia")
      private Departamento departamento;
+     
      private String descripcion;
      private String usuarioIngresa;
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
+     
+     @JsonManagedReference("ProvinciaSede")
      private Set<Sede> sedes = new HashSet<Sede>(0);
+     
+     @JsonManagedReference("ProvinciaDistrito")
      private Set<Distrito> distritos = new HashSet<Distrito>(0);
 
     public Provincia() {
@@ -133,7 +148,8 @@ public class Provincia  implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="provincia")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="provincia")
     public Set<Sede> getSedes() {
         return this.sedes;
     }
@@ -142,7 +158,8 @@ public class Provincia  implements java.io.Serializable {
         this.sedes = sedes;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="provincia")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="provincia")
     public Set<Distrito> getDistritos() {
         return this.distritos;
     }

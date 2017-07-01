@@ -35,9 +35,16 @@ import javax.persistence.TemporalType;
 public class Sede implements java.io.Serializable {
 
     private String idSede;
+    
+    @JsonBackReference("DepartamentoSede")
     private Departamento departamento;
+    
+    @JsonBackReference("DistritoSede")
     private Distrito distrito;
+    
+    @JsonBackReference("ProvinciaSede")
     private Provincia provincia;
+    
     private String nombre;
     private String direccion;
     private String usuarioIngresa;
@@ -174,6 +181,7 @@ public class Sede implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sede")
     public Set<InvestigacionSede> getInvestigacionSedes() {
         return this.investigacionSedes;

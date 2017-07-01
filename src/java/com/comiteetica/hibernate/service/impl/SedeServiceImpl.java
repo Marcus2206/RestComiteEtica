@@ -26,6 +26,30 @@ public class SedeServiceImpl implements SedeService{
     
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        sedeDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        sedeDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        sedeDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        sedeDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(Sede sede) throws BussinessException {
         sedeDao.create(sede);
     }

@@ -19,4 +19,8 @@ public interface SedeService {
     public void update(Sede sede) throws BussinessException;
     public void delete(Sede sede) throws BussinessException;
     public List<Sede> getAllSede() throws BussinessException;
+    public void beginTransaction() throws BussinessException;
+    public void commit() throws BussinessException;
+    public void close() throws BussinessException;
+    public void rollback() throws BussinessException;
 }

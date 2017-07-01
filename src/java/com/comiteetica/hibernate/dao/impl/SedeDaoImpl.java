@@ -8,9 +8,7 @@ package com.comiteetica.hibernate.dao.impl;
 import com.comiteetica.hibernate.dao.SedeDao;
 import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.Sede;
-import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -22,75 +20,70 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class SedeDaoImpl implements SedeDao{
 
+    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+    
+    @Override
+    public void beginTransaction(){
+        sessionFactory.getCurrentSession().beginTransaction();
+    }
+    
+    @Override
+    public void commit(){
+        sessionFactory.getCurrentSession().getTransaction().commit();
+    }
+    
+    @Override
+    public void close(){
+        sessionFactory.getCurrentSession().close();
+    }
+    
+    @Override
+    public void rollback(){
+        sessionFactory.getCurrentSession().getTransaction().rollback();
+    }
+    
     @Override
     public void create(Sede sede) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(sede);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close(); 
     }
 
     @Override
     public Sede read(String idSede) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.openSession();
-        sessionFactory.getCurrentSession().beginTransaction();
         Sede sede=(Sede)sessionFactory.getCurrentSession().get(Sede.class,idSede);
-        Hibernate.initialize(sede.getInvestigacionSedes());
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
+//        Hibernate.initialize(sede.getInvestigacionSedes());
         return sede;
     }
 
     @Override
     public void update(Sede sede) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().update(sede);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public void delete(Sede sede) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().delete(sede);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public List<Sede> getAllSede() {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
-
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select "
-                                                    +"idProducto, " 
-                                                    +"nombre, " 
-                                                    +"descripcion "  
-                                            +"from    Producto p" );
+                                .createQuery("select s from Sede s" );
         //query.setFirstResult(ini);
         //query.setMaxResults(fin);
         /*Crea Objeto contenedor*/
-        List<Sede> sedes=new ArrayList<>();
+//        List<Sede> sedes=new ArrayList<>();
         /*Realiza consulta y devuelve Object[]*/
-        List<Object[]> list=query.list();
+        List<Sede> sedes=query.list();
         /*Itera en cada fila*/
-        list.stream().forEach((sede)->{
-            Sede sed=new Sede();
-            sed.setIdSede(sede[0].toString());
-            sed.setNombre(sede[1].toString());
-            sedes.add(sed);
-        });
+//        list.stream().forEach((sede)->{
+//            Sede sed=new Sede();
+//            sed.setIdSede(sede[0].toString());
+//            sed.setNombre(sede[1].toString());
+//            sedes.add(sed);
+//        });
         
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
-        
+        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
         return sedes;
     }
     

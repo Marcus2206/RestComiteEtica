@@ -18,4 +18,8 @@ public interface SedeDao {
     public void update(Sede sede);
     public void delete(Sede sede);
     public List<Sede> getAllSede();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
 }
