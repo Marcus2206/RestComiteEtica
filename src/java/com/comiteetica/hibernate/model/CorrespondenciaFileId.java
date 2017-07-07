@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -57,6 +57,25 @@ public class CorrespondenciaFileId  implements java.io.Serializable {
     }
 
 
+   public boolean equals(Object other) {
+         if ( (this == other ) ) return true;
+		 if ( (other == null ) ) return false;
+		 if ( !(other instanceof CorrespondenciaFileId) ) return false;
+		 CorrespondenciaFileId castOther = ( CorrespondenciaFileId ) other; 
+         
+		 return ( (this.getIdCorrespondencia()==castOther.getIdCorrespondencia()) || ( this.getIdCorrespondencia()!=null && castOther.getIdCorrespondencia()!=null && this.getIdCorrespondencia().equals(castOther.getIdCorrespondencia()) ) )
+ && ( (this.getIdRegistro()==castOther.getIdRegistro()) || ( this.getIdRegistro()!=null && castOther.getIdRegistro()!=null && this.getIdRegistro().equals(castOther.getIdRegistro()) ) )
+ && (this.getFileDetalle()==castOther.getFileDetalle());
+   }
+   
+   public int hashCode() {
+         int result = 17;
+         
+         result = 37 * result + ( getIdCorrespondencia() == null ? 0 : this.getIdCorrespondencia().hashCode() );
+         result = 37 * result + ( getIdRegistro() == null ? 0 : this.getIdRegistro().hashCode() );
+         result = 37 * result + this.getFileDetalle();
+         return result;
+   }   
 
 
 }

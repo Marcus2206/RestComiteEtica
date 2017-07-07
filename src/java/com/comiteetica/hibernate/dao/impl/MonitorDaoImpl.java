@@ -6,7 +6,6 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.MonitorDao;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.Monitor;
 import java.util.ArrayList;
 import java.util.List;

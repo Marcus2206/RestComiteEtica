@@ -6,9 +6,7 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.ParametroDao;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.Parametro;
-import com.comiteetica.hibernate.model.ParametroDetalle;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;

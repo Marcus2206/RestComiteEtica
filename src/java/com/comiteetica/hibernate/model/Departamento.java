@@ -1,11 +1,8 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,9 +23,6 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "idDepartamento")
 public class Departamento  implements java.io.Serializable {
 
 
@@ -38,12 +32,7 @@ public class Departamento  implements java.io.Serializable {
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
-     
-     @JsonManagedReference("DepartamentoProvincia")
      private Set<Provincia> provincias = new HashSet<Provincia>(0);
-
-     @JsonManagedReference("DepartamentoSede")
-     private Set<Sede> sedes = new HashSet<Sede>(0);
 
     public Departamento() {
     }
@@ -52,7 +41,7 @@ public class Departamento  implements java.io.Serializable {
     public Departamento(String idDepartamento) {
         this.idDepartamento = idDepartamento;
     }
-    public Departamento(String idDepartamento, String descripcion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<Provincia> provincias, Set<Sede> sedes) {
+    public Departamento(String idDepartamento, String descripcion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<Provincia> provincias) {
        this.idDepartamento = idDepartamento;
        this.descripcion = descripcion;
        this.usuarioIngresa = usuarioIngresa;
@@ -60,13 +49,12 @@ public class Departamento  implements java.io.Serializable {
        this.usuarioModifica = usuarioModifica;
        this.fechaModificacion = fechaModificacion;
        this.provincias = provincias;
-       this.sedes = sedes;
     }
    
      @Id 
 
     
-    @Column(name="IdDepartamento", nullable=false, length=2)
+    @Column(name="IdDepartamento", unique=true, nullable=false, length=2)
     public String getIdDepartamento() {
         return this.idDepartamento;
     }
@@ -131,18 +119,9 @@ public class Departamento  implements java.io.Serializable {
         return this.provincias;
     }
     
+    @JsonIgnore
     public void setProvincias(Set<Provincia> provincias) {
         this.provincias = provincias;
-    }
-
-    @JsonIgnore
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="departamento")
-    public Set<Sede> getSedes() {
-        return this.sedes;
-    }
-    
-    public void setSedes(Set<Sede> sedes) {
-        this.sedes = sedes;
     }
 
 

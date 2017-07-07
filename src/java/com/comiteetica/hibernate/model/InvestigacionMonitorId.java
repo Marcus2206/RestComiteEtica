@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -45,6 +45,23 @@ public class InvestigacionMonitorId  implements java.io.Serializable {
     }
 
 
+   public boolean equals(Object other) {
+         if ( (this == other ) ) return true;
+		 if ( (other == null ) ) return false;
+		 if ( !(other instanceof InvestigacionMonitorId) ) return false;
+		 InvestigacionMonitorId castOther = ( InvestigacionMonitorId ) other; 
+         
+		 return ( (this.getIdInvestigacion()==castOther.getIdInvestigacion()) || ( this.getIdInvestigacion()!=null && castOther.getIdInvestigacion()!=null && this.getIdInvestigacion().equals(castOther.getIdInvestigacion()) ) )
+ && ( (this.getIdMonitor()==castOther.getIdMonitor()) || ( this.getIdMonitor()!=null && castOther.getIdMonitor()!=null && this.getIdMonitor().equals(castOther.getIdMonitor()) ) );
+   }
+   
+   public int hashCode() {
+         int result = 17;
+         
+         result = 37 * result + ( getIdInvestigacion() == null ? 0 : this.getIdInvestigacion().hashCode() );
+         result = 37 * result + ( getIdMonitor() == null ? 0 : this.getIdMonitor().hashCode() );
+         return result;
+   }   
 
 
 }

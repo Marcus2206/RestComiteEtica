@@ -1,12 +1,8 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,9 +26,6 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
-@JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "idInvestigacion")
 public class Investigacion  implements java.io.Serializable {
 
 
@@ -47,25 +40,16 @@ public class Investigacion  implements java.io.Serializable {
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
-     
-     @JsonManagedReference("InvestigacionMonitor")
      private Set<InvestigacionMonitor> investigacionMonitors = new HashSet<InvestigacionMonitor>(0);
-     
-     @JsonManagedReference("InvestigacionCoordinador")
      private Set<InvestigacionCoordinador> investigacionCoordinadors = new HashSet<InvestigacionCoordinador>(0);
-
-     @JsonManagedReference("InvestigacionInvestigador")
      private Set<InvestigacionInvestigador> investigacionInvestigadors = new HashSet<InvestigacionInvestigador>(0);
-
-     @JsonManagedReference("InvestigacionRegistro")
      private Set<Registro> registros = new HashSet<Registro>(0);
-
-     @JsonManagedReference("InvestigacionSede")
      private Set<InvestigacionSede> investigacionSedes = new HashSet<InvestigacionSede>(0);
 
     public Investigacion() {
     }
 
+	
     public Investigacion(String idInvestigacion) {
         this.idInvestigacion = idInvestigacion;
     }
@@ -91,7 +75,7 @@ public class Investigacion  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdInvestigacion", nullable=false, length=10)
+    @Column(name="IdInvestigacion", unique=true, nullable=false, length=10)
     public String getIdInvestigacion() {
         return this.idInvestigacion;
     }
@@ -208,6 +192,7 @@ public class Investigacion  implements java.io.Serializable {
         return this.investigacionMonitors;
     }
     
+    @JsonIgnore
     public void setInvestigacionMonitors(Set<InvestigacionMonitor> investigacionMonitors) {
         this.investigacionMonitors = investigacionMonitors;
     }
@@ -218,6 +203,7 @@ public class Investigacion  implements java.io.Serializable {
         return this.investigacionCoordinadors;
     }
     
+    @JsonIgnore
     public void setInvestigacionCoordinadors(Set<InvestigacionCoordinador> investigacionCoordinadors) {
         this.investigacionCoordinadors = investigacionCoordinadors;
     }
@@ -228,6 +214,7 @@ public class Investigacion  implements java.io.Serializable {
         return this.investigacionInvestigadors;
     }
     
+    @JsonIgnore
     public void setInvestigacionInvestigadors(Set<InvestigacionInvestigador> investigacionInvestigadors) {
         this.investigacionInvestigadors = investigacionInvestigadors;
     }
@@ -238,6 +225,7 @@ public class Investigacion  implements java.io.Serializable {
         return this.registros;
     }
     
+    @JsonIgnore
     public void setRegistros(Set<Registro> registros) {
         this.registros = registros;
     }
@@ -248,6 +236,7 @@ public class Investigacion  implements java.io.Serializable {
         return this.investigacionSedes;
     }
     
+    @JsonIgnore
     public void setInvestigacionSedes(Set<InvestigacionSede> investigacionSedes) {
         this.investigacionSedes = investigacionSedes;
     }

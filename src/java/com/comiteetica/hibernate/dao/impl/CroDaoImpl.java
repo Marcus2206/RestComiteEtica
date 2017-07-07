@@ -7,7 +7,6 @@ package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.CroDao;
 import com.comiteetica.hibernate.model.Cro;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;

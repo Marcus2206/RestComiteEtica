@@ -1,11 +1,7 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,9 +22,6 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
-@JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "idMonitor")
 public class Monitor  implements java.io.Serializable {
 
 
@@ -36,12 +29,11 @@ public class Monitor  implements java.io.Serializable {
      private String apePaterno;
      private String apeMaterno;
      private String nombres;
+     private String correo;
      private String usuarioIngresa;
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
-     
-     @JsonManagedReference("MonitorInvestigacion")
      private Set<InvestigacionMonitor> investigacionMonitors = new HashSet<InvestigacionMonitor>(0);
 
     public Monitor() {
@@ -51,11 +43,12 @@ public class Monitor  implements java.io.Serializable {
     public Monitor(String idMonitor) {
         this.idMonitor = idMonitor;
     }
-    public Monitor(String idMonitor, String apePaterno, String apeMaterno, String nombres, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<InvestigacionMonitor> investigacionMonitors) {
+    public Monitor(String idMonitor, String apePaterno, String apeMaterno, String nombres, String correo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<InvestigacionMonitor> investigacionMonitors) {
        this.idMonitor = idMonitor;
        this.apePaterno = apePaterno;
        this.apeMaterno = apeMaterno;
        this.nombres = nombres;
+       this.correo = correo;
        this.usuarioIngresa = usuarioIngresa;
        this.fechaIngreso = fechaIngreso;
        this.usuarioModifica = usuarioModifica;
@@ -66,7 +59,7 @@ public class Monitor  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdMonitor", nullable=false, length=10)
+    @Column(name="IdMonitor", unique=true, nullable=false, length=10)
     public String getIdMonitor() {
         return this.idMonitor;
     }
@@ -103,6 +96,16 @@ public class Monitor  implements java.io.Serializable {
     
     public void setNombres(String nombres) {
         this.nombres = nombres;
+    }
+
+    
+    @Column(name="Correo", length=150)
+    public String getCorreo() {
+        return this.correo;
+    }
+    
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     

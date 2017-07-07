@@ -109,57 +109,58 @@ public class InvestigadorController {
 //    }
 //
 //    
-//    @RequestMapping(value = "/Producto", method = RequestMethod.GET, produces = "application/json")
-//    public void find(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
-//        //Product prod=new Product();
-//        try {
-//            
-//            /* esto sí funcionó
-//            System.out.println("antes de listar");
-//            List<Producto> productos = prod.getProductos();
-//            System.out.println("terminó");
-//            */
-//            //ArrayList list = (ArrayList)jsonTransformer.fromJson(jsonEntrada, ArrayList.class);
-//            
-////            System.out.println("antes de listar ini ::"+list.get(0).toString());
-////            System.out.println("antes de listar fin ::"+list.get(1).toString());
-//            System.out.println("jsonEntrada "+jsonEntrada);
-//           
-//            List<Producto> productos = productoService.getAllProducto(0,25);
-//            System.out.println("terminó");
-//            //System.out.println("Listó"+productos.get(0).getMarca().getDescripcion());
-//
-//            String jsonSalida = jsonTransformer.toJson(productos);
-//            System.out.println("transformó lista completa: "+jsonSalida);
-//            //httpServletRequest.
-//            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
-//            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            httpServletResponse.getWriter().println(jsonSalida);
-//            
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//                System.out.println("2do try ");
-//            } catch (IOException ex1) {
-//                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex1);
-//                System.out.println("2do catch "+ex1.getMessage());
-//            }
-//            
-//            System.out.println("1er catch "+ex.getMessage());
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            System.out.println("3er catch "+ex.getMessage());
-//        }
-//
-//    }
-//    
+    @RequestMapping(value = "/InvestigadorSinIdInvestigacionFind/{idInvestigacion}", method = RequestMethod.GET, produces = "application/json")
+    public void findInvestigadorSinIdInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable String idInvestigacion) {
+        //Product prod=new Product();
+        try {
+            investigadorService.beginTransaction();
+            List<Investigador> investigacions = investigadorService.getInvestigadorSinIdInvestigacion(idInvestigacion);
+            System.out.println("terminó");
+            String jsonSalida = jsonTransformer.toJson(investigacions);
+            System.out.println("transformó lista completa: "+jsonSalida);
+            investigadorService.commit();
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+            
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                investigadorService.rollback();
+                System.out.println("2do try ");
+            } catch (IOException ex1) {
+                Logger.getLogger(InvestigadorController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("2do catch "+ex1.getMessage());
+            } catch (Exception e){
+                
+            }
+            
+            System.out.println("1er catch "+ex.getMessage());
+            
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            try{
+                investigadorService.rollback();
+            }catch(Exception e){
+                
+            }
+            System.out.println("3er catch "+ex.getMessage());
+        }finally{
+            try{
+                investigadorService.close();
+            }catch(Exception e){
+                
+            }
+        }
+
+    }
+    
 //    @RequestMapping(value = "/ProductoByStep", method = RequestMethod.PUT, produces = "application/json",consumes = "application/json")
 //    public void findProductoByStep(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@RequestBody String jsonEntrada) {
 //        //Product prod=new Product();

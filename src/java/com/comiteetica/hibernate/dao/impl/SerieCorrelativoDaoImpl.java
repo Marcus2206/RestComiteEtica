@@ -6,7 +6,6 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.SerieCorrelativoDao;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.SerieCorrelativo;
 import com.comiteetica.hibernate.model.SerieCorrelativoId;
 import java.util.ArrayList;

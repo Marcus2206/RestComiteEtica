@@ -1,15 +1,9 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -19,7 +13,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,25 +25,16 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Distrito  implements java.io.Serializable {
 
 
      private DistritoId id;
-     
-     @JsonBackReference("ProvinciaDistrito")
      private Provincia provincia;
-     
      private String descripcion;
      private String usuarioIngresa;
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
-     
-     @JsonManagedReference("DistritoSede")
-     private Set<Sede> sedes = new HashSet<Sede>(0);
 
     public Distrito() {
     }
@@ -60,7 +44,7 @@ public class Distrito  implements java.io.Serializable {
         this.id = id;
         this.provincia = provincia;
     }
-    public Distrito(DistritoId id, Provincia provincia, String descripcion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<Sede> sedes) {
+    public Distrito(DistritoId id, Provincia provincia, String descripcion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
        this.id = id;
        this.provincia = provincia;
        this.descripcion = descripcion;
@@ -68,7 +52,6 @@ public class Distrito  implements java.io.Serializable {
        this.fechaIngreso = fechaIngreso;
        this.usuarioModifica = usuarioModifica;
        this.fechaModificacion = fechaModificacion;
-       this.sedes = sedes;
     }
    
      @EmbeddedId
@@ -86,7 +69,8 @@ public class Distrito  implements java.io.Serializable {
         this.id = id;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumns( { 
         @JoinColumn(name="IdDepartamento", referencedColumnName="IdDepartamento", nullable=false, insertable=false, updatable=false), 
         @JoinColumn(name="IdProvincia", referencedColumnName="IdProvincia", nullable=false, insertable=false, updatable=false) } )
@@ -94,6 +78,7 @@ public class Distrito  implements java.io.Serializable {
         return this.provincia;
     }
     
+    @JsonIgnore
     public void setProvincia(Provincia provincia) {
         this.provincia = provincia;
     }
@@ -146,16 +131,6 @@ public class Distrito  implements java.io.Serializable {
     
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
-    }
-
-    @JsonIgnore
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="distrito")
-    public Set<Sede> getSedes() {
-        return this.sedes;
-    }
-    
-    public void setSedes(Set<Sede> sedes) {
-        this.sedes = sedes;
     }
 
 

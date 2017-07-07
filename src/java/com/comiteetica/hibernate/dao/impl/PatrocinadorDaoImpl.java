@@ -6,7 +6,6 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.PatrocinadorDao;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.Patrocinador;
 import java.util.ArrayList;
 import java.util.List;

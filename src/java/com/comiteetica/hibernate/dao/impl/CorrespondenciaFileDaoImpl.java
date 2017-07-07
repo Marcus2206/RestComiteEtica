@@ -8,7 +8,6 @@ package com.comiteetica.hibernate.dao.impl;
 import com.comiteetica.hibernate.dao.CorrespondenciaFileDao;
 import com.comiteetica.hibernate.model.CorrespondenciaFile;
 import com.comiteetica.hibernate.model.CorrespondenciaFileId;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;

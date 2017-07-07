@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 17-jun-2017 14:55:22 by Hibernate Tools 4.3.1 -->
+<!-- Generated 05-jul-2017 13:56:02 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.comiteetica.hibernate.model.Distrito" table="Distrito" schema="dbo" catalog="ComiteEtica">
+    <class name="com.comiteetica.hibernate.model.Distrito" table="Distrito" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
         <composite-id name="id" class="com.comiteetica.hibernate.model.DistritoId">
             <key-property name="idDepartamento" type="string">
                 <column name="IdDepartamento" length="2" />
@@ -34,13 +34,5 @@
         <property name="fechaModificacion" type="timestamp">
             <column name="FechaModificacion" length="23" />
         </property>
-        <set name="sedes" table="Sede" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="IdDepartamento" length="2" />
-                <column name="IdProvincia" length="2" />
-                <column name="IdDistrito" length="2" />
-            </key>
-            <one-to-many class="com.comiteetica.hibernate.model.Sede" />
-        </set>
     </class>
 </hibernate-mapping>

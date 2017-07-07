@@ -6,6 +6,7 @@
 package com.comiteetica.hibernate.dao;
 
 import com.comiteetica.hibernate.model.Sede;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,4 +23,5 @@ public interface SedeDao {
     public void commit();
     public void close();
     public void rollback();
+    public List<Object[]> getAllSedeList();
 }

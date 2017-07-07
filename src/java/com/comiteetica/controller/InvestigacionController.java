@@ -54,10 +54,11 @@ public class InvestigacionController {
         try {            
             investigacionService.beginTransaction();
             Investigacion investigacion = investigacionService.read(idInvestigacion);
-            investigacionService.commit();
+            
             String jsonSalida = jsonTransformer.toJson(investigacion);
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
+            investigacionService.commit();
             httpServletResponse.getWriter().println(jsonSalida);
         } catch (BussinessException ex) {
             List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
@@ -102,8 +103,8 @@ public class InvestigacionController {
             investigacion.setIdInvestigacion("INV"+seriecorrelativo.getUltimoUsado());
             investigacionService.create(investigacion);
             serieCorrelativoService.update(seriecorrelativo);
-            investigacionService.commit();
             String jsonSalida = jsonTransformer.toJson(investigacion);
+            investigacionService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -146,14 +147,14 @@ public class InvestigacionController {
         }
     }
 
-    
     @RequestMapping(value = "/InvestigacionFindAll", method = RequestMethod.GET, produces = "application/json")
     public void findAllInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             investigacionService.beginTransaction();
-            List<Investigacion> investigacions = investigacionService.getAllInvestigacion();
-            investigacionService.commit();
+//            List<Investigacion> investigacions = investigacionService.getAllInvestigacion();
+            List<Object[]> investigacions = investigacionService.getAllInvestigacionList();
             String jsonSalida = jsonTransformer.toJson(investigacions);
+            investigacionService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -200,8 +201,8 @@ public class InvestigacionController {
             investigacionService.beginTransaction();
             Investigacion investigacion = (Investigacion) jsonTransformer.fromJson(jsonEntrada, Investigacion.class);
             investigacionService.update(investigacion);
+            String jsonSalida = jsonTransformer.toJson(investigacion);       
             investigacionService.commit();
-            String jsonSalida = jsonTransformer.toJson(investigacion);            
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -248,8 +249,8 @@ public class InvestigacionController {
             investigacionService.beginTransaction();
             Investigacion investigacion = (Investigacion) jsonTransformer.fromJson(jsonEntrada, Investigacion.class);
             investigacionService.delete(investigacion);
-            investigacionService.commit();      
             String jsonSalida = jsonTransformer.toJson(investigacion); 
+            investigacionService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -269,7 +270,6 @@ public class InvestigacionController {
                 
             }
 
-            
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             httpServletResponse.setContentType("text/plain; charset=UTF-8");
@@ -287,35 +287,6 @@ public class InvestigacionController {
             }catch(Exception e){
                 
             }
-        }
-    }
-
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
-    public class User {
-        public int id;
-        public String name;
- 
-        @JsonBackReference
-        public List<Item> userItems=new ArrayList(0);
-        
-        public User(int id,String name){
-            this.id=id;
-            this.name=name;
-        }
-    }
-    
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
-    public class Item {
-        public int id;
-        public String itemName;
-
-        @JsonManagedReference
-        public User owner;
-        
-        public Item(int id,String itemName,User owner){
-            this.id=id;
-            this.itemName=itemName;
-            this.owner=owner;
         }
     }
 }

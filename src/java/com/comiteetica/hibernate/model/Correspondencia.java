@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -71,7 +71,7 @@ public class Correspondencia  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdCorrespondencia", nullable=false, length=10)
+    @Column(name="IdCorrespondencia", unique=true, nullable=false, length=10)
     public String getIdCorrespondencia() {
         return this.idCorrespondencia;
     }

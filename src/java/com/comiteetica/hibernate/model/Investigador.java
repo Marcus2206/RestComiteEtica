@@ -1,11 +1,8 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,9 +23,6 @@ import javax.persistence.TemporalType;
     ,schema="dbo"
     ,catalog="ComiteEtica"
 )
-@JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "idInvestigador")
 public class Investigador  implements java.io.Serializable {
 
 
@@ -37,12 +31,11 @@ public class Investigador  implements java.io.Serializable {
      private String apeMaterno;
      private String nombres;
      private String paramEspecialidadInvestigador;
+     private String correo;
      private String usuarioIngresa;
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
-     
-     @JsonManagedReference("InvestigadorInvestigacion")
      private Set<InvestigacionInvestigador> investigacionInvestigadors = new HashSet<InvestigacionInvestigador>(0);
 
     public Investigador() {
@@ -52,12 +45,13 @@ public class Investigador  implements java.io.Serializable {
     public Investigador(String idInvestigador) {
         this.idInvestigador = idInvestigador;
     }
-    public Investigador(String idInvestigador, String apePaterno, String apeMaterno, String nombres, String paramEspecialidadInvestigador, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<InvestigacionInvestigador> investigacionInvestigadors) {
+    public Investigador(String idInvestigador, String apePaterno, String apeMaterno, String nombres, String paramEspecialidadInvestigador, String correo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<InvestigacionInvestigador> investigacionInvestigadors) {
        this.idInvestigador = idInvestigador;
        this.apePaterno = apePaterno;
        this.apeMaterno = apeMaterno;
        this.nombres = nombres;
        this.paramEspecialidadInvestigador = paramEspecialidadInvestigador;
+       this.correo = correo;
        this.usuarioIngresa = usuarioIngresa;
        this.fechaIngreso = fechaIngreso;
        this.usuarioModifica = usuarioModifica;
@@ -68,7 +62,7 @@ public class Investigador  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdInvestigador", nullable=false, length=10)
+    @Column(name="IdInvestigador", unique=true, nullable=false, length=10)
     public String getIdInvestigador() {
         return this.idInvestigador;
     }
@@ -118,6 +112,16 @@ public class Investigador  implements java.io.Serializable {
     }
 
     
+    @Column(name="Correo", length=150)
+    public String getCorreo() {
+        return this.correo;
+    }
+    
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    
     @Column(name="UsuarioIngresa", length=50)
     public String getUsuarioIngresa() {
         return this.usuarioIngresa;
@@ -157,11 +161,13 @@ public class Investigador  implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="investigador")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="investigador")
     public Set<InvestigacionInvestigador> getInvestigacionInvestigadors() {
         return this.investigacionInvestigadors;
     }
     
+    @JsonIgnore
     public void setInvestigacionInvestigadors(Set<InvestigacionInvestigador> investigacionInvestigadors) {
         this.investigacionInvestigadors = investigacionInvestigadors;
     }

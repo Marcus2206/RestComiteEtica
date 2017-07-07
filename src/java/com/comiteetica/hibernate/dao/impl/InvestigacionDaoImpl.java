@@ -6,17 +6,9 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.InvestigacionDao;
-import com.comiteetica.hibernate.model.Coordinador;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.Investigacion;
-import com.comiteetica.hibernate.model.InvestigacionCoordinador;
-import com.comiteetica.hibernate.model.InvestigacionMonitor;
-import com.comiteetica.hibernate.model.Registro;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -166,4 +158,36 @@ public class InvestigacionDaoImpl implements InvestigacionDao{
         return investigacions;
     }
     
+    @Override
+    public List<Object[]> getAllInvestigacionList() {
+        /*Fabrica Query*/
+        Query query=sessionFactory.getCurrentSession()
+                                .createSQLQuery("select	IdInvestigacion,\n" +
+                                        "		Protocolo,\n" +
+                                        "		Titulo,\n" +
+                                        "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P003' and pd.IdParametroDetalle=i.ParamEspecialidad)ParamEspecialidad,\n" +
+                                        "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P005' and pd.IdParametroDetalle=i.ParamFase)ParamFase,\n" +
+                                        "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P004' and pd.IdParametroDetalle=i.ParamTipoInvestigacion)ParamTipoInvestigacion\n" +
+                                        "from	Investigacion i\n" +
+                                        "order by IdInvestigacion" );
+        //query.setFirstResult(ini);
+        //query.setMaxResults(fin);
+        /*Crea Objeto contenedor*/
+        ArrayList investigacions=new ArrayList();
+        /*Realiza consulta y devuelve Object[]*/
+        List<Object[]> list=query.list();
+        /*Itera en cada fila*/
+        list.stream().forEach((investigacion)->{
+            Investigacion inv=new Investigacion();
+            inv.setIdInvestigacion(investigacion[0].toString());
+            inv.setProtocolo(investigacion[1].toString());
+            inv.setTitulo(investigacion[2].toString());
+            inv.setParamEspecialidad((String)investigacion[3]);
+            inv.setParamFase((String)investigacion[4]);
+            inv.setParamTipoInvestigacion((String)investigacion[5]);
+            investigacions.add(inv);
+        });
+   
+        return investigacions;
+    }
 }

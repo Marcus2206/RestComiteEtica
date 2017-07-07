@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -53,7 +53,7 @@ public class Patrocinador  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdPatrocinador", nullable=false, length=10)
+    @Column(name="IdPatrocinador", unique=true, nullable=false, length=10)
     public String getIdPatrocinador() {
         return this.idPatrocinador;
     }

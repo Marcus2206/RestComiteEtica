@@ -6,9 +6,9 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.InvestigacionInvestigadorDao;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.InvestigacionInvestigador;
 import com.comiteetica.hibernate.model.InvestigacionInvestigadorId;
+import com.comiteetica.hibernate.model.Investigador;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
@@ -22,50 +22,52 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class InvestigacionInvestigadorDaoImpl implements InvestigacionInvestigadorDao{
 
+    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+    
+    @Override
+    public void beginTransaction(){
+        sessionFactory.getCurrentSession().beginTransaction();
+    }
+    
+    @Override
+    public void commit(){
+        sessionFactory.getCurrentSession().getTransaction().commit();
+    }
+    
+    @Override
+    public void close(){
+        sessionFactory.getCurrentSession().close();
+    }
+    
+    @Override
+    public void rollback(){
+        sessionFactory.getCurrentSession().getTransaction().rollback();
+    }
+    
     @Override
     public void create(InvestigacionInvestigador investigacionInvestigador) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(investigacionInvestigador);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close(); 
     }
 
     @Override
     public InvestigacionInvestigador read(InvestigacionInvestigadorId investigacionInvestigadorId) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.openSession();
-        sessionFactory.getCurrentSession().beginTransaction();
         InvestigacionInvestigador investigacionInvestigador=(InvestigacionInvestigador)sessionFactory.getCurrentSession().get(InvestigacionInvestigador.class,investigacionInvestigadorId);
         //Hibernate.initialize(monitor.getInvestigacionMonitors());
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
         return investigacionInvestigador;
     }
 
     @Override
     public void update(InvestigacionInvestigador investigacionInvestigador) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().update(investigacionInvestigador);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public void delete(InvestigacionInvestigador investigacionInvestigador) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().delete(investigacionInvestigador);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public List<InvestigacionInvestigador> getAllInvestigacionInvestigador() {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
-
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
                                 .createQuery("select "
@@ -86,12 +88,32 @@ public class InvestigacionInvestigadorDaoImpl implements InvestigacionInvestigad
             invInvestigador.setObservacion(investigacionInvestigador[1].toString());
             investigacionInvestigadors.add(invInvestigador);
         });
-        
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
-        
         return investigacionInvestigadors;
     }
     
+    @Override
+    public List<Object> getInvestigacionInvestigadorByIdInvestigacion(String idInvestigacion) {
+        /*Fabrica Query*/
+        Query query=sessionFactory.getCurrentSession()
+                                .createQuery("select ic,c " +
+                                             "	from InvestigacionInvestigador ic " +
+                                             "inner join ic.investigador c " +
+                                             "where  ic.id.idInvestigacion='"+idInvestigacion+"'" );
+        
+        //query.setFirstResult(ini);
+        //query.setMaxResults(fin);
+        /*Crea Objeto contenedor*/
+        List<Object> objetos=new ArrayList<>();
+        /*Realiza consulta y devuelve Object[]*/
+        List<Object[]> list=query.list();
+        /*Itera en cada fila*/
+        list.stream().forEach((objeto)->{
+            Object[] o=new Object[2];
+            o[0]=(InvestigacionInvestigador)objeto[0];
+            o[1]=(Investigador)objeto[1];
+            objetos.add(o);
+        });
+   
+        return objetos;
+    }
 }

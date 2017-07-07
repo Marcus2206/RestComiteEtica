@@ -18,6 +18,9 @@ public interface InvestigadorDao {
     public void update(Investigador investigador);
     public void delete(Investigador investigador);
     public List<Investigador> getAllInvestigador();
-    //public String getNextIdProducto();
-    //public int getProductoCount();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
+    public List<Investigador> getInvestigadorSinIdInvestigacion(String idInvestigacion);
 }

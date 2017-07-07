@@ -23,4 +23,5 @@ public interface InvestigacionDao {
     public void commit();
     public void close();
     public void rollback();
+    public List<Object[]> getAllInvestigacionList();
 }

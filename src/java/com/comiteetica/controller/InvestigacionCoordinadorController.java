@@ -43,8 +43,9 @@ public class InvestigacionCoordinadorController {
             investigacionCoordinadorService.beginTransaction();
             InvestigacionCoordinadorId investigacionCoordinadorId=new InvestigacionCoordinadorId(idInvestigacion,idCoordinador);
             InvestigacionCoordinador investigacionCoordinador = investigacionCoordinadorService.read(investigacionCoordinadorId);
+            
+            String jsonSalida = jsonTransformer.toJson(investigacionCoordinador);   
             investigacionCoordinadorService.commit();
-            String jsonSalida = jsonTransformer.toJson(investigacionCoordinador);            
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -87,8 +88,9 @@ public class InvestigacionCoordinadorController {
             investigacionCoordinadorService.beginTransaction();
             InvestigacionCoordinador investigacionCoordinador = (InvestigacionCoordinador) jsonTransformer.fromJson(jsonEntrada, InvestigacionCoordinador.class);
             investigacionCoordinadorService.create(investigacionCoordinador);
-            investigacionCoordinadorService.commit();
+            
             String jsonSalida = jsonTransformer.toJson(investigacionCoordinador);
+            investigacionCoordinadorService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -138,8 +140,9 @@ public class InvestigacionCoordinadorController {
         try {
             investigacionCoordinadorService.beginTransaction();
             List<InvestigacionCoordinador> investigacionCoordinadors = investigacionCoordinadorService.getAllInvestigacionCoordinador();
-            investigacionCoordinadorService.commit();
+            
             String jsonSalida = jsonTransformer.toJson(investigacionCoordinadors);
+            investigacionCoordinadorService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -182,8 +185,9 @@ public class InvestigacionCoordinadorController {
         try {
             investigacionCoordinadorService.beginTransaction();
             List<Object> investigacionCoordinadors = investigacionCoordinadorService.getInvestigacionCoordinadorByIdInvestigacion(idInvestigacion);
-            investigacionCoordinadorService.commit();
+            
             String jsonSalida = jsonTransformer.toJson(investigacionCoordinadors);
+            investigacionCoordinadorService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -231,8 +235,8 @@ public class InvestigacionCoordinadorController {
             investigacionCoordinadorService.beginTransaction();
             InvestigacionCoordinador investigacionCoordinador = (InvestigacionCoordinador) jsonTransformer.fromJson(jsonEntrada, InvestigacionCoordinador.class);
             investigacionCoordinadorService.update(investigacionCoordinador);
+            String jsonSalida = jsonTransformer.toJson(investigacionCoordinador); 
             investigacionCoordinadorService.commit();
-            String jsonSalida = jsonTransformer.toJson(investigacionCoordinador);            
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -318,37 +322,4 @@ public class InvestigacionCoordinadorController {
             }
         }
     }
-    
-//    @RequestMapping(value = "/Producto/{idProducto}", method = RequestMethod.DELETE, consumes = "application/json")
-//    public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@PathVariable("idProducto") String idProducto  ) {
-//        try {
-//            System.out.println("entro delete controller");
-//            //Producto producto = (Producto) jsonTransformer.fromJson(jsonEntrada, Producto.class);
-//            Producto producto=productoService.read(idProducto);
-//            productoService.delete(producto);
-//            System.out.println("borró");
-//            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-//            
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//                System.out.println("try 2: "+ex.getMessage());
-//            } catch (IOException ex1) {
-//                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex1);
-//                System.out.println("catch 3: "+ex1.getMessage());
-//            }
-//            System.out.println("catch 2: "+ex.getMessage());
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            System.out.println("catch 1: "+ex.getMessage());
-//        }
-//
-//    }    
-//  
 }

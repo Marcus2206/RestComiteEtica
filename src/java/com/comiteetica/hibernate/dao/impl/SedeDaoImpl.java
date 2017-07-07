@@ -6,9 +6,11 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.SedeDao;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.Sede;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -50,7 +52,9 @@ public class SedeDaoImpl implements SedeDao{
     @Override
     public Sede read(String idSede) {
         Sede sede=(Sede)sessionFactory.getCurrentSession().get(Sede.class,idSede);
-//        Hibernate.initialize(sede.getInvestigacionSedes());
+//        Hibernate.initialize(sede.getDepartamento());
+//        Hibernate.initialize(sede.getProvincia());
+//        Hibernate.initialize(sede.getDistrito());
         return sede;
     }
 
@@ -76,14 +80,53 @@ public class SedeDaoImpl implements SedeDao{
         /*Realiza consulta y devuelve Object[]*/
         List<Sede> sedes=query.list();
         /*Itera en cada fila*/
-//        list.stream().forEach((sede)->{
-//            Sede sed=new Sede();
-//            sed.setIdSede(sede[0].toString());
-//            sed.setNombre(sede[1].toString());
-//            sedes.add(sed);
-//        });
+        sedes.stream().forEach((sede)->{
+//            Hibernate.initialize(sede.getDepartamento());
+//            Hibernate.initialize(sede.getProvincia());
+//            Hibernate.initialize(sede.getDistrito());
+        });
         
         //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
+        return sedes;
+    }
+    
+    @Override
+    public List<Object[]> getAllSedeList() {
+        /*Fabrica Query*/
+        Query query=sessionFactory.getCurrentSession()
+                                .createSQLQuery("select	IdSede,\n" +
+"		Nombre,\n" +
+"		Direccion,\n" +
+"		(select Descripcion from Departamento d where d.IdDepartamento=s.IdDepartamento)IdDepartamento,\n" +
+"		(select Descripcion from Provincia p where p.IdDepartamento=s.IdDepartamento and p.IdProvincia=s.IdProvincia)IdProvincia,\n" +
+"		(select Descripcion from Distrito d where d.IdDepartamento=s.IdDepartamento and d.IdProvincia=s.IdProvincia and d.IdDistrito=s.IdDistrito)IdDistrito		 \n" +
+"from	Sede s" );
+        //query.setFirstResult(ini);
+        //query.setMaxResults(fin);
+        /*Crea Objeto contenedor*/
+        ArrayList sedes=new ArrayList();
+        /*Realiza consulta y devuelve Object[]*/
+        List<Object[]> list=query.list();
+        /*Itera en cada fila*/
+        list.stream().forEach((sede)->{
+            Sede sed=new Sede();
+            sed.setIdSede(sede[0].toString());
+            sed.setNombre(sede[1].toString());
+            sed.setDireccion(sede[2].toString());
+            sed.setIdDepartamento((String)sede[3]);
+            sed.setIdProvincia((String)sede[4]);
+            sed.setIdDistrito((String)sede[5]);
+            
+            sedes.add(sed);
+//            HashMap mMap = new HashMap(); // create a new one!
+//            mMap.put("idSede",sede[0].toString());
+//            mMap.put("nombre",sede[1].toString());
+//            mMap.put("direccion",sede[2].toString());
+//            mMap.put("idDepartamento",sede[3].toString());
+//            mMap.put("idProvincia",sede[4].toString());
+//            mMap.put("idDistrito",sede[5].toString());
+//            ss.add(mMap);
+        });
         return sedes;
     }
     

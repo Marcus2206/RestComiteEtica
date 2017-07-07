@@ -20,4 +20,9 @@ public interface InvestigacionInvestigadorService {
     public void update(InvestigacionInvestigador investigacionInvestigador)  throws BussinessException;
     public void delete(InvestigacionInvestigador investigacionInvestigador)  throws BussinessException;
     public List<InvestigacionInvestigador> getAllInvestigacionInvestigador()  throws BussinessException; 
+    public void beginTransaction()throws BussinessException;
+    public void commit()throws BussinessException;
+    public void close()throws BussinessException;
+    public void rollback()throws BussinessException;
+    public List<Object> getInvestigacionInvestigadorByIdInvestigacion(String idInvestigacion) throws BussinessException;
 }

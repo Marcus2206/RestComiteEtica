@@ -15,6 +15,7 @@ import com.comiteetica.persistencia.BussinessMessage;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,12 +50,13 @@ public class SedeController {
             System.out.println("antes de cargar");
             Sede sede = sedeService.read(idSede);
             System.out.println("cargó sede");
-            sedeService.commit();
+            
             String jsonSalida = jsonTransformer.toJson(sede);
             System.out.println(jsonSalida);
             
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
+            sedeService.commit();
             httpServletResponse.getWriter().println(jsonSalida);
             
         } catch (BussinessException ex) {
@@ -156,9 +158,10 @@ public class SedeController {
     public void findAllSede(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             sedeService.beginTransaction();
-            List<Sede> sedes = sedeService.getAllSede();
-            sedeService.commit();
+//            List<Sede> sedes = sedeService.getAllSede();
+            List<Object[]> sedes = sedeService.getAllSedeList();
             String jsonSalida = jsonTransformer.toJson(sedes);
+            sedeService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");

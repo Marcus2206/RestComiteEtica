@@ -7,9 +7,7 @@ package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.CoordinadorDao;
 import com.comiteetica.hibernate.model.Coordinador;
-import com.comiteetica.hibernate.model.HibernateUtil;
-import java.sql.Date;
-import java.time.Instant;
+//import com.comiteetica.hibernate.dao.impl.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;
@@ -68,7 +66,7 @@ public class CoordinadorDaoImpl implements CoordinadorDao{
     @Override
     public Coordinador read(String idCoordinador) {
 //        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        Coordinador investigador=null;
+        Coordinador investigador;
 //        try{
 //        sessionFactory.getCurrentSession().beginTransaction();
         investigador=(Coordinador)sessionFactory.getCurrentSession().get(Coordinador.class,idCoordinador);

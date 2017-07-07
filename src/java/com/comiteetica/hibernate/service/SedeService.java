@@ -7,6 +7,7 @@ package com.comiteetica.hibernate.service;
 
 import com.comiteetica.hibernate.model.Sede;
 import com.comiteetica.persistencia.BussinessException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,4 +24,5 @@ public interface SedeService {
     public void commit() throws BussinessException;
     public void close() throws BussinessException;
     public void rollback() throws BussinessException;
+    public List<Object[]> getAllSedeList()throws BussinessException;
 }

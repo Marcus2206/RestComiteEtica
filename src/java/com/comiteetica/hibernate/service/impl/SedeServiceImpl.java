@@ -9,6 +9,7 @@ import com.comiteetica.hibernate.dao.SedeDao;
 import com.comiteetica.hibernate.model.Sede;
 import com.comiteetica.hibernate.service.SedeService;
 import com.comiteetica.persistencia.BussinessException;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,4 +79,9 @@ public class SedeServiceImpl implements SedeService{
         return sedeDao.getAllSede();
     }
     
+    @Transactional
+    @Override
+    public List<Object[]> getAllSedeList() {
+        return sedeDao.getAllSedeList();
+    }
 }

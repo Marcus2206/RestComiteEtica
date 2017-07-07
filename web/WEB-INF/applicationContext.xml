@@ -81,5 +81,13 @@
     <bean name="InvestigacionSedeDaoImpl"  class="com.comiteetica.hibernate.dao.impl.InvestigacionSedeDaoImpl" />
     <bean name="InvestigacionSedeServiceImpl"  class="com.comiteetica.hibernate.service.impl.InvestigacionSedeServiceImpl" />
     
+    <bean name="DepartamentoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.DepartamentoDaoImpl" />
+    <bean name="DepartamentoServiceImpl"  class="com.comiteetica.hibernate.service.impl.DepartamentoServiceImpl" />
+    
+        <bean name="ProvinciaDaoImpl"  class="com.comiteetica.hibernate.dao.impl.ProvinciaDaoImpl" />
+    <bean name="ProvinciaServiceImpl"  class="com.comiteetica.hibernate.service.impl.ProvinciaServiceImpl" />
+    
+        <bean name="DistritoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.DistritoDaoImpl" />
+    <bean name="DistritoServiceImpl"  class="com.comiteetica.hibernate.service.impl.DistritoServiceImpl" />
     
 </beans>

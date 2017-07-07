@@ -1,30 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 17-jun-2017 14:55:22 by Hibernate Tools 4.3.1 -->
+<!-- Generated 05-jul-2017 13:56:02 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.comiteetica.hibernate.model.Sede" table="Sede" schema="dbo" catalog="ComiteEtica">
+    <class name="com.comiteetica.hibernate.model.Sede" table="Sede" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
         <id name="idSede" type="string">
             <column name="IdSede" length="10" />
-            <generator class="assigned"></generator>
+            <generator class="assigned" />
         </id>
-        <many-to-one name="departamento" class="com.comiteetica.hibernate.model.Departamento" fetch="select">
-            <column name="IdDepartamento" length="2" />
-        </many-to-one>
-        <many-to-one name="distrito" class="com.comiteetica.hibernate.model.Distrito" update="false" insert="false" fetch="select">
-            <column name="IdDepartamento" length="2" />
-            <column name="IdProvincia" length="2" />
-            <column name="IdDistrito" length="2" />
-        </many-to-one>
-        <many-to-one name="provincia" class="com.comiteetica.hibernate.model.Provincia" update="false" insert="false" fetch="select">
-            <column name="IdDepartamento" length="2" />
-            <column name="IdProvincia" length="2" />
-        </many-to-one>
         <property name="nombre" type="string">
             <column name="Nombre" length="150" />
         </property>
         <property name="direccion" type="string">
             <column name="Direccion" length="250" />
+        </property>
+        <property name="idDepartamento" type="string">
+            <column name="IdDepartamento" length="2" />
+        </property>
+        <property name="idProvincia" type="string">
+            <column name="IdProvincia" length="2" />
+        </property>
+        <property name="idDistrito" type="string">
+            <column name="IdDistrito" length="2" />
         </property>
         <property name="usuarioIngresa" type="string">
             <column name="UsuarioIngresa" length="50" />

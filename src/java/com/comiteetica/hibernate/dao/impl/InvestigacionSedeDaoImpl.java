@@ -6,7 +6,6 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.InvestigacionSedeDao;
-import com.comiteetica.hibernate.model.HibernateUtil;
 import com.comiteetica.hibernate.model.InvestigacionSede;
 import com.comiteetica.hibernate.model.InvestigacionSedeId;
 import java.util.ArrayList;

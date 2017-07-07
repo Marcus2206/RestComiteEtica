@@ -24,4 +24,5 @@ public interface InvestigacionService {
     public void commit()  throws BussinessException;
     public void close()  throws BussinessException;
     public void rollback()  throws BussinessException;
+    public List<Object[]> getAllInvestigacionList()throws BussinessException;
 }

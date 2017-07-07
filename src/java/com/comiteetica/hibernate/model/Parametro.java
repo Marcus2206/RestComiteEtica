@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 17-jun-2017 14:55:19 by Hibernate Tools 4.3.1
+// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -32,8 +32,7 @@ public class Parametro  implements java.io.Serializable {
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
-     
-     @JsonManagedReference("ParametroDetalle")
+     @JsonManagedReference
      private Set<ParametroDetalle> parametroDetalles = new HashSet<ParametroDetalle>(0);
 
     public Parametro() {
@@ -56,7 +55,7 @@ public class Parametro  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdParametro", nullable=false, length=4)
+    @Column(name="IdParametro", unique=true, nullable=false, length=4)
     public String getIdParametro() {
         return this.idParametro;
     }

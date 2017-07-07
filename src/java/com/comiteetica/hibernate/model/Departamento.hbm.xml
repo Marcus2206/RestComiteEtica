@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 17-jun-2017 14:55:22 by Hibernate Tools 4.3.1 -->
+<!-- Generated 05-jul-2017 13:56:02 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.comiteetica.hibernate.model.Departamento" table="Departamento" schema="dbo" catalog="ComiteEtica">
+    <class name="com.comiteetica.hibernate.model.Departamento" table="Departamento" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
         <id name="idDepartamento" type="string">
             <column name="IdDepartamento" length="2" />
-            <generator class="assigned"></generator>
+            <generator class="assigned" />
         </id>
         <property name="descripcion" type="string">
             <column name="Descripcion" length="250" />
@@ -28,12 +28,6 @@
                 <column name="IdDepartamento" length="2" not-null="true" />
             </key>
             <one-to-many class="com.comiteetica.hibernate.model.Provincia" />
-        </set>
-        <set name="sedes" table="Sede" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="IdDepartamento" length="2" />
-            </key>
-            <one-to-many class="com.comiteetica.hibernate.model.Sede" />
         </set>
     </class>
 </hibernate-mapping>

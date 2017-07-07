@@ -19,4 +19,9 @@ public interface InvestigadorService {
     public void update(Investigador investigador) throws BussinessException ;
     public void delete(Investigador investigador)throws BussinessException ;
     public List<Investigador> getAllInvestigador()throws BussinessException ;
+    public void beginTransaction() throws BussinessException;
+    public void commit() throws BussinessException;
+    public void close() throws BussinessException;
+    public void rollback() throws BussinessException;
+    public List<Investigador> getInvestigadorSinIdInvestigacion(String idInvestigacion) throws BussinessException;
 }
