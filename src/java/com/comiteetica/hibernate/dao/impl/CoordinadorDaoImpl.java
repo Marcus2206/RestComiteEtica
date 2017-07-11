@@ -129,49 +129,29 @@ public class CoordinadorDaoImpl implements CoordinadorDao{
 
     @Override
     public List<Coordinador> getAllCoordinador() {
-        //SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
         List<Coordinador> coordinadors=new ArrayList<>();
-        //try{
-//        sessionFactory.getCurrentSession().beginTransaction();
-
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
                                 .createQuery("select "
                                                     +"idCoordinador, " 
                                                     +"apePaterno, " 
                                                     +"apeMaterno,"
-                                                    +"nombres "  
+                                                    +"nombres, "  
+                                                    +"correo "
                                             +"from    Coordinador" );
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
         
         /*Realiza consulta y devuelve Object[]*/
         List<Object[]> list=query.list();
         /*Itera en cada fila*/
         list.stream().forEach((coordinador)->{
             Coordinador coor=new Coordinador();
-            coor.setIdCoordinador(coordinador[0].toString());
-            coor.setApePaterno(coordinador[1].toString());
-            coor.setApeMaterno(coordinador[2].toString());
-            coor.setNombres(coordinador[3].toString());
+            coor.setIdCoordinador((String)coordinador[0]);
+            coor.setApePaterno((String)coordinador[1]);
+            coor.setApeMaterno((String)coordinador[2]);
+            coor.setNombres((String)coordinador[3]);
+            coor.setCorreo((String)coordinador[4]);
             coordinadors.add(coor);
-        });
-        
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-        //}catch(Exception e){
-            //sessionFactory.getCurrentSession().getTransaction().rollback();
-            //System.out.println("Error en: CoordinadorDaoImpl - getAllCoordinador. "+e.getMessage());
-        //}finally{
-//            try{
-//                sessionFactory.getCurrentSession().close();
-//            }catch(Exception e1){
-//                System.out.println("Error en: CoordinadorDaoImpl - getAllCoordinador - finally. "+e1.getMessage());
-//            }
-//        }
-        
-        
+        });        
         return coordinadors;
     }
     

@@ -199,6 +199,52 @@ public class SedeController {
             } 
         }
     }
+    
+    @RequestMapping(value = "/SedeByIdInvestigacionFind", method = RequestMethod.GET, produces = "application/json")
+    public void findSedeByIdInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        try {
+            sedeService.beginTransaction();
+//            List<Sede> sedes = sedeService.getAllSede();
+            List<Object[]> sedes = sedeService.getAllSedeList();
+            String jsonSalida = jsonTransformer.toJson(sedes);
+            sedeService.commit();
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                sedeService.rollback();
+                System.out.println("2do try ");
+            } catch (IOException ex1) {
+                Logger.getLogger(SedeController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("2do catch "+ex1.getMessage());
+            } catch(Exception e){
+                
+            }
+            System.out.println("1er catch "+ex.getMessage());
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            try{
+                sedeService.rollback();
+            }catch(Exception e){
+                
+            }
+            System.out.println("3er catch "+ex.getMessage());
+        }finally{
+            try{
+                sedeService.close();
+            }catch(Exception e){
+                
+            } 
+        }
+    }
 //    
 //    @RequestMapping(value = "/ProductoByStep", method = RequestMethod.PUT, produces = "application/json",consumes = "application/json")
 //    public void findProductoByStep(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@RequestBody String jsonEntrada) {
@@ -343,17 +389,12 @@ public class SedeController {
     }
     
     @RequestMapping(value = "/SedeDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteProducto(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deleteSede(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             sedeService.beginTransaction();
-            System.out.println("entró deleteProducto Controller");
             Sede sede = (Sede) jsonTransformer.fromJson(jsonEntrada, Sede.class);
             sedeService.delete(sede);
-            sedeService.commit();
-            System.out.println("borró Producto Del Controller");
-            //String jsonSalida = jsonTransformer.toJson(producto);
-            //System.out.println("devuelve json"+jsonSalida);
-            
+            sedeService.commit();            
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             //httpServletResponse.setContentType("application/json; charset=UTF-8");
             //httpServletResponse.getWriter().println(jsonSalida);
@@ -391,37 +432,53 @@ public class SedeController {
             }
         }
     }
-    
-//    @RequestMapping(value = "/Producto/{idProducto}", method = RequestMethod.DELETE, consumes = "application/json")
-//    public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@PathVariable("idProducto") String idProducto  ) {
-//        try {
-//            System.out.println("entro delete controller");
-//            //Producto producto = (Producto) jsonTransformer.fromJson(jsonEntrada, Producto.class);
-//            Producto producto=productoService.read(idProducto);
-//            productoService.delete(producto);
-//            System.out.println("borró");
-//            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-//            
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//                System.out.println("try 2: "+ex.getMessage());
-//            } catch (IOException ex1) {
-//                Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex1);
-//                System.out.println("catch 3: "+ex1.getMessage());
-//            }
-//            System.out.println("catch 2: "+ex.getMessage());
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            System.out.println("catch 1: "+ex.getMessage());
-//        }
-//
-//    }    
-//    
+       
+    @RequestMapping(value = "/SedeSinIdInvestigacionFind/{idInvestigacion}", method = RequestMethod.GET, produces = "application/json")
+    public void findSedeSinIdInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idInvestigacion") String idInvestigacion) {
+        try {
+            sedeService.beginTransaction();
+            List<Sede> sedes = sedeService.getSedeSinIdInvestigacion(idInvestigacion);
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+            String jsonSalida = jsonTransformer.toJson(sedes);
+            sedeService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+            
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                sedeService.rollback();
+                System.out.println("2do try ");
+            } catch (IOException ex1) {
+                Logger.getLogger(CoordinadorController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("2do catch "+ex1.getMessage());
+            } catch(Exception e){
+                
+            }
+            
+            System.out.println("1er catch "+ex.getMessage());
+            
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            try{
+                sedeService.rollback();
+            }catch(Exception e){
+                
+            }
+            System.out.println("3er catch "+ex.getMessage());
+        }finally{
+            try{
+                sedeService.close();
+            }catch(Exception e){
+                
+            }
+        }
+
+    }
 }

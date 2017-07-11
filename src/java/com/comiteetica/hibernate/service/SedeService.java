@@ -25,4 +25,5 @@ public interface SedeService {
     public void close() throws BussinessException;
     public void rollback() throws BussinessException;
     public List<Object[]> getAllSedeList()throws BussinessException;
+    public List<Sede> getSedeSinIdInvestigacion(String idInvestigacion)throws BussinessException;
 }

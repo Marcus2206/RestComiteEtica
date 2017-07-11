@@ -84,4 +84,10 @@ public class SedeServiceImpl implements SedeService{
     public List<Object[]> getAllSedeList() {
         return sedeDao.getAllSedeList();
     }
+    
+    @Transactional
+    @Override
+    public List<Sede> getSedeSinIdInvestigacion(String idInvestigacion) {
+        return sedeDao.getSedeSinIdInvestigacion(idInvestigacion);
+    }
 }

@@ -2,6 +2,7 @@ package com.comiteetica.hibernate.model;
 // Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -69,22 +70,26 @@ public class InvestigacionCoordinador  implements java.io.Serializable {
         this.id = id;
     }
 
+    
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="IdCoordinador", nullable=false, insertable=false, updatable=false)
     public Coordinador getCoordinador() {
         return this.coordinador;
     }
     
+    
     public void setCoordinador(Coordinador coordinador) {
         this.coordinador = coordinador;
     }
 
+  
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="IdInvestigacion", nullable=false, insertable=false, updatable=false)
     public Investigacion getInvestigacion() {
         return this.investigacion;
     }
     
+
     public void setInvestigacion(Investigacion investigacion) {
         this.investigacion = investigacion;
     }

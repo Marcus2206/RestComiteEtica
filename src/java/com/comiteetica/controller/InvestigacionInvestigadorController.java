@@ -163,9 +163,7 @@ public class InvestigacionInvestigadorController{
         try {
             investigacionInvestigadorService.beginTransaction();
             List<Object> objects = investigacionInvestigadorService.getInvestigacionInvestigadorByIdInvestigacion(idInvestigacion);
-            System.out.println("terminó");
             String jsonSalida = jsonTransformer.toJson(objects);
-            System.out.println("transformó lista completa: "+jsonSalida);
             investigacionInvestigadorService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -380,11 +378,9 @@ public class InvestigacionInvestigadorController{
     @RequestMapping(value = "/InvestigacionInvestigadorDelete", method = RequestMethod.PUT, consumes = "application/json")
     public void deleteInvestigacionInvestigador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@RequestBody String jsonEntrada  ) {
         try {
-            System.out.println("entro delete deleteInvestigacionInvestigador");
             investigacionInvestigadorService.beginTransaction();
             InvestigacionInvestigador investigacionInvestigador = (InvestigacionInvestigador) jsonTransformer.fromJson(jsonEntrada, InvestigacionInvestigador.class);
             investigacionInvestigadorService.delete(investigacionInvestigador);
-            System.out.println("borró");
             investigacionInvestigadorService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             

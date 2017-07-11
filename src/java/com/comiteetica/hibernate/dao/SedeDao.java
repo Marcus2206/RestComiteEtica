@@ -24,4 +24,5 @@ public interface SedeDao {
     public void close();
     public void rollback();
     public List<Object[]> getAllSedeList();
+    public List<Sede> getSedeSinIdInvestigacion(String idInvestigacion);
 }

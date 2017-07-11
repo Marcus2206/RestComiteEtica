@@ -115,9 +115,7 @@ public class InvestigadorController {
         try {
             investigadorService.beginTransaction();
             List<Investigador> investigacions = investigadorService.getInvestigadorSinIdInvestigacion(idInvestigacion);
-            System.out.println("terminó");
             String jsonSalida = jsonTransformer.toJson(investigacions);
-            System.out.println("transformó lista completa: "+jsonSalida);
             investigadorService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);

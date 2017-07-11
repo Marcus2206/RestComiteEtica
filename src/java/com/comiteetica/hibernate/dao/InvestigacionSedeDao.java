@@ -19,4 +19,9 @@ public interface InvestigacionSedeDao {
     public void update(InvestigacionSede investigacionSede);
     public void delete(InvestigacionSede investigacionSede);
     public List<InvestigacionSede> getAllInvestigacionSede();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
+    public List<Object> getInvestigacionSedeByIdInvestigacion(String idInvestigacion);
 }

@@ -130,4 +130,34 @@ public class SedeDaoImpl implements SedeDao{
         return sedes;
     }
     
+    
+    @Override
+    public List<Sede> getSedeSinIdInvestigacion(String idInvestigacion) {
+        List<Sede> sedes=new ArrayList<>();
+
+        /*Fabrica Query*/
+        Query query=sessionFactory.getCurrentSession()
+                                .createSQLQuery("select	s.IdSede,\n" +
+                                        "		s.Nombre,\n" +
+                                        "		(select Descripcion from Departamento where IdDepartamento=s.IdDepartamento)IdDepartamento,\n" +
+                                        "		(select Descripcion from Provincia where IdDepartamento=s.IdDepartamento and IdProvincia=s.IdProvincia)IdProvincia,\n" +
+                                        "		(select Descripcion from Distrito where IdDepartamento=s.IdDepartamento and IdProvincia=s.IdProvincia and IdDistrito=s.IdDistrito)IdDistrito\n" +
+                                        "from	Sede s\n" +
+                                        "where	s.IdSede not in(select distinct invs.IdSede from InvestigacionSede invs where invs.IdInvestigacion=:IdInvestigacion)")
+                                                        .setString("IdInvestigacion", idInvestigacion);
+        
+        List<Object[]> list=query.list();
+        /*Itera en cada fila*/
+        list.stream().forEach((sede)->{
+            Sede sed=new Sede();
+            sed.setIdSede(sede[0].toString());
+            sed.setNombre(sede[1].toString());
+            sed.setIdDepartamento(sede[2].toString());
+            sed.setIdProvincia(sede[3].toString());
+            sed.setIdDistrito(sede[4].toString());
+            sedes.add(sed);
+        });
+
+        return sedes;
+    }
 }
