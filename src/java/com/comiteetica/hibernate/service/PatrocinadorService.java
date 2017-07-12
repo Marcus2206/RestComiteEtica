@@ -19,4 +19,8 @@ public interface PatrocinadorService {
     public void update(Patrocinador patrocinador) throws BussinessException ;
     public void delete(Patrocinador patrocinador) throws BussinessException ;
     public List<Patrocinador> getAllPatrocinador() throws BussinessException ;
+    public void beginTransaction() throws BussinessException;
+    public void commit() throws BussinessException;
+    public void close() throws BussinessException;
+    public void rollback() throws BussinessException;
 }

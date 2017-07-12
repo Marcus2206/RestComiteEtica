@@ -26,6 +26,30 @@ public class PatrocinadorServiceImpl implements PatrocinadorService{
     
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        patrocinadorDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        patrocinadorDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        patrocinadorDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        patrocinadorDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(Patrocinador patrocinador) throws BussinessException {
         patrocinadorDao.create(patrocinador);
     }

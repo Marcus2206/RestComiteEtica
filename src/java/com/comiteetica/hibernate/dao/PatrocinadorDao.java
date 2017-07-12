@@ -18,4 +18,8 @@ public interface PatrocinadorDao {
     public void update(Patrocinador patrocinador);
     public void delete(Patrocinador patrocinador);
     public List<Patrocinador> getAllPatrocinador();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
 }
