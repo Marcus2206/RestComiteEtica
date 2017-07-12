@@ -70,11 +70,13 @@ public class InvestigadorDaoImpl implements InvestigadorDao{
     public List<Investigador> getAllInvestigador() {
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select "
-                                                    +"idProducto, " 
-                                                    +"nombre, " 
-                                                    +"descripcion "  
-                                            +"from    Producto p" );
+                                .createSQLQuery("select	idInvestigador,\n" +
+"		apePaterno,\n" +
+"		apeMaterno,\n" +
+"		nombres,\n" +
+"		correo,\n" +
+"		(select Descripcion from ParametroDetalle where IdParametro='P008' and IdParametroDetalle=a.ParamEspecialidadInvestigador)paramEspecialidadInvestigador\n" +
+"from	Investigador a" );
         //query.setFirstResult(ini);
         //query.setMaxResults(fin);
         /*Crea Objeto contenedor*/
@@ -84,9 +86,12 @@ public class InvestigadorDaoImpl implements InvestigadorDao{
         /*Itera en cada fila*/
         list.stream().forEach((investigador)->{
             Investigador inv=new Investigador();
-            inv.setIdInvestigador(investigador[0].toString());
-            inv.setNombres(investigador[1].toString());
-            inv.setApePaterno(investigador[2].toString());
+            inv.setIdInvestigador((String)investigador[0]);
+            inv.setApePaterno((String)investigador[1]);
+            inv.setApeMaterno((String)investigador[2]);
+            inv.setNombres((String)investigador[3]);
+            inv.setCorreo((String)investigador[4]);
+            inv.setParamEspecialidadInvestigador((String)investigador[5]);
             investigadors.add(inv);
         });        
         return investigadors;
@@ -120,5 +125,6 @@ public class InvestigadorDaoImpl implements InvestigadorDao{
 
         return investigadors;
     }
+    
     
 }
