@@ -24,6 +24,30 @@ public class CroServiceImpl implements CroService{
     
     @Transactional
     @Override
+    public void beginTransaction() throws BussinessException{
+        croDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        croDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        croDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        croDao.rollback();
+    }
+    
+    @Transactional
+    @Override
     public void create(Cro cro) throws BussinessException {
         croDao.create(cro);
     }

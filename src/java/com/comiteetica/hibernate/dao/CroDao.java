@@ -18,4 +18,8 @@ public interface CroDao {
     public void update(Cro cro);
     public void delete(Cro cro);
     public List<Cro> getAllCro();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
 }
