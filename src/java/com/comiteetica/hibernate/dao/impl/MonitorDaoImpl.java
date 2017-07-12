@@ -21,57 +21,60 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MonitorDaoImpl implements MonitorDao{
 
+    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
+    
+    @Override
+    public void beginTransaction(){
+        sessionFactory.getCurrentSession().beginTransaction();
+    }
+    
+    @Override
+    public void commit(){
+        sessionFactory.getCurrentSession().getTransaction().commit();
+    }
+    
+    @Override
+    public void close(){
+        sessionFactory.getCurrentSession().close();
+    }
+    
+    @Override
+    public void rollback(){
+        sessionFactory.getCurrentSession().getTransaction().rollback();
+    }
+    
     @Override
     public void create(Monitor monitor) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(monitor);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close(); 
     }
 
     @Override
     public Monitor read(String idMonitor) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.openSession();
-        sessionFactory.getCurrentSession().beginTransaction();
         Monitor monitor=(Monitor)sessionFactory.getCurrentSession().get(Monitor.class,idMonitor);
-        Hibernate.initialize(monitor.getInvestigacionMonitors());
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
+//        Hibernate.initialize(monitor.getInvestigacionMonitors());
         return monitor;
     }
 
     @Override
     public void update(Monitor monitor) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().update(monitor);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public void delete(Monitor monitor) {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().delete(monitor);
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public List<Monitor> getAllMonitor() {
-        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-        sessionFactory.getCurrentSession().beginTransaction();
-
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select "
-                                                    +"idProducto, " 
-                                                    +"nombre, " 
-                                                    +"descripcion "  
-                                            +"from    Producto p" );
+                                .createQuery("select m.idMonitor,"
+                                                   +"m.nombres,"
+                                                   +"m.apePaterno,"
+                                                   +"m.apeMaterno,"
+                                                   +"m.correo "
+                                                + " from Monitor m" );
         //query.setFirstResult(ini);
         //query.setMaxResults(fin);
         /*Crea Objeto contenedor*/
@@ -81,15 +84,13 @@ public class MonitorDaoImpl implements MonitorDao{
         /*Itera en cada fila*/
         list.stream().forEach((monitor)->{
             Monitor mon=new Monitor();
-            mon.setIdMonitor(monitor[0].toString());
-            mon.setNombres(monitor[1].toString());
+            mon.setIdMonitor((String)monitor[0]);
+            mon.setNombres((String)monitor[1]);
+            mon.setApePaterno((String)monitor[2]);
+            mon.setApeMaterno((String)monitor[3]);
+            mon.setCorreo((String)monitor[4]);
             monitors.add(mon);
         });
-        
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
-        
         return monitors;
     }
     

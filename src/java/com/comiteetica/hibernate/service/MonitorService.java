@@ -19,4 +19,8 @@ public interface MonitorService {
     public void update(Monitor monitor) throws BussinessException ;
     public void delete(Monitor monitor) throws BussinessException ;
     public List<Monitor> getAllMonitor() throws BussinessException ;
+    public void beginTransaction() throws BussinessException;
+    public void commit() throws BussinessException;
+    public void close() throws BussinessException;
+    public void rollback() throws BussinessException;
 }

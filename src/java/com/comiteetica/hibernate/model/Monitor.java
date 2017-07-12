@@ -2,6 +2,7 @@ package com.comiteetica.hibernate.model;
 // Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -148,11 +149,13 @@ public class Monitor  implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="monitor")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="monitor")
     public Set<InvestigacionMonitor> getInvestigacionMonitors() {
         return this.investigacionMonitors;
     }
     
+    @JsonIgnore
     public void setInvestigacionMonitors(Set<InvestigacionMonitor> investigacionMonitors) {
         this.investigacionMonitors = investigacionMonitors;
     }

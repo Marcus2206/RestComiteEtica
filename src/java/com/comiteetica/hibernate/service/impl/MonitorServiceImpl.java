@@ -11,16 +11,42 @@ import com.comiteetica.hibernate.service.MonitorService;
 import com.comiteetica.persistencia.BussinessException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author rasec
  */
+@Service
 public class MonitorServiceImpl implements MonitorService{
 
     @Autowired
     private MonitorDao monitorDao;
+    
+    @Transactional
+    @Override
+    public void beginTransaction() throws BussinessException{
+        monitorDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        monitorDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        monitorDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        monitorDao.rollback();
+    }
     
     @Transactional
     @Override

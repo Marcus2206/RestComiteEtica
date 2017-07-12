@@ -62,7 +62,7 @@ public class CoordinadorController {
                 httpServletResponse.getWriter().println(jsonSalida);
                 coordinadorService.rollback();
             } catch (IOException ex1) {
-                Logger.getLogger(InvestigadorController.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(CoordinadorController.class.getName()).log(Level.SEVERE, null, ex1);
             } catch(Exception ee){
                 
             }
@@ -141,7 +141,6 @@ public class CoordinadorController {
         }
     }
 
-    
     @RequestMapping(value = "/CoordinadorFindAll", method = RequestMethod.GET, produces = "application/json")
     public void findAllCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
         try {

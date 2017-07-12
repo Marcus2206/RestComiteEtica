@@ -18,4 +18,8 @@ public interface MonitorDao {
     public void update(Monitor monitor);
     public void delete(Monitor monitor);
     public List<Monitor> getAllMonitor();
+    public void beginTransaction();
+    public void commit();
+    public void close();
+    public void rollback();
 }
