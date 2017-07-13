@@ -98,9 +98,6 @@ public class CoordinadorController {
             serieCorrelativoService.update(seriecorrelativo);
             String jsonSalida = jsonTransformer.toJson(coordinador);
             coordinadorService.commit();
-//            java.io.File dir = new java.io.File("/fuentes");
-//            String[] files = dir.list();
-//            System.out.println("length: "+files.length);
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
