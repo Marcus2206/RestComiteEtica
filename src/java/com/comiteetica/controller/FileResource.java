@@ -18,16 +18,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 //import com.sun.jersey.core.header.FormDataContentDisposition;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-//import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 //@Controller
@@ -58,14 +58,41 @@ public class FileResource {
     public @ResponseBody
     void handleUpload(@RequestParam("file") MultipartFile file) throws IOException {
         System.out.print("handleUpload");
+        
         if (!file.isEmpty()) {
-            System.out.print("file.getOriginalFilename(): "+file.getOriginalFilename());
-            System.out.print("file.getName(): "+file.getName());
-            byte[] bytes = file.getBytes(); // alternatively, file.getInputStream();
-            String fileLocation = "d:/prueba/"+file.getOriginalFilename();
-//            InputStream stream = new FileInputStream(file);
+            System.out.print("file.getOriginalFilename(): " + file.getOriginalFilename());
+            System.out.print("file.getName(): " + file.getName());
+//            byte[] bytes = file.getBytes(); // alternatively, file.getInputStream();
+
+            File theDir = new File("d:/prueba/dasdsadeeee");
+
+            // if the directory does not exist, create it
+            if (!theDir.exists()) {
+                System.out.println("creating directory: " + theDir.getCanonicalPath());
+                boolean result = false;
+
+                try {
+                    theDir.mkdir();
+                    result = true;
+                } catch (SecurityException se) {
+                    //handle it
+                }
+                if (result) {
+                    System.out.println("DIR created" + theDir.getPath() + "-----" + theDir.getCanonicalPath());
+                }
+            }
+            //new String(oldString.getBytes("UTF-8"), "UTF-8")
+            String nombreUTF8= new String(file.getOriginalFilename().getBytes("UTF-8"), "UTF-8");
+            
+            System.out.println("nombreUTF8: "+nombreUTF8);
+            
+            String fileLocation = theDir.getCanonicalPath() + "\\" + nombreUTF8;
+
             InputStream is =  new BufferedInputStream(file.getInputStream());
+
+            
             try {
+                System.out.println("fileLocation: "+fileLocation);
                 saveFile(is, fileLocation);
                 String result = "Successfully File Uploaded on the path " + fileLocation;
 //                return Response.status(Status.OK).entity(result).build();
@@ -75,10 +102,12 @@ public class FileResource {
                 e.printStackTrace();
                 System.out.println("sdasdasdsssssssssssssdasd");
 //                return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-                System.out.print("error"+e.getMessage());
+                System.out.print("error" + e.getMessage());
             }
 
-            
+//            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+//            httpServletResponse.setContentType("application/json; charset=UTF-8");
+//            httpServletResponse.getWriter().println(jsonSalida);
             // application logic
         } else {
             System.out.print("vacío");
@@ -102,7 +131,6 @@ public class FileResource {
 //        }
 //
 //    }
-
     private void saveFile(InputStream is, String fileLocation) throws IOException {
         OutputStream os = new FileOutputStream(new File(fileLocation));
         byte[] buffer = new byte[256];
