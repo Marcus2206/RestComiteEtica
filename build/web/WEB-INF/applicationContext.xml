@@ -23,8 +23,11 @@
     p:password="${jdbc.password}" /-->
 
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
-
     <context:annotation-config/>
+    
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+    
     <bean name="JsonTransformerImplJackson"  class="com.comiteetica.json.impl.JsonTransformerImplJackson" />
     
     <bean name="CoordinadorDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CoordinadorDaoImpl" />
@@ -84,10 +87,10 @@
     <bean name="DepartamentoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.DepartamentoDaoImpl" />
     <bean name="DepartamentoServiceImpl"  class="com.comiteetica.hibernate.service.impl.DepartamentoServiceImpl" />
     
-        <bean name="ProvinciaDaoImpl"  class="com.comiteetica.hibernate.dao.impl.ProvinciaDaoImpl" />
+    <bean name="ProvinciaDaoImpl"  class="com.comiteetica.hibernate.dao.impl.ProvinciaDaoImpl" />
     <bean name="ProvinciaServiceImpl"  class="com.comiteetica.hibernate.service.impl.ProvinciaServiceImpl" />
     
-        <bean name="DistritoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.DistritoDaoImpl" />
+    <bean name="DistritoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.DistritoDaoImpl" />
     <bean name="DistritoServiceImpl"  class="com.comiteetica.hibernate.service.impl.DistritoServiceImpl" />
     
 </beans>
