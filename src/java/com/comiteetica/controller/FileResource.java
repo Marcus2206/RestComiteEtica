@@ -21,6 +21,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -81,16 +82,15 @@ public class FileResource {
                     System.out.println("DIR created" + theDir.getPath() + "-----" + theDir.getCanonicalPath());
                 }
             }
-            //new String(oldString.getBytes("UTF-8"), "UTF-8")
-            String nombreUTF8= new String(file.getOriginalFilename().getBytes("UTF-8"), "UTF-8");
-            
-            System.out.println("nombreUTF8: "+nombreUTF8);
-            
+            String nombreFile= file.getOriginalFilename();
+            /* From ISO-8859-1 to UTF-8 */
+            String nombreUTF8= new String(nombreFile.getBytes("ISO-8859-1"), "UTF-8");
+
+            System.out.println("nombreFile: "+nombreFile+"-----nombreUTF8: "+nombreUTF8);
             String fileLocation = theDir.getCanonicalPath() + "\\" + nombreUTF8;
 
             InputStream is =  new BufferedInputStream(file.getInputStream());
 
-            
             try {
                 System.out.println("fileLocation: "+fileLocation);
                 saveFile(is, fileLocation);
