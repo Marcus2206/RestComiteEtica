@@ -14,9 +14,24 @@ import java.util.List;
  * @author rasec
  */
 public interface CorrespondenciaService {
+
     public void create(Correspondencia correspondencia) throws BussinessException;
+
     public Correspondencia read(String idCorrespondencia) throws BussinessException;
+
     public void update(Correspondencia correspondencia) throws BussinessException;
+
     public void delete(Correspondencia correspondencia) throws BussinessException;
+
     public List<Correspondencia> getAllCorrespondencia() throws BussinessException;
+
+    public void beginTransaction() throws BussinessException;
+
+    public void commit() throws BussinessException;
+
+    public void close() throws BussinessException;
+
+    public void rollback() throws BussinessException;
+    
+    public List<Object> getAllCorrespondenciaList() throws BussinessException;
 }

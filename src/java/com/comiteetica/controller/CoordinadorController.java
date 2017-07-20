@@ -283,7 +283,6 @@ public class CoordinadorController {
             }
         }
     }
-    
         
     @RequestMapping(value = "/CoordinadorSinIdInvestigacionFind/{idInvestigacion}", method = RequestMethod.GET, produces = "application/json")
     public void findCoordinadorSinIdInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idInvestigacion") String idInvestigacion) {

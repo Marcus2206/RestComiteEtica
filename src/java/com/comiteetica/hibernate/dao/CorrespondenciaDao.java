@@ -13,9 +13,24 @@ import java.util.List;
  * @author rasec
  */
 public interface CorrespondenciaDao {
+
     public void create(Correspondencia correspondencia);
+
     public Correspondencia read(String idCorrespondencia);
+
     public void update(Correspondencia correspondencia);
+
     public void delete(Correspondencia correspondencia);
+
     public List<Correspondencia> getAllCorrespondencia();
+
+    public void beginTransaction();
+
+    public void commit();
+
+    public void close();
+
+    public void rollback();
+    
+    List<Object> getAllCorrespondenciaList();
 }

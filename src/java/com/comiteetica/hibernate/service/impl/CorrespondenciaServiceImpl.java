@@ -12,6 +12,7 @@ import com.comiteetica.persistencia.BussinessException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -22,6 +23,30 @@ public class CorrespondenciaServiceImpl implements CorrespondenciaService{
 
     @Autowired
     private CorrespondenciaDao correspondenciaDao;
+    
+    @Transactional
+    @Override
+    public void beginTransaction() throws BussinessException{
+        correspondenciaDao.beginTransaction();
+    }
+    
+    @Transactional
+    @Override
+    public void commit() throws BussinessException{
+        correspondenciaDao.commit();
+    }
+    
+    @Transactional
+    @Override
+    public void close() throws BussinessException{
+        correspondenciaDao.close();
+    }
+    
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException{
+        correspondenciaDao.rollback();
+    }
     
     @Override
     public void create(Correspondencia correspondencia) throws BussinessException {
@@ -48,4 +73,9 @@ public class CorrespondenciaServiceImpl implements CorrespondenciaService{
         return correspondenciaDao.getAllCorrespondencia();
     }
     
+    @Override
+    public List<Object> getAllCorrespondenciaList()throws BussinessException {
+        return correspondenciaDao.getAllCorrespondenciaList();
+    }
+            
 }

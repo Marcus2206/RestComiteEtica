@@ -19,30 +19,30 @@ import org.springframework.stereotype.Repository;
  * @author rasec
  */
 @Repository
-public class ParametroDaoImpl implements ParametroDao{
+public class ParametroDaoImpl implements ParametroDao {
 
-    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-    
+    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
-    public void beginTransaction(){
+    public void beginTransaction() {
         sessionFactory.getCurrentSession().beginTransaction();
     }
-    
+
     @Override
-    public void commit(){
+    public void commit() {
         sessionFactory.getCurrentSession().getTransaction().commit();
     }
-    
+
     @Override
-    public void close(){
+    public void close() {
         sessionFactory.getCurrentSession().close();
     }
-    
+
     @Override
-    public void rollback(){
+    public void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
-    
+
     @Override
     public void create(Parametro parametro) {
         sessionFactory.getCurrentSession().save(parametro);
@@ -50,7 +50,7 @@ public class ParametroDaoImpl implements ParametroDao{
 
     @Override
     public Parametro read(String idParametro) {
-        Parametro parametro=(Parametro)sessionFactory.getCurrentSession().get(Parametro.class,idParametro);
+        Parametro parametro = (Parametro) sessionFactory.getCurrentSession().get(Parametro.class, idParametro);
         Hibernate.initialize(parametro.getParametroDetalles());
         return parametro;
     }
@@ -68,21 +68,21 @@ public class ParametroDaoImpl implements ParametroDao{
     @Override
     public List<Parametro> getAllParametro() {
         /*Fabrica Query*/
-        Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select p "  
-                                            +"from    Parametro p" );
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select p "
+                        + "from    Parametro p ");
 
         /*Crea Objeto contenedor*/
-        List<Parametro> parametros=new ArrayList<>();
+        List<Parametro> parametros = new ArrayList<>();
         /*Realiza consulta y devuelve Object[]*/
 //        List<Object[]> list=query.list();
-        parametros=query.list();
+        parametros = query.list();
         /*Itera en cada fila*/
-        parametros.stream().forEach((parametro)->{
+        parametros.stream().forEach((parametro) -> {
             Hibernate.initialize(parametro.getParametroDetalles());
         });
-             
+
         return parametros;
     }
-    
+
 }
