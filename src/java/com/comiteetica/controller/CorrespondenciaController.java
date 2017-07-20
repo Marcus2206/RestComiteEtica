@@ -244,8 +244,9 @@ public class CorrespondenciaController {
 
     
     @RequestMapping(value = "/Correspondencia/CorrespondenciaDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deleteCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
+            
             correspondeciaService.beginTransaction();
             Correspondencia correspondencia = (Correspondencia) jsonTransformer.fromJson(jsonEntrada, Correspondencia.class);
             correspondeciaService.delete(correspondencia);
@@ -269,6 +270,7 @@ public class CorrespondenciaController {
             } catch(Exception eee){
                 
             }
+            System.out.println("1er catch " + ex.getMessage());
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             httpServletResponse.setContentType("text/plain; charset=UTF-8");
@@ -280,6 +282,7 @@ public class CorrespondenciaController {
             } catch(Exception eee){
                 
             }
+            System.out.println("1er catch " + ex.getMessage());
         }finally{
             try{
                 correspondeciaService.close();
