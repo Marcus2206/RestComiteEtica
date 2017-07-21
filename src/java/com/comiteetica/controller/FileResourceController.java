@@ -5,39 +5,20 @@
  */
 package com.comiteetica.controller;
 
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
 import java.io.File;
 import org.springframework.util.FileCopyUtils;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-//import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-//import com.sun.jersey.core.header.FormDataContentDisposition;
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.text.NumberFormat;
-import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import org.hibernate.validator.internal.util.logging.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,47 +26,62 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.IOUtils;
 
 //@Controller
 @Controller
-public class FileResource {
+@RequestMapping("/File")
+public class FileResourceController {
 
     private final String APPLICATION_ContentType = "application/unefined";
-    
-    @RequestMapping(value = "/SubirArchivo", method = RequestMethod.POST)
-    public void handleUpload(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+
+    @RequestMapping(value = "/SubirArchivo/{idCorrespondencia}", method = RequestMethod.POST)
+    public void handleUpload(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idCorrespondencia") String idCorrespondencia) throws IOException {
         if (!file.isEmpty()) {
-//            byte[] bytes = file.getBytes(); // alternatively, file.getInputStream();
-            File theDir = new File("d:/prueba/dasdsadeeee");
+            /*Directorio único por correspondencia.*/
+            System.out.println("dasdasdasdads: "+idCorrespondencia);
+            File directorio = new File("d:/Repositorio/Correspondencia/" + idCorrespondencia);
             ServletContext context = httpServletRequest.getServletContext();
             String appPath = context.getRealPath("");
+
             System.out.println("appPath = " + appPath);
-            // if the directory does not exist, create it
-            if (!theDir.exists()) {
-                boolean result = false;
+            /*Se valida si existe, si no existe, se crea.*/
+            if (!directorio.exists()) {
                 try {
-                    theDir.mkdir();
-                    result = true;
+                    directorio.mkdir();
                 } catch (SecurityException se) {
-                    //handle it
-                }
-                if (result) {
                 }
             }
+
+            /*Se obtiene el nombre del archivo*/
             String nombreFile = file.getOriginalFilename();
-            /* From ISO-8859-1 to UTF-8 */
+            /*Se convierte el nombre del archivo a formato UTF-8, para que acepte tíldes*/
+            /*From ISO-8859-1 to UTF-8 */
             String nombreUTF8 = new String(nombreFile.getBytes("ISO-8859-1"), "UTF-8");
-            String fileLocation = theDir.getCanonicalPath() + "\\" + nombreUTF8;
+            /*Se crea el directiorio con el nombre de archivo dentro del directorio*/
+            String fileLocation = directorio.getCanonicalPath() + "\\" + nombreUTF8;
+            /*Se procede a crear la entrada de escritura.*/
             InputStream is = new BufferedInputStream(file.getInputStream());
 
             try {
+                /*Validando archivos*/
+                File validaFile = new File(fileLocation);
+                String extensionFile = FilenameUtils.getExtension(fileLocation);
+                String nameFile = nombreUTF8.replace(extensionFile, "");
+                int conta = 0;
+
+                /*Si existe el archivo con el mismo nombre, se suma y no reemplaza.*/
+                while (validaFile.exists()) {
+                    conta++;
+                    fileLocation = directorio.getCanonicalPath() + "\\" + nameFile + "_" + conta + extensionFile;
+                    validaFile = new File(fileLocation);
+                }
+
+                /*Escribiendo archivo.*/
                 saveFile(is, fileLocation);
                 is.close();
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                 httpServletResponse.setContentType("application/unefined; charset=UTF-8");
             } catch (Exception e) {
-                e.printStackTrace();
                 httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         } else {
@@ -102,32 +98,32 @@ public class FileResource {
         }
         os.close();
     }
-    
-    @RequestMapping(value = "/BajarArchivo/{nombre:.+}", 
-            method = RequestMethod.GET, 
+
+    @RequestMapping(value = "/BajarArchivo/{nombre:.+}",
+            method = RequestMethod.GET,
             produces = "application/unefined")
     public @ResponseBody
     void downloadA(HttpServletResponse response,
             @PathVariable String nombre) throws IOException {
         File file = getFile(nombre);
         InputStream in = new FileInputStream(file);
-        response.setContentType(APPLICATION_ContentType+"; charset=UTF-8");
+        response.setContentType(APPLICATION_ContentType + "; charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
         response.setHeader("Content-Length", String.valueOf(file.length()));
-        System.out.println("file.getAbsolutePath():"+file.getAbsolutePath());
+        System.out.println("file.getAbsolutePath():" + file.getAbsolutePath());
         FileCopyUtils.copy(in, response.getOutputStream());
     }
-    
+
     private File getFile(String nombre) throws FileNotFoundException, UnsupportedEncodingException {
         /* From ISO-8859-1 to UTF-8 */
         String nombreUTF8 = new String(nombre.getBytes("ISO-8859-1"), "UTF-8");
-        
-        File file = new File("d:/prueba/dasdsadeeee/"+nombreUTF8);
+
+        File file = new File("d:/prueba/dasdsadeeee/" + nombreUTF8);
 //        File file = new File("d:/prueba/dasdsadeeee/imagen.png");
-        if (!file.exists()){
-            throw new FileNotFoundException("file with path: " + "d:/prueba/dasdsadeeee/"+nombreUTF8 + " was not found.");
-        }else{
-            System.out.println("d:/prueba/dasdsadeeee/"+nombreUTF8);
+        if (!file.exists()) {
+            throw new FileNotFoundException("file with path: " + "d:/prueba/dasdsadeeee/" + nombreUTF8 + " was not found.");
+        } else {
+            System.out.println("d:/prueba/dasdsadeeee/" + nombreUTF8);
         }
         return file;
     }

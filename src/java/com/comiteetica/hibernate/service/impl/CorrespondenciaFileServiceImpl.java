@@ -20,11 +20,35 @@ import org.springframework.transaction.annotation.Transactional;
  * @author rasec
  */
 @Service
-public class CorrespondenciaFileServiceImpl implements CorrespondenciaFileService{
+public class CorrespondenciaFileServiceImpl implements CorrespondenciaFileService {
 
     @Autowired
     private CorrespondenciaFileDao correspondenciaFileDao;
-    
+
+    @Transactional
+    @Override
+    public void beginTransaction() throws BussinessException {
+        correspondenciaFileDao.beginTransaction();
+    }
+
+    @Transactional
+    @Override
+    public void commit() throws BussinessException {
+        correspondenciaFileDao.commit();
+    }
+
+    @Transactional
+    @Override
+    public void close() throws BussinessException {
+        correspondenciaFileDao.close();
+    }
+
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException {
+        correspondenciaFileDao.rollback();
+    }
+
     @Transactional
     @Override
     public void create(CorrespondenciaFile correspondenciaFile) throws BussinessException {
@@ -54,5 +78,11 @@ public class CorrespondenciaFileServiceImpl implements CorrespondenciaFileServic
     public List<CorrespondenciaFile> getAllCorrespondenciaFile() throws BussinessException {
         return correspondenciaFileDao.getAllCorrespondenciaFile();
     }
-    
+
+    @Transactional
+    @Override
+    public List<CorrespondenciaFile> getAllCorrespondenciaFileByIdCorrepondencia(String idCorrespondencia) {
+        return correspondenciaFileDao.getAllCorrespondenciaFileByIdCorrepondencia(idCorrespondencia);
+    }
+
 }

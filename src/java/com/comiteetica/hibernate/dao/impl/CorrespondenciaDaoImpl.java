@@ -122,8 +122,8 @@ public class CorrespondenciaDaoImpl implements CorrespondenciaDao {
                 + "		c.otro,\n"
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion)paramDistribucion,\n"
                 + "		c.fechaSesion,\n"
-                + "		c.enviarCorreo,\n"
-                + "		c.enviado\n"
+                + "		cast(c.enviarCorreo as int)enviarCorreo,\n"
+                + "		cast(c.enviado as int )enviado\n"
                 + "from	Correspondencia c\n"
                 + "order by idCorrespondencia";
 
