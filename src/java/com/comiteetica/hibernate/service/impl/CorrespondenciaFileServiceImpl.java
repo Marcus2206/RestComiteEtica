@@ -85,4 +85,9 @@ public class CorrespondenciaFileServiceImpl implements CorrespondenciaFileServic
         return correspondenciaFileDao.getAllCorrespondenciaFileByIdCorrepondencia(idCorrespondencia);
     }
 
+    @Transactional
+    @Override
+    public int getNextFileDetalleByIdCorrespondencia(String idCorrespondencia) {
+        return correspondenciaFileDao.getNextFileDetalleByIdCorrespondencia(idCorrespondencia);
+    }
 }

@@ -33,6 +33,8 @@ public interface CorrespondenciaFileService {
     public void close() throws BussinessException;
 
     public void rollback() throws BussinessException;
-    
+
     public List<CorrespondenciaFile> getAllCorrespondenciaFileByIdCorrepondencia(String idCorrespondencia) throws BussinessException;
+
+    public int getNextFileDetalleByIdCorrespondencia(String idCorrespondencia) throws BussinessException;
 }

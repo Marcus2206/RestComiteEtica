@@ -242,7 +242,6 @@ public class CorrespondenciaController {
         }
     }
 
-    
     @RequestMapping(value = "/Correspondencia/CorrespondenciaDelete", method = RequestMethod.PUT, consumes = "application/json")
     public void deleteCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
@@ -291,6 +290,7 @@ public class CorrespondenciaController {
             }
         }
     }
+    
     @RequestMapping(value = "/Correspondencia/CorrespondenciaFindAll", method = RequestMethod.GET, produces = "application/json")
     public void findAllCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
         try {

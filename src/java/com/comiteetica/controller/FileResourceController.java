@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,15 +36,14 @@ public class FileResourceController {
     private final String APPLICATION_ContentType = "application/unefined";
 
     @RequestMapping(value = "/SubirArchivo/{idCorrespondencia}", method = RequestMethod.POST)
-    public void handleUpload(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idCorrespondencia") String idCorrespondencia) throws IOException {
+    public void handleUpload(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse, @PathVariable("idCorrespondencia") String idCorrespondencia)
+            throws IOException {
         if (!file.isEmpty()) {
             /*Directorio único por correspondencia.*/
-            System.out.println("dasdasdasdads: "+idCorrespondencia);
             File directorio = new File("d:/Repositorio/Correspondencia/" + idCorrespondencia);
             ServletContext context = httpServletRequest.getServletContext();
             String appPath = context.getRealPath("");
-
-            System.out.println("appPath = " + appPath);
             /*Se valida si existe, si no existe, se crea.*/
             if (!directorio.exists()) {
                 try {
@@ -55,32 +55,40 @@ public class FileResourceController {
             /*Se obtiene el nombre del archivo*/
             String nombreFile = file.getOriginalFilename();
             /*Se convierte el nombre del archivo a formato UTF-8, para que acepte tíldes*/
-            /*From ISO-8859-1 to UTF-8 */
+ /*From ISO-8859-1 to UTF-8 */
             String nombreUTF8 = new String(nombreFile.getBytes("ISO-8859-1"), "UTF-8");
             /*Se crea el directiorio con el nombre de archivo dentro del directorio*/
             String fileLocation = directorio.getCanonicalPath() + "\\" + nombreUTF8;
             /*Se procede a crear la entrada de escritura.*/
             InputStream is = new BufferedInputStream(file.getInputStream());
 
+            /*Validando archivos*/
+            File validaFile = new File(fileLocation);
+            String extensionFile = FilenameUtils.getExtension(fileLocation);
+            String nameFile = FilenameUtils.removeExtension(FilenameUtils.getName(fileLocation));
+            int conta = 0;
+
             try {
-                /*Validando archivos*/
-                File validaFile = new File(fileLocation);
-                String extensionFile = FilenameUtils.getExtension(fileLocation);
-                String nameFile = nombreUTF8.replace(extensionFile, "");
-                int conta = 0;
 
                 /*Si existe el archivo con el mismo nombre, se suma y no reemplaza.*/
                 while (validaFile.exists()) {
                     conta++;
-                    fileLocation = directorio.getCanonicalPath() + "\\" + nameFile + "_" + conta + extensionFile;
+                    fileLocation = directorio.getCanonicalPath() + "\\" + nameFile + "_" + conta + "." + extensionFile;
                     validaFile = new File(fileLocation);
                 }
 
                 /*Escribiendo archivo.*/
                 saveFile(is, fileLocation);
                 is.close();
+                nameFile = FilenameUtils.getName(fileLocation);
                 httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-                httpServletResponse.setContentType("application/unefined; charset=UTF-8");
+                httpServletResponse.setContentType("application/undefined; charset=UTF-8");
+                fileLocation = fileLocation.replace("\\", "\\\\");
+                String jsonSalida = "{\n"
+                        + "    \"nombreArchivo\":\"" + nameFile + "\",\n"
+                        + "    \"direccion\":\"" + fileLocation + "\"\n"
+                        + "}";
+                httpServletResponse.getWriter().println(jsonSalida);
             } catch (Exception e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
@@ -99,13 +107,13 @@ public class FileResourceController {
         os.close();
     }
 
-    @RequestMapping(value = "/BajarArchivo/{nombre:.+}",
+    @RequestMapping(value = "/BajarArchivo",
             method = RequestMethod.GET,
             produces = "application/unefined")
     public @ResponseBody
     void downloadA(HttpServletResponse response,
-            @PathVariable String nombre) throws IOException {
-        File file = getFile(nombre);
+            @RequestParam("direccion") String direccion) throws IOException {
+        File file = getFile(direccion);
         InputStream in = new FileInputStream(file);
         response.setContentType(APPLICATION_ContentType + "; charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
@@ -118,14 +126,40 @@ public class FileResourceController {
         /* From ISO-8859-1 to UTF-8 */
         String nombreUTF8 = new String(nombre.getBytes("ISO-8859-1"), "UTF-8");
 
-        File file = new File("d:/prueba/dasdsadeeee/" + nombreUTF8);
+        File file = new File(nombreUTF8);
 //        File file = new File("d:/prueba/dasdsadeeee/imagen.png");
         if (!file.exists()) {
-            throw new FileNotFoundException("file with path: " + "d:/prueba/dasdsadeeee/" + nombreUTF8 + " was not found.");
+            throw new FileNotFoundException("file with path: " + nombreUTF8 + " was not found.");
         } else {
-            System.out.println("d:/prueba/dasdsadeeee/" + nombreUTF8);
+            System.out.println(nombreUTF8);
         }
         return file;
     }
 
+    @RequestMapping(value = "/BorrarArchivo", method = RequestMethod.DELETE)
+    public void borrarFile(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse,
+            @RequestParam("direccion") String direccion)
+            throws IOException {
+
+        /*Nombre a UTF-8*/
+        String nombreUTF8 = new String(direccion.getBytes("ISO-8859-1"), "UTF-8");
+        try {
+            deleteFile(nombreUTF8);
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/undefined; charset=UTF-8");
+            httpServletResponse.getWriter().println("");
+        } catch (Exception e) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("application/undefined; charset=UTF-8");
+            httpServletResponse.getWriter().println(e.getMessage());
+        }
+
+    }
+
+    private void deleteFile(String fileLocation) throws IOException {
+        File file = new File(fileLocation);
+        file.delete();
+
+    }
 }

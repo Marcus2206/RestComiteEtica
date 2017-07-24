@@ -58,8 +58,8 @@ public class CorrespondenciaFile implements java.io.Serializable {
     @AttributeOverrides({
         @AttributeOverride(name = "idCorrespondencia", column = @Column(name = "IdCorrespondencia", nullable = false, length = 10))
         , 
-        @AttributeOverride(name = "idRegistro", column = @Column(name = "IdRegistro", nullable = false, length = 10))
-        , 
+//        @AttributeOverride(name = "idRegistro", column = @Column(name = "IdRegistro", nullable = false, length = 10))
+//        , 
         @AttributeOverride(name = "fileDetalle", column = @Column(name = "FileDetalle", nullable = false))})
     public CorrespondenciaFileId getId() {
         return this.id;

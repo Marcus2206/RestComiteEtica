@@ -8,9 +8,9 @@
             <key-property name="idCorrespondencia" type="string">
                 <column name="IdCorrespondencia" length="10" />
             </key-property>
-            <key-property name="idRegistro" type="string">
+            <!--<key-property name="idRegistro" type="string">
                 <column name="IdRegistro" length="10" />
-            </key-property>
+            </key-property>-->
             <key-property name="fileDetalle" type="int">
                 <column name="FileDetalle" />
             </key-property>

@@ -45,6 +45,7 @@ public class CorrespondenciaFileDaoImpl implements CorrespondenciaFileDao {
 
     @Override
     public void create(CorrespondenciaFile correspondenciaFile) {
+
         sessionFactory.getCurrentSession().save(correspondenciaFile);
     }
 
@@ -69,23 +70,37 @@ public class CorrespondenciaFileDaoImpl implements CorrespondenciaFileDao {
         /*Fabrica Query*/
         Query query = sessionFactory.getCurrentSession()
                 .createQuery("select cf from CorrespondenciaFile cf");
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
-//        List<CorrespondenciaFile> correspondenciaFiles = new ArrayList<>();
-        /*Realiza consulta y devuelve Object[]*/
-//        List<Object[]> list = query.list();
-        List<CorrespondenciaFile> correspondenciaFiles = query.list();
-        /*Itera en cada fila*/
-//        list.stream().forEach((correspondencia) -> {
-//            CorrespondenciaFile corrFile = new CorrespondenciaFile();
-//            corrFile.setId((CorrespondenciaFileId) correspondencia[0]);
-//            corrFile.setNombreArchivo(correspondencia[1].toString());
-//            correspondenciaFiles.add(corrFile);
-//        });
 
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
+        List<CorrespondenciaFile> correspondenciaFiles = query.list();
         return correspondenciaFiles;
+    }
+
+    @Override
+    public int getNextFileDetalleByIdCorrespondencia(String idCorrespondencia) {
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select max(cf.id.fileDetalle)\n"
+                        + "from CorrespondenciaFile cf\n"
+                        + "where cf.id.idCorrespondencia = :idCorrespondencia")
+                .setString("idCorrespondencia", idCorrespondencia);
+        System.out.println("idCorrespondencia: " + idCorrespondencia);
+        List<Object> nextFileDetalleQuery = query.list();
+        int nextFileDetalle = 0;
+
+        System.out.println("size: " + nextFileDetalleQuery.size());
+        if (nextFileDetalleQuery.size() > 0) {
+//            System.out.println(nextFileDetalleQuery.get(0));
+            if (nextFileDetalleQuery.get(0) != null) {
+                System.out.println("nextFileDetalleQuery.get(0) != null--> " + nextFileDetalleQuery.get(0));
+
+                nextFileDetalle = (int) nextFileDetalleQuery.get(0) + 1;
+            } else {
+                System.out.println("nextFileDetalleQuery.get(0) == null--> ");
+                nextFileDetalle = 1;
+            }
+        }
+
+        return nextFileDetalle;
     }
 
     @Override
@@ -94,7 +109,7 @@ public class CorrespondenciaFileDaoImpl implements CorrespondenciaFileDao {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery("select cf "
                         + "from CorrespondenciaFile cf "
-                        + "where cf.id.idCorrespondencia=':idCorrespondencia'")
+                        + "where cf.id.idCorrespondencia=:idCorrespondencia")
                 .setString("idCorrespondencia", idCorrespondencia);
         //query.setFirstResult(ini);
         //query.setMaxResults(fin);
