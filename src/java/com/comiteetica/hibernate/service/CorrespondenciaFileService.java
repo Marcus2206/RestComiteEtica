@@ -37,4 +37,6 @@ public interface CorrespondenciaFileService {
     public List<CorrespondenciaFile> getAllCorrespondenciaFileByIdCorrepondencia(String idCorrespondencia) throws BussinessException;
 
     public int getNextFileDetalleByIdCorrespondencia(String idCorrespondencia) throws BussinessException;
+
+    public void deleteAllCorrespondencia(String idCorrespondencia) throws BussinessException;
 }

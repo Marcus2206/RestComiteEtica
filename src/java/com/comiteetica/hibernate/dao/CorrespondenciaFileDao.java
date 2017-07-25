@@ -34,6 +34,8 @@ public interface CorrespondenciaFileDao {
     public void rollback();
 
     public List<CorrespondenciaFile> getAllCorrespondenciaFileByIdCorrepondencia(String idCorrespondencia);
-    
+
     public int getNextFileDetalleByIdCorrespondencia(String idCorrespondencia);
+
+    public void deleteAllCorrespondencia(String idCorrespondencia);
 }

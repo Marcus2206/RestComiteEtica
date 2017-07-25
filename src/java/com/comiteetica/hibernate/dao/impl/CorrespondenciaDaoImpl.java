@@ -119,7 +119,7 @@ public class CorrespondenciaDaoImpl implements CorrespondenciaDao {
         String sqlQuery = "select	c.idCorrespondencia,\n"
                 + "		c.fechaCorrespondencia,\n"
                 + "		c.fechaCarta,\n"
-                + "		c.idRegistro registro,\n"
+                + "		c.idRegistro idRegistro,\n"
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=c.ParamTipoServicio)paramTipoServicio,\n"
                 + "		c.otro,\n"
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion)paramDistribucion,\n"

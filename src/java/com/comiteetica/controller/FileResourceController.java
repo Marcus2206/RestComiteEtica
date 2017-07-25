@@ -159,7 +159,49 @@ public class FileResourceController {
 
     private void deleteFile(String fileLocation) throws IOException {
         File file = new File(fileLocation);
+        System.out.println();
         file.delete();
 
+    }
+
+    @RequestMapping(value = "/BorrarTodoArchivo", method = RequestMethod.DELETE)
+    public void borrarTodoFile(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse,
+            @RequestParam("carpeta") String carpeta)
+            throws IOException {
+
+        /*Nombre a UTF-8*/
+        String nombreUTF8 = new String(carpeta.getBytes("ISO-8859-1"), "UTF-8");
+        try {
+            deleteFolder(new File("D:/Repositorio/Correspondencia/" + nombreUTF8));
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/undefined; charset=UTF-8");
+            httpServletResponse.getWriter().println("");
+        } catch (Exception e) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("application/undefined; charset=UTF-8");
+            httpServletResponse.getWriter().println(e.getMessage());
+        }
+    }
+
+    private void deleteFolder(File fileDel) throws IOException {
+        if (fileDel.isDirectory()) {
+            if (fileDel.list().length == 0) {
+                fileDel.delete();
+            } else {
+                for (String temp : fileDel.list()) {
+                    File fileDelete = new File(fileDel, temp);
+                    //recursive delete
+                    deleteFolder(fileDelete);
+                }
+                //check the directory again, if empty then delete it
+                if (fileDel.list().length == 0) {
+                    fileDel.delete();
+                }
+            }
+        } else {
+            //if file, then delete it
+            fileDel.delete();
+        }
     }
 }

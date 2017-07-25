@@ -111,23 +111,14 @@ public class CorrespondenciaFileDaoImpl implements CorrespondenciaFileDao {
                         + "from CorrespondenciaFile cf "
                         + "where cf.id.idCorrespondencia=:idCorrespondencia")
                 .setString("idCorrespondencia", idCorrespondencia);
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
-//        List<CorrespondenciaFile> correspondenciaFiles = new ArrayList<>();
-        /*Realiza consulta y devuelve Object[]*/
-//        List<Object[]> list = query.list();
         List<CorrespondenciaFile> correspondenciaFiles = query.list();
-        /*Itera en cada fila*/
-//        list.stream().forEach((correspondencia) -> {
-//            CorrespondenciaFile corrFile = new CorrespondenciaFile();
-//            corrFile.setId((CorrespondenciaFileId) correspondencia[0]);
-//            corrFile.setNombreArchivo(correspondencia[1].toString());
-//            correspondenciaFiles.add(corrFile);
-//        });
-
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
         return correspondenciaFiles;
+    }
+
+    @Override
+    public void deleteAllCorrespondencia(String idCorrespondencia) {
+        String sqlQuery = "delete from correspondenciaFile where idCorrespondencia=:idCorrespondencia";
+        sessionFactory.getCurrentSession().createSQLQuery(sqlQuery).setString("idCorrespondencia", idCorrespondencia).executeUpdate();
     }
 
 }
