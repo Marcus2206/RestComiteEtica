@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author rasec
  */
 @Controller
+@RequestMapping(value = "/Correspondencia")
 public class CorrespondenciaController {
 
     @Autowired
@@ -43,7 +44,7 @@ public class CorrespondenciaController {
     @Autowired
     private SerieCorrelativoService serieCorrelativoService;
 
-    @RequestMapping(value = "/Correspondencia/CorrespondenciaRead/{idCorrespondencia}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/CorrespondenciaRead/{idCorrespondencia}", method = RequestMethod.GET, produces = "application/json")
     public void readCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idCorrespondencia") String idCorrespondencia) {
         try {
             correspondeciaService.beginTransaction();
@@ -86,7 +87,7 @@ public class CorrespondenciaController {
 
     }
 
-    @RequestMapping(value = "/Correspondencia/CorrespondenciaInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/CorrespondenciaInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insertCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             correspondeciaService.beginTransaction();
@@ -140,7 +141,7 @@ public class CorrespondenciaController {
         }
     }
 
-    @RequestMapping(value = "/Correspondencia/CorrespondenciaUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/CorrespondenciaUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public void updateCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             correspondeciaService.beginTransaction();
@@ -188,7 +189,7 @@ public class CorrespondenciaController {
         }
     }
     
-    @RequestMapping(value = "/Correspondencia/CorrespondenciaListFindAll", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value = "/CorrespondenciaListFindAll", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
     public void listFindAllCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
 
@@ -242,7 +243,7 @@ public class CorrespondenciaController {
         }
     }
 
-    @RequestMapping(value = "/Correspondencia/CorrespondenciaDelete", method = RequestMethod.PUT, consumes = "application/json")
+    @RequestMapping(value = "/CorrespondenciaDelete", method = RequestMethod.PUT, consumes = "application/json")
     public void deleteCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             
@@ -291,7 +292,7 @@ public class CorrespondenciaController {
         }
     }
     
-    @RequestMapping(value = "/Correspondencia/CorrespondenciaFindAll", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/CorrespondenciaFindAll", method = RequestMethod.GET, produces = "application/json")
     public void findAllCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
         try {
             correspondeciaService.beginTransaction();

@@ -73,7 +73,6 @@ public class CorrespondenciaDaoImpl implements CorrespondenciaDao {
 
     @Override
     public List<Correspondencia> getAllCorrespondencia() {
-
         /*Fabrica Query*/
         Query query = sessionFactory.getCurrentSession()
                 .createSQLQuery("select	c.idCorrespondencia,\n"
@@ -88,28 +87,9 @@ public class CorrespondenciaDaoImpl implements CorrespondenciaDao {
                         + "		c.enviado\n"
                         + "from	Correspondencia c\n"
                         + "order by idCorrespondencia");
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
+
         List<Correspondencia> correspondencias = new ArrayList<>();
-        /*Realiza consulta y devuelve Object[]*/
         List<Object[]> list = query.list();
-        /*Itera en cada fila*/
-//        list.stream().forEach((correspondencia) -> {
-//            Correspondencia corr = new Correspondencia();
-//            corr.setIdCorrespondencia((String)correspondencia[0]);
-//            corr.setFechaCorrespondencia((Date)correspondencia[1]);
-//            corr.setFechaCarta((Date)correspondencia[2]);
-//            Registro reg=
-//            corr.setRegistro((String)correspondencia[1]);
-//            corr.setOtro(correspondencia[1].toString());
-//            correspondencias.add(corr);
-//        });
-
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
-        sessionFactory.getCurrentSession().getTransaction().commit();
-        sessionFactory.getCurrentSession().close();
-
         return correspondencias;
     }
 

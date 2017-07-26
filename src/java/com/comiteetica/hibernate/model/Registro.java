@@ -93,6 +93,7 @@ public class Registro implements java.io.Serializable {
         this.idRegistro = idRegistro;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdInvestigacion")
     public Investigacion getInvestigacion() {
@@ -103,6 +104,7 @@ public class Registro implements java.io.Serializable {
         this.investigacion = investigacion;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "IdInvestigacion", referencedColumnName = "IdInvestigacion", insertable = false, updatable = false)
@@ -116,6 +118,7 @@ public class Registro implements java.io.Serializable {
         this.investigacionInvestigador = investigacionInvestigador;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "IdInvestigacion", referencedColumnName = "IdInvestigacion", insertable = false, updatable = false)

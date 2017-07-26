@@ -19,11 +19,35 @@ import org.springframework.transaction.annotation.Transactional;
  * @author rasec
  */
 @Service
-public class RegistroServiceImpl implements RegistroService{
+public class RegistroServiceImpl implements RegistroService {
 
     @Autowired
     private RegistroDao registroDao;
-    
+
+    @Transactional
+    @Override
+    public void beginTransaction() throws BussinessException {
+        registroDao.beginTransaction();
+    }
+
+    @Transactional
+    @Override
+    public void commit() throws BussinessException {
+        registroDao.commit();
+    }
+
+    @Transactional
+    @Override
+    public void close() throws BussinessException {
+        registroDao.close();
+    }
+
+    @Transactional
+    @Override
+    public void rollback() throws BussinessException {
+        registroDao.rollback();
+    }
+
     @Transactional
     @Override
     public void create(Registro registro) throws BussinessException {
@@ -53,5 +77,9 @@ public class RegistroServiceImpl implements RegistroService{
     public List<Registro> getAllRegistro() throws BussinessException {
         return registroDao.getAllRegistro();
     }
-    
+
+    @Override
+    public List<Object> getAllRegistroList() throws BussinessException {
+        return registroDao.getAllRegistroList();
+    }
 }

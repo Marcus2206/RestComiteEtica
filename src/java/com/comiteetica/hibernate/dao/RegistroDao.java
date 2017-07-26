@@ -13,9 +13,24 @@ import java.util.List;
  * @author rasec
  */
 public interface RegistroDao {
+
     public void create(Registro registro);
+
     public Registro read(String idRegistro);
+
     public void update(Registro registro);
+
     public void delete(Registro registro);
+
     public List<Registro> getAllRegistro();
+
+    public void beginTransaction();
+
+    public void commit();
+
+    public void close();
+
+    public void rollback();
+
+    List<Object> getAllRegistroList();
 }
