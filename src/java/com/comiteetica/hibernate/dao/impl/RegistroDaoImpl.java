@@ -98,7 +98,24 @@ public class RegistroDaoImpl implements RegistroDao {
     @Override
     public List<Object> getAllRegistroList() {
 
-        String sqlQuery = "";
+        String sqlQuery = "select	r.idRegistro,\n"
+                + "		r.fechaAprobacion,\n"
+                + "		(select Protocolo+' - '+Titulo from Investigacion where IdInvestigacion=r.IdInvestigacion)idInvestigacion,\n"
+                + "		(select Nombre from Sede where IdSede=r.idSede)idSede,\n"
+                + "		(select ApePaterno+' '+ApeMaterno+', '+Nombres from Investigador where IdInvestigador=r.IdInvestigador)idInvestigador,\n"
+                + "		(select Descripcion from ParametroDetalle where IdParametro='P006' and IdParametroDetalle=r.paramEstado)paramEstado,\n"
+                + "		r.observacion,\n"
+                + "		r.farmacoExperimental,\n"
+                + "		r.placebo,\n"
+                + "		r.pacienteEas,\n"
+                + "		r.easLocal,\n"
+                + "		(select Descripcion from ParametroDetalle where IdParametro='P007' and IdParametroDetalle=r.paramNotificacion)paramNotificacion,\n"
+                + "		r.fechaEas,\n"
+                + "		r.visitaInspeccion,\n"
+                + "		r.estudioNinos,\n"
+                + "		r.visitaInspeccionIns\n"
+                + "from	Registro r\n"
+                + "order by idRegistro asc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override

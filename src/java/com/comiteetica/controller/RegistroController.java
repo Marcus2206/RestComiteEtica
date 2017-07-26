@@ -6,11 +6,15 @@
 package com.comiteetica.controller;
 
 import com.comiteetica.hibernate.model.Registro;
+import com.comiteetica.hibernate.model.SerieCorrelativo;
 import com.comiteetica.hibernate.service.RegistroService;
+import com.comiteetica.hibernate.service.SerieCorrelativoService;
 import com.comiteetica.json.JsonTransformer;
 import com.comiteetica.persistencia.BussinessException;
 import com.comiteetica.persistencia.BussinessMessage;
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +40,62 @@ public class RegistroController {
     @Autowired
     private RegistroService registroService;
     
+      @Autowired
+    private SerieCorrelativoService serieCorrelativoService;
+    
+    @RequestMapping(value = "/RegistroInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public void insertRegistro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+        try {
+            registroService.beginTransaction();
+            Registro registro = (Registro) jsonTransformer.fromJson(jsonEntrada, Registro.class);
+            java.util.Date date = Date.from(Instant.now());
+            SerieCorrelativo seriecorrelativo = serieCorrelativoService.readNextSerieCorrelativo("REG", date);
+            registro.setIdRegistro(seriecorrelativo.getId().getIdSerie() + seriecorrelativo.getUltimoUsado());
+            registroService.create(registro);
+            seriecorrelativo.setFechaModificacion(date);
+            serieCorrelativoService.update(seriecorrelativo);
+            String jsonSalida = jsonTransformer.toJson(registro);
+            registroService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                registroService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(RegistroController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+            System.out.println("catch 1" + ex.getMessage());
+
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                registroService.rollback();
+                System.out.println("try 3" + ex.getMessage());
+            } catch (IOException ex1) {
+                Logger.getLogger(RegistroController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("catch 4" + ex1.getMessage());
+            } catch (Exception ee) {
+
+            }
+            System.out.println("catch 3" + ex.getMessage());
+        } finally {
+            try {
+                registroService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+    }
     
     @RequestMapping(value = "/RegistroListFindAll", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
     public void listFindAllRegistro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
