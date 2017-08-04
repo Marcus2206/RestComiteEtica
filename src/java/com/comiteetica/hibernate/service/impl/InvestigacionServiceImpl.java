@@ -86,7 +86,7 @@ public class InvestigacionServiceImpl implements InvestigacionService{
     
     @Transactional
     @Override
-    public List<Object[]> getAllInvestigacionList() throws BussinessException {
+    public List<Object> getAllInvestigacionList() throws BussinessException {
         return investigacionDao.getAllInvestigacionList();
     }
     

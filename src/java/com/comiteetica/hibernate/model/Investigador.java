@@ -167,7 +167,7 @@ public class Investigador  implements java.io.Serializable {
         return this.investigacionInvestigadors;
     }
     
-    @JsonIgnore
+
     public void setInvestigacionInvestigadors(Set<InvestigacionInvestigador> investigacionInvestigadors) {
         this.investigacionInvestigadors = investigacionInvestigadors;
     }

@@ -33,4 +33,6 @@ public interface RegistroDao {
     public void rollback();
 
     List<Object> getAllRegistroList();
+
+    public List<Object>  validateRegistro(String idInvestigacion, String idInvestigador, String idSede);
 }

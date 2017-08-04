@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author rasec
  */
 @Controller
+@RequestMapping("/Patrocinador")
 public class PatrocinadorController {
     @Autowired
     JsonTransformer jsonTransformer;
@@ -85,7 +86,6 @@ public class PatrocinadorController {
         }
 
     }
-    
     
     @RequestMapping(value = "/PatrocinadorUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public void updatePatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
@@ -181,7 +181,7 @@ public class PatrocinadorController {
     }
     
     @RequestMapping(value = "/PatrocinadorFindAll", method = RequestMethod.GET, produces = "application/json")
-    public void findAllPatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
+    public void findAllPatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             patrocinadorService.beginTransaction();
             List<Patrocinador> coordinadors = patrocinadorService.getAllPatrocinador();

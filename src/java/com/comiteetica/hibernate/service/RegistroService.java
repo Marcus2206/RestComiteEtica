@@ -34,4 +34,6 @@ public interface RegistroService {
     public void rollback() throws BussinessException;
 
     public List<Object> getAllRegistroList() throws BussinessException;
+
+    public List<Object>  validateRegistro(String idInvestigacion, String idInvestigador, String idSede) throws BussinessException;
 }

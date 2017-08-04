@@ -75,6 +75,7 @@ public class InvestigacionSede  implements java.io.Serializable {
         this.id = id;
     }
 
+    @JsonIgnore
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="IdInvestigacion", nullable=false, insertable=false, updatable=false)
     public Investigacion getInvestigacion() {
@@ -85,6 +86,7 @@ public class InvestigacionSede  implements java.io.Serializable {
         this.investigacion = investigacion;
     }
 
+    @JsonIgnore
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="IdSede", nullable=false, insertable=false, updatable=false)
     public Sede getSede() {
@@ -151,7 +153,7 @@ public class InvestigacionSede  implements java.io.Serializable {
         return this.registros;
     }
     
-    @JsonIgnore
+
     public void setRegistros(Set<Registro> registros) {
         this.registros = registros;
     }

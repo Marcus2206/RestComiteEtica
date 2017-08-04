@@ -12,7 +12,7 @@
                 <column name="IdInvestigador" length="10" />
             </key-property>
         </composite-id>
-        <many-to-one name="investigacion" class="com.comiteetica.hibernate.model.Investigacion" update="false" insert="false" fetch="select">
+                <many-to-one name="investigacion" class="com.comiteetica.hibernate.model.Investigacion" update="false" insert="false" fetch="select">
             <column name="IdInvestigacion" length="10" not-null="true" />
         </many-to-one>
         <many-to-one name="investigador" class="com.comiteetica.hibernate.model.Investigador" update="false" insert="false" fetch="select">
@@ -33,7 +33,7 @@
         <property name="fechaModificacion" type="timestamp">
             <column name="FechaModificacion" length="23" />
         </property>
-        <set name="registros" table="Registro" inverse="true" lazy="true" fetch="select">
+        <set name="registros" table="Registro" lazy="true" fetch="select">
             <key>
                 <column name="IdInvestigacion" length="10" />
                 <column name="IdInvestigador" length="10" />

@@ -32,30 +32,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author rasec
  */
 @Controller
+@RequestMapping("/Cro")
 public class CroController {
+
     @Autowired
     JsonTransformer jsonTransformer;
-    
+
     @Autowired
     CroService croService;
-    
+
     @Autowired
     SerieCorrelativoService serieCorrelativoService;
-    
+
     @RequestMapping(value = "/CroRead/{idCro}", method = RequestMethod.GET, produces = "application/json")
     public void readCro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idCro") String idCro) {
         try {
             croService.beginTransaction();
             Cro cro = croService.read(idCro);
-            String jsonSalida = jsonTransformer.toJson(cro);  
+            String jsonSalida = jsonTransformer.toJson(cro);
             croService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -63,37 +65,37 @@ public class CroController {
                 croService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-            
+
         } catch (Exception ex) {
-            try{
+            try {
                 croService.rollback();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            System.out.println("catch "+ex.getMessage());
-        } finally{
-            try{
+            System.out.println("catch " + ex.getMessage());
+        } finally {
+            try {
                 croService.close();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
 
     }
-      
+
     @RequestMapping(value = "/CroInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insertCro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
-        
+
         try {
             croService.beginTransaction();
             Cro cro = (Cro) jsonTransformer.fromJson(jsonEntrada, Cro.class);
             java.util.Date date = Date.from(Instant.now());
-            SerieCorrelativo seriecorrelativo=serieCorrelativoService.readNextSerieCorrelativo("CRO", date);
-            cro.setIdCro(seriecorrelativo.getId().getIdSerie()+seriecorrelativo.getUltimoUsado());
+            SerieCorrelativo seriecorrelativo = serieCorrelativoService.readNextSerieCorrelativo("CRO", date);
+            cro.setIdCro(seriecorrelativo.getId().getIdSerie() + seriecorrelativo.getUltimoUsado());
             croService.create(cro);
             seriecorrelativo.setFechaModificacion(date);
             serieCorrelativoService.update(seriecorrelativo);
@@ -103,7 +105,7 @@ public class CroController {
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -112,31 +114,30 @@ public class CroController {
                 croService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-            System.out.println("catch 1"+ex.getMessage());
-            
+            System.out.println("catch 1" + ex.getMessage());
+
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             httpServletResponse.setContentType("text/plain; charset=UTF-8");
             try {
                 ex.printStackTrace(httpServletResponse.getWriter());
                 croService.rollback();
-                System.out.println("try 3"+ex.getMessage());
+                System.out.println("try 3" + ex.getMessage());
             } catch (IOException ex1) {
                 Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
-                System.out.println("catch 4"+ex1.getMessage());
-            } catch(Exception ee){
-                
+                System.out.println("catch 4" + ex1.getMessage());
+            } catch (Exception ee) {
+
             }
-            System.out.println("catch 3"+ex.getMessage());
+            System.out.println("catch 3" + ex.getMessage());
         } finally {
-            try{
+            try {
                 croService.close();
-            }
-            catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
     }
@@ -152,11 +153,11 @@ public class CroController {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -165,27 +166,27 @@ public class CroController {
                 System.out.println("2do try ");
             } catch (IOException ex1) {
                 Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
-                System.out.println("2do catch "+ex1.getMessage());
-            } catch(Exception ee){
-                
+                System.out.println("2do catch " + ex1.getMessage());
+            } catch (Exception ee) {
+
             }
-            
-            System.out.println("1er catch "+ex.getMessage());
-            
+
+            System.out.println("1er catch " + ex.getMessage());
+
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            try{
+            try {
                 croService.rollback();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-            
-            System.out.println("3er catch "+ex.getMessage());
-        } finally{
-            try{
+
+            System.out.println("3er catch " + ex.getMessage());
+        } finally {
+            try {
                 croService.close();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
 
@@ -202,11 +203,11 @@ public class CroController {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -214,8 +215,8 @@ public class CroController {
                 croService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (Exception ee){
-                
+            } catch (Exception ee) {
+
             }
 
         } catch (IOException ex) {
@@ -226,18 +227,18 @@ public class CroController {
                 croService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-        }finally{
-            try{
+        } finally {
+            try {
                 croService.close();
-            }catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
         }
     }
-    
+
     @RequestMapping(value = "/CroDelete", method = RequestMethod.PUT, consumes = "application/json")
     public void deleteCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
@@ -245,15 +246,15 @@ public class CroController {
             Cro cro = (Cro) jsonTransformer.fromJson(jsonEntrada, Cro.class);
             croService.delete(cro);
             croService.commit();
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             //httpServletResponse.setContentType("application/json; charset=UTF-8");
             //httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -261,8 +262,8 @@ public class CroController {
                 croService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -272,17 +273,58 @@ public class CroController {
                 croService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
-        }finally{
-            try{
+        } finally {
+            try {
                 croService.close();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
     }
-    
-    
+
+    @RequestMapping(value = "/CroByPatrocinadorList/{idPatrocinador}", method = RequestMethod.GET, produces = "application/json")
+    public void listCroByPatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idPatrocinador") String idPatrocinador) {
+        try {
+            croService.beginTransaction();
+            List<Cro> cro = croService.getCroByPatrocinador(idPatrocinador);
+            String jsonSalida = jsonTransformer.toJson(cro);
+            croService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                croService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+
+        } catch (Exception ex) {
+            try {
+                croService.rollback();
+            } catch (Exception ee) {
+
+            }
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            System.out.println("catch " + ex.getMessage());
+        } finally {
+            try {
+                croService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+
+    }
 }

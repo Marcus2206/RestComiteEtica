@@ -11,6 +11,7 @@
         <many-to-one name="investigacion" class="com.comiteetica.hibernate.model.Investigacion" fetch="select">
             <column name="IdInvestigacion" length="10" />
         </many-to-one>
+        <!--
         <many-to-one name="investigacionInvestigador" class="com.comiteetica.hibernate.model.InvestigacionInvestigador" update="false" insert="false" fetch="select">
             <column name="IdInvestigacion" length="10" />
             <column name="IdInvestigador" length="10" />
@@ -19,6 +20,13 @@
             <column name="IdInvestigacion" length="10" />
             <column name="IdSede" length="10" />
         </many-to-one>
+        -->
+        <property name="idInvestigador" type="string">
+            <column name="IdInvestigador" length="10" />
+        </property>
+        <property name="idSede" type="string">
+            <column name="IdSede" length="10" />
+        </property>
         <property name="fechaAprobacion" type="timestamp">
             <column name="FechaAprobacion" length="23" />
         </property>

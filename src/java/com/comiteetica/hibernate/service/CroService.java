@@ -14,13 +14,24 @@ import java.util.List;
  * @author rasec
  */
 public interface CroService {
+
     public void create(Cro cro) throws BussinessException;
-    public Cro read(String idCro)throws BussinessException;
-    public void update(Cro cro)throws BussinessException;
-    public void delete(Cro cro)throws BussinessException;
-    public List<Cro> getAllCro()throws BussinessException;
+
+    public Cro read(String idCro) throws BussinessException;
+
+    public void update(Cro cro) throws BussinessException;
+
+    public void delete(Cro cro) throws BussinessException;
+
+    public List<Cro> getAllCro() throws BussinessException;
+
     public void beginTransaction() throws BussinessException;
+
     public void commit() throws BussinessException;
+
     public void close() throws BussinessException;
+
     public void rollback() throws BussinessException;
+
+    public List<Cro> getCroByPatrocinador(String idPatrocinador) throws BussinessException;
 }

@@ -68,21 +68,21 @@ public class PatrocinadorDaoImpl implements PatrocinadorDao{
     public List<Patrocinador> getAllPatrocinador() {
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select p.idPatrocinador,"
-                                        + "p.nombre from Patrocinador p" );
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
-        List<Patrocinador> patrocinadors=new ArrayList<>();
+                                .createQuery("select p "
+                                        + "from Patrocinador p "
+                                        + "order by p.nombre asc" );
+
+        List<Patrocinador> patrocinadors=query.list();
         /*Realiza consulta y devuelve Object[]*/
-        List<Object[]> list=query.list();
-        /*Itera en cada fila*/
-        list.stream().forEach((patrocinador)->{
-            Patrocinador patro=new Patrocinador();
-            patro.setIdPatrocinador(patrocinador[0].toString());
-            patro.setNombre(patrocinador[1].toString());
-            patrocinadors.add(patro);
-        });        
+//        List<Object[]> list=query.list();
+//        /*Itera en cada fila*/
+//        list.stream().forEach((patrocinador)->{
+//            Patrocinador patro=new Patrocinador();
+//            patro.setIdPatrocinador(patrocinador[0].toString());
+//            patro.setNombre(patrocinador[1].toString());
+//            patrocinadors.add(patro);
+//        });        
+
         return patrocinadors;
     }
     

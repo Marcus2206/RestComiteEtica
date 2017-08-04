@@ -7,10 +7,16 @@ package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.InvestigacionDao;
 import com.comiteetica.hibernate.model.Investigacion;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.jdbc.ReturningWork;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -18,176 +24,154 @@ import org.springframework.stereotype.Repository;
  * @author rasec
  */
 @Repository
-public class InvestigacionDaoImpl implements InvestigacionDao{
+public class InvestigacionDaoImpl implements InvestigacionDao {
 
-    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-    
+    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
-    public void beginTransaction(){
+    public void beginTransaction() {
         sessionFactory.getCurrentSession().beginTransaction();
     }
-    
+
     @Override
-    public void commit(){
+    public void commit() {
         sessionFactory.getCurrentSession().getTransaction().commit();
     }
-    
+
     @Override
-    public void close(){
+    public void close() {
         sessionFactory.getCurrentSession().close();
     }
-    
+
     @Override
-    public void rollback(){
+    public void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
-    
+
     @Override
     public void create(Investigacion investigacion) {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(investigacion);
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        sessionFactory.getCurrentSession().close(); 
     }
 
     @Override
     public Investigacion read(String idInvestigacion) {
-        Investigacion investigacion=(Investigacion)sessionFactory.getCurrentSession().get(Investigacion.class,idInvestigacion);
-//        Hibernate.initialize(investigacion.getInvestigacionSedes());
-//        Set<InvestigacionCoordinador> investigacionCoordinadors = new HashSet<InvestigacionCoordinador>(0);
-//        investigacion.setInvestigacionCoordinadors(investigacionCoordinadors);
-//        Hibernate.initialize(investigacion.getInvestigacionCoordinadors());
-//        System.out.println("Hibernate.initialize(investigacion.getInvestigacionCoordinadors());");
-//        investigacion.getInvestigacionCoordinadors().forEach((investigacionCoordinador)->{
-//                System.out.println("Inicializado---investigacionCoordinador: "+investigacionCoordinador.getCoordinador().getIdCoordinador());
-//                //Hibernate.initialize(investigacionCoordinador.getCoordinador());
-//                System.out.println("investigacionCoordinador.getCoordinador().getApePaterno(): "+investigacionCoordinador.getCoordinador().getApePaterno());
-//        });
-//        Hibernate.initialize(investigacion.getInvestigacionInvestigadors());
-//        Hibernate.initialize(investigacion.getInvestigacionMonitors());
-//        Set<Registro> registros = new HashSet<Registro>(0);
-//        investigacion.setRegistros(registros);
+        Investigacion investigacion = (Investigacion) sessionFactory.getCurrentSession().get(Investigacion.class, idInvestigacion);
+        Hibernate.initialize(investigacion.getPatrocinadorCro());
         return investigacion;
     }
 
     @Override
     public Investigacion readInvestigacion(String idInvestigacion) {
         /*Fabrica Query*/
-        Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select "
-                                                    +"idInvestigacion, " 
-                                                    +"protocolo, " 
-                                                    +"titulo, "  
-                                                    +"paramEspecialidad, " 
-                                                    +"paramFase, " 
-                                                    +"paramTipoInvestigacion " 
-                                            + "from    Investigacion "
-                                            + " where idInvestigacion=:idInvestigacion" )
-                                .setString("idInvestigacion", idInvestigacion);
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select "
+                        + "idInvestigacion, "
+                        + "protocolo, "
+                        + "titulo, "
+                        + "paramEspecialidad, "
+                        + "paramFase, "
+                        + "paramTipoInvestigacion "
+                        + "from    Investigacion "
+                        + " where idInvestigacion=:idInvestigacion")
+                .setString("idInvestigacion", idInvestigacion);
 
         /*Crea Objeto contenedor*/
-        List<Investigacion> investigacions=new ArrayList<>();
+        List<Investigacion> investigacions = new ArrayList<>();
         /*Realiza consulta y devuelve Object[]*/
-        List<Object[]> list=query.list();
+        List<Object[]> list = query.list();
         /*Itera en cada fila*/
-        list.stream().forEach((investigacion)->{
-            Investigacion inv=new Investigacion();
+        list.stream().forEach((investigacion) -> {
+            Investigacion inv = new Investigacion();
             inv.setIdInvestigacion(investigacion[0].toString());
             inv.setProtocolo(investigacion[1].toString());
             inv.setTitulo(investigacion[2].toString());
-            inv.setParamEspecialidad((String)investigacion[3]);
-            inv.setParamFase((String)investigacion[4]);
-            inv.setParamTipoInvestigacion((String)investigacion[5]);
+            inv.setParamEspecialidad((String) investigacion[3]);
+            inv.setParamFase((String) investigacion[4]);
+            inv.setParamTipoInvestigacion((String) investigacion[5]);
             investigacions.add(inv);
         });
-   
+
         return investigacions.get(0);
     }
-    
+
     @Override
     public void update(Investigacion investigacion) {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().update(investigacion);
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public void delete(Investigacion investigacion) {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        sessionFactory.getCurrentSession().beginTransaction();
-        Investigacion managedInvestigacion = (Investigacion)sessionFactory.getCurrentSession().merge(investigacion);
-        sessionFactory.getCurrentSession().delete(managedInvestigacion);
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        sessionFactory.getCurrentSession().close();
+        sessionFactory.getCurrentSession().delete(investigacion);
     }
 
     @Override
     public List<Investigacion> getAllInvestigacion() {
         /*Fabrica Query*/
-        Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select "
-                                                    +"idInvestigacion, " 
-                                                    +"protocolo, " 
-                                                    +"titulo, "  
-                                                    +"paramEspecialidad, " 
-                                                    +"paramFase, " 
-                                                    +"paramTipoInvestigacion " 
-                                            +"from    Investigacion" );
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
-        List<Investigacion> investigacions=new ArrayList<>();
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select "
+                        + "idInvestigacion, "
+                        + "protocolo, "
+                        + "titulo, "
+                        + "paramEspecialidad, "
+                        + "paramFase, "
+                        + "paramTipoInvestigacion "
+                        + "from    Investigacion");
+
+        List<Investigacion> investigacions = new ArrayList<>();
         /*Realiza consulta y devuelve Object[]*/
-        List<Object[]> list=query.list();
+        List<Object[]> list = query.list();
         /*Itera en cada fila*/
-        list.stream().forEach((investigacion)->{
-            Investigacion inv=new Investigacion();
+        list.stream().forEach((investigacion) -> {
+            Investigacion inv = new Investigacion();
             inv.setIdInvestigacion(investigacion[0].toString());
             inv.setProtocolo(investigacion[1].toString());
             inv.setTitulo(investigacion[2].toString());
-            inv.setParamEspecialidad((String)investigacion[3]);
-            inv.setParamFase((String)investigacion[4]);
-            inv.setParamTipoInvestigacion((String)investigacion[5]);
-            
+            inv.setParamEspecialidad((String) investigacion[3]);
+            inv.setParamFase((String) investigacion[4]);
+            inv.setParamTipoInvestigacion((String) investigacion[5]);
+
             investigacions.add(inv);
         });
-   
+
         return investigacions;
     }
-    
+
     @Override
-    public List<Object[]> getAllInvestigacionList() {
+    public List<Object> getAllInvestigacionList() {
         /*Fabrica Query*/
-        Query query=sessionFactory.getCurrentSession()
-                                .createSQLQuery("select	IdInvestigacion,\n" +
-                                        "		Protocolo,\n" +
-                                        "		Titulo,\n" +
-                                        "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P003' and pd.IdParametroDetalle=i.ParamEspecialidad)ParamEspecialidad,\n" +
-                                        "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P005' and pd.IdParametroDetalle=i.ParamFase)ParamFase,\n" +
-                                        "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P004' and pd.IdParametroDetalle=i.ParamTipoInvestigacion)ParamTipoInvestigacion\n" +
-                                        "from	Investigacion i\n" +
-                                        "order by IdInvestigacion" );
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
-        ArrayList investigacions=new ArrayList();
-        /*Realiza consulta y devuelve Object[]*/
-        List<Object[]> list=query.list();
-        /*Itera en cada fila*/
-        list.stream().forEach((investigacion)->{
-            Investigacion inv=new Investigacion();
-            inv.setIdInvestigacion(investigacion[0].toString());
-            inv.setProtocolo(investigacion[1].toString());
-            inv.setTitulo(investigacion[2].toString());
-            inv.setParamEspecialidad((String)investigacion[3]);
-            inv.setParamFase((String)investigacion[4]);
-            inv.setParamTipoInvestigacion((String)investigacion[5]);
-            investigacions.add(inv);
+        String sqlQuery = "select	idInvestigacion,\n"
+                + "		protocolo,\n"
+                + "		titulo,\n"
+                + "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P003' and pd.IdParametroDetalle=i.ParamEspecialidad)paramEspecialidad,\n"
+                + "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P005' and pd.IdParametroDetalle=i.ParamFase)paramFase,\n"
+                + "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P004' and pd.IdParametroDetalle=i.ParamTipoInvestigacion)paramTipoInvestigacion\n"
+                + "from	Investigacion i\n"
+                + "order by IdInvestigacion";
+        
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+                CallableStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                String sqlString = "{call uspGetJsonFromQuery(?)}";
+                statement = connection.prepareCall(sqlString);
+                statement.setString(1, sqlQuery);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getString(1));
+                }
+                return obj;
+            }
         });
-   
-        return investigacions;
+
+        if (list != null) {
+            if (list.size() > 0) {
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }

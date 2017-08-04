@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,8 +30,10 @@ public class Registro implements java.io.Serializable {
 
     private String idRegistro;
     private Investigacion investigacion;
-    private InvestigacionInvestigador investigacionInvestigador;
-    private InvestigacionSede investigacionSede;
+//    private InvestigacionInvestigador investigacionInvestigador;
+//    private InvestigacionSede investigacionSede;
+    String idInvestigador;
+    String idSede;
     private Date fechaAprobacion;
     private String paramEstado;
     private String observacion;
@@ -57,11 +60,13 @@ public class Registro implements java.io.Serializable {
         this.idRegistro = idRegistro;
     }
 
-    public Registro(String idRegistro, Investigacion investigacion, InvestigacionInvestigador investigacionInvestigador, InvestigacionSede investigacionSede, Date fechaAprobacion, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
+    public Registro(String idRegistro, Investigacion investigacion, String idInvestigador, String idSede, Date fechaAprobacion, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
         this.idRegistro = idRegistro;
         this.investigacion = investigacion;
-        this.investigacionInvestigador = investigacionInvestigador;
-        this.investigacionSede = investigacionSede;
+        //        this.investigacionInvestigador = investigacionInvestigador;
+        //        this.investigacionSede = investigacionSede;
+        this.idInvestigador = idInvestigador;
+        this.idSede = idSede;
         this.fechaAprobacion = fechaAprobacion;
         this.paramEstado = paramEstado;
         this.observacion = observacion;
@@ -93,7 +98,7 @@ public class Registro implements java.io.Serializable {
         this.idRegistro = idRegistro;
     }
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdInvestigacion")
     public Investigacion getInvestigacion() {
@@ -104,33 +109,50 @@ public class Registro implements java.io.Serializable {
         this.investigacion = investigacion;
     }
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name = "IdInvestigacion", referencedColumnName = "IdInvestigacion", insertable = false, updatable = false)
-        , 
-        @JoinColumn(name = "IdInvestigador", referencedColumnName = "IdInvestigador", insertable = false, updatable = false)})
-    public InvestigacionInvestigador getInvestigacionInvestigador() {
-        return this.investigacionInvestigador;
+    @Column(name = "IdInvestigador", length = 10)
+    public String getIdInvestigador() {
+        return this.idInvestigador;
     }
 
-    public void setInvestigacionInvestigador(InvestigacionInvestigador investigacionInvestigador) {
-        this.investigacionInvestigador = investigacionInvestigador;
+    public void setIdInvestigador(String idInvestigador) {
+        this.idInvestigador = idInvestigador;
+    }
+//
+////    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumns({
+//        @JoinColumn(name = "IdInvestigacion", referencedColumnName = "IdInvestigacion", insertable = false, updatable = false)
+//        , 
+//                @JoinColumn(name = "IdInvestigador", referencedColumnName = "IdInvestigador", insertable = false, updatable = false)})
+//    public InvestigacionInvestigador getInvestigacionInvestigador() {
+//        return this.investigacionInvestigador;
+//    }
+//
+//    public void setInvestigacionInvestigador(InvestigacionInvestigador investigacionInvestigador) {
+//        this.investigacionInvestigador = investigacionInvestigador;
+//    }
+
+    @Column(name = "IdSede", length = 10)
+    public String getIdSede() {
+        return this.idSede;
     }
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name = "IdInvestigacion", referencedColumnName = "IdInvestigacion", insertable = false, updatable = false)
-        , 
-        @JoinColumn(name = "IdSede", referencedColumnName = "IdSede", insertable = false, updatable = false)})
-    public InvestigacionSede getInvestigacionSede() {
-        return this.investigacionSede;
+    public void setIdSede(String idSede) {
+        this.idSede = idSede;
     }
-
-    public void setInvestigacionSede(InvestigacionSede investigacionSede) {
-        this.investigacionSede = investigacionSede;
-    }
+////    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumns({
+//        @JoinColumn(name = "IdInvestigacion", referencedColumnName = "IdInvestigacion", insertable = true, updatable = true, nullable = true)
+//        , 
+//        @JoinColumn(name = "IdSede", referencedColumnName = "IdSede", insertable = true, updatable = true, nullable = true)})
+//    public InvestigacionSede getInvestigacionSede() {
+//        return this.investigacionSede;
+//    }
+//
+//    public void setInvestigacionSede(InvestigacionSede investigacionSede) {
+//        this.investigacionSede = investigacionSede;
+//    }
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "FechaAprobacion", length = 23)

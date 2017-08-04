@@ -81,7 +81,6 @@ public class Investigacion implements java.io.Serializable {
         this.idInvestigacion = idInvestigacion;
     }
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "IdPatrocinador", referencedColumnName = "IdPatrocinador")
@@ -184,7 +183,6 @@ public class Investigacion implements java.io.Serializable {
         return this.investigacionMonitors;
     }
 
-    @JsonIgnore
     public void setInvestigacionMonitors(Set<InvestigacionMonitor> investigacionMonitors) {
         this.investigacionMonitors = investigacionMonitors;
     }
@@ -195,7 +193,6 @@ public class Investigacion implements java.io.Serializable {
         return this.investigacionCoordinadors;
     }
 
-    @JsonIgnore
     public void setInvestigacionCoordinadors(Set<InvestigacionCoordinador> investigacionCoordinadors) {
         this.investigacionCoordinadors = investigacionCoordinadors;
     }
@@ -206,7 +203,6 @@ public class Investigacion implements java.io.Serializable {
         return this.investigacionInvestigadors;
     }
 
-    @JsonIgnore
     public void setInvestigacionInvestigadors(Set<InvestigacionInvestigador> investigacionInvestigadors) {
         this.investigacionInvestigadors = investigacionInvestigadors;
     }
@@ -217,7 +213,6 @@ public class Investigacion implements java.io.Serializable {
         return this.registros;
     }
 
-    @JsonIgnore
     public void setRegistros(Set<Registro> registros) {
         this.registros = registros;
     }
@@ -228,7 +223,7 @@ public class Investigacion implements java.io.Serializable {
         return this.investigacionSedes;
     }
 
-    @JsonIgnore
+
     public void setInvestigacionSedes(Set<InvestigacionSede> investigacionSedes) {
         this.investigacionSedes = investigacionSedes;
     }

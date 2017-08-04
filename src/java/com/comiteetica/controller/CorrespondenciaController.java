@@ -49,8 +49,8 @@ public class CorrespondenciaController {
         try {
             correspondeciaService.beginTransaction();
             Correspondencia correspondencia = correspondeciaService.read(idCorrespondencia);
-            correspondeciaService.commit();
             String jsonSalida = jsonTransformer.toJson(correspondencia);
+            correspondeciaService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -147,9 +147,8 @@ public class CorrespondenciaController {
             correspondeciaService.beginTransaction();
             Correspondencia correspondencia = (Correspondencia) jsonTransformer.fromJson(jsonEntrada, Correspondencia.class);
             correspondeciaService.update(correspondencia);
-            correspondeciaService.commit();
             String jsonSalida = jsonTransformer.toJson(correspondencia);
-            
+            correspondeciaService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -251,7 +250,6 @@ public class CorrespondenciaController {
             Correspondencia correspondencia = (Correspondencia) jsonTransformer.fromJson(jsonEntrada, Correspondencia.class);
             correspondeciaService.delete(correspondencia);
             correspondeciaService.commit();
-            
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             //httpServletResponse.setContentType("application/json; charset=UTF-8");
             //httpServletResponse.getWriter().println(jsonSalida);

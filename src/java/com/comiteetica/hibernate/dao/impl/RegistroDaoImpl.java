@@ -55,9 +55,12 @@ public class RegistroDaoImpl implements RegistroDao {
 
     @Override
     public Registro read(String idRegistro) {
-        Registro patrocinador = (Registro) sessionFactory.getCurrentSession().get(Registro.class, idRegistro);
-        Hibernate.initialize(patrocinador.getCorrespondencias());
-        return patrocinador;
+        Registro registro = (Registro) sessionFactory.getCurrentSession().get(Registro.class, idRegistro);
+        Hibernate.initialize(registro.getInvestigacion());
+//        Hibernate.initialize(registro.getInvestigacionInvestigador());
+//        Hibernate.initialize(registro.getInvestigacionSede());
+//        Hibernate.initialize(patrocinador.getCorrespondencias());
+        return registro;
     }
 
     @Override
@@ -143,4 +146,40 @@ public class RegistroDaoImpl implements RegistroDao {
             return null;
         }
     }
+
+    @Override
+    public List<Object> validateRegistro(String idInvestigacion, String idInvestigador, String idSede) {
+
+        String sqlQuery = "select idRegistro from Registro\n"
+                + "                       where idInvestigacion='" + idInvestigacion + "'\n"
+                + "                       and idInvestigador='" + idInvestigador + "'\n"
+                + "                       and idSede='" + idSede + "'\n";
+
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+                CallableStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                String sqlString = "{call uspGetJsonFromQuery(?)}";
+                statement = connection.prepareCall(sqlString);
+                statement.setString(1, sqlQuery);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getString(1));
+                }
+                return obj;
+            }
+        });
+
+        if (list != null) {
+            if (list.size() > 0) {
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
 }

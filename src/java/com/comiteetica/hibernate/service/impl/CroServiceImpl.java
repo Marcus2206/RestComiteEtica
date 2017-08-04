@@ -17,35 +17,35 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author rasec
  */
-public class CroServiceImpl implements CroService{
+public class CroServiceImpl implements CroService {
 
     @Autowired
     private CroDao croDao;
-    
+
     @Transactional
     @Override
-    public void beginTransaction() throws BussinessException{
+    public void beginTransaction() throws BussinessException {
         croDao.beginTransaction();
     }
-    
+
     @Transactional
     @Override
-    public void commit() throws BussinessException{
+    public void commit() throws BussinessException {
         croDao.commit();
     }
-    
+
     @Transactional
     @Override
-    public void close() throws BussinessException{
+    public void close() throws BussinessException {
         croDao.close();
     }
-    
+
     @Transactional
     @Override
-    public void rollback() throws BussinessException{
+    public void rollback() throws BussinessException {
         croDao.rollback();
     }
-    
+
     @Transactional
     @Override
     public void create(Cro cro) throws BussinessException {
@@ -75,5 +75,11 @@ public class CroServiceImpl implements CroService{
     public List<Cro> getAllCro() throws BussinessException {
         return croDao.getAllCro();
     }
-    
+
+    @Transactional
+    @Override
+    public List<Cro> getCroByPatrocinador(String idPatrocinador) throws BussinessException {
+        return croDao.getCroByPatrocinador(idPatrocinador);
+    }
+
 }

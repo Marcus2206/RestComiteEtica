@@ -78,8 +78,15 @@ public class RegistroServiceImpl implements RegistroService {
         return registroDao.getAllRegistro();
     }
 
+    @Transactional
     @Override
     public List<Object> getAllRegistroList() throws BussinessException {
         return registroDao.getAllRegistroList();
+    }
+
+    @Transactional
+    @Override
+    public List<Object>  validateRegistro(String idInvestigacion, String idInvestigador, String idSede) throws BussinessException {
+        return registroDao.validateRegistro(idInvestigacion, idInvestigador, idSede);
     }
 }

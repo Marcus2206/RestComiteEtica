@@ -19,30 +19,30 @@ import org.springframework.stereotype.Repository;
  * @author rasec
  */
 @Repository
-public class CroDaoImpl implements CroDao{
+public class CroDaoImpl implements CroDao {
 
-    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-    
+    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
-    public void beginTransaction(){
+    public void beginTransaction() {
         sessionFactory.getCurrentSession().beginTransaction();
     }
-    
+
     @Override
-    public void commit(){
+    public void commit() {
         sessionFactory.getCurrentSession().getTransaction().commit();
     }
-    
+
     @Override
-    public void close(){
+    public void close() {
         sessionFactory.getCurrentSession().close();
     }
-    
+
     @Override
-    public void rollback(){
+    public void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
-    
+
     @Override
     public void create(Cro cro) {
         sessionFactory.getCurrentSession().save(cro);
@@ -50,7 +50,7 @@ public class CroDaoImpl implements CroDao{
 
     @Override
     public Cro read(String idCro) {
-        Cro cro=(Cro)sessionFactory.getCurrentSession().get(Cro.class,idCro);
+        Cro cro = (Cro) sessionFactory.getCurrentSession().get(Cro.class, idCro);
         return cro;
     }
 
@@ -67,22 +67,21 @@ public class CroDaoImpl implements CroDao{
     @Override
     public List<Cro> getAllCro() {
         /*Fabrica Query*/
-        Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select c.idCro, c.nombre from Cro c" );
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
-        List<Cro> cros=new ArrayList<>();
-        /*Realiza consulta y devuelve Object[]*/
-        List<Object[]> list=query.list();
-        /*Itera en cada fila*/
-        list.stream().forEach((cro)->{
-            Cro c=new Cro();
-            c.setIdCro((String)cro[0]);
-            c.setNombre((String)cro[1]);
-            cros.add(c);
-        });
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select c from Cro c order by c.nombre asc");
+        List<Cro> cros = query.list();
         return cros;
     }
-    
+
+    @Override
+    public List<Cro> getCroByPatrocinador(String idPatrocinador) {
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select c \n"
+                        + "from Cro c \n"
+                        + "where c.idCro in (select p.id.idCro from PatrocinadorCro p where p.id.idPatrocinador='"+idPatrocinador+"')\n"
+                        + "order by c.nombre asc");
+        List<Cro> cros = query.list();
+        return cros;
+    }
 }

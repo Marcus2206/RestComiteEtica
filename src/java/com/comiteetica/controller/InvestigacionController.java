@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author rasec
  */
 @Controller
+@RequestMapping("/Investigacion")
 public class InvestigacionController {
     
     @Autowired 
@@ -151,9 +152,15 @@ public class InvestigacionController {
     public void findAllInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             investigacionService.beginTransaction();
-//            List<Investigacion> investigacions = investigacionService.getAllInvestigacion();
-            List<Object[]> investigacions = investigacionService.getAllInvestigacionList();
-            String jsonSalida = jsonTransformer.toJson(investigacions);
+            String jsonSalida = "[]";
+            List<Object> investigacions = investigacionService.getAllInvestigacionList();
+            if (investigacions != null) {
+                if (investigacions.size() > 0) {
+                    if (investigacions.get(0) != null) {
+                        jsonSalida = "[" + ((String) investigacions.get(0)) + "]";
+                    }
+                }
+            }
             investigacionService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -192,7 +199,6 @@ public class InvestigacionController {
                 
             }
         }
-
     }
     
     @RequestMapping(value = "/InvestigacionUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
@@ -241,7 +247,6 @@ public class InvestigacionController {
             }
         }
     }
-    
     
     @RequestMapping(value = "/InvestigacionDelete", method = RequestMethod.PUT, consumes = "application/json")
     public void deleteInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
