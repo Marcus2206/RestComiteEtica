@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-ago-2017 18:25:54 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.CorrespondenciaServicio" table="CorrespondenciaServicio" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <composite-id name="id" class="com.comiteetica.hibernate.model.CorrespondenciaServicioId">
+            <key-property name="idCorrespondencia" type="string">
+                <column name="IdCorrespondencia" length="10" />
+            </key-property>
+            <key-property name="idCorrespondenciaServicio" type="int">
+                <column name="IdCorrespondenciaServicio" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="correspondencia" class="com.comiteetica.hibernate.model.Correspondencia" update="false" insert="false" fetch="select">
+            <column name="IdCorrespondencia" length="10" not-null="true" />
+        </many-to-one>
+        <property name="paramTipoServicio" type="string">
+            <column name="ParamTipoServicio" length="4" />
+        </property>
+        <property name="transferido" type="int">
+            <column name="Transferido" />
+        </property>
+        <property name="costo" type="big_decimal">
+            <column name="Costo" precision="9" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="Observacion" length="150" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

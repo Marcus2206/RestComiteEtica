@@ -32,6 +32,6 @@ public interface CorrespondenciaService {
     public void close() throws BussinessException;
 
     public void rollback() throws BussinessException;
-    
+
     public List<Object> getAllCorrespondenciaList() throws BussinessException;
 }

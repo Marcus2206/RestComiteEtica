@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 05-jul-2017 13:56:02 by Hibernate Tools 4.3.1 -->
+<!-- Generated 04-ago-2017 18:25:54 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="com.comiteetica.hibernate.model.Registro" table="Registro" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
         <id name="idRegistro" type="string">
@@ -11,24 +11,14 @@
         <many-to-one name="investigacion" class="com.comiteetica.hibernate.model.Investigacion" fetch="select">
             <column name="IdInvestigacion" length="10" />
         </many-to-one>
-        <!--
-        <many-to-one name="investigacionInvestigador" class="com.comiteetica.hibernate.model.InvestigacionInvestigador" update="false" insert="false" fetch="select">
-            <column name="IdInvestigacion" length="10" />
-            <column name="IdInvestigador" length="10" />
-        </many-to-one>
-        <many-to-one name="investigacionSede" class="com.comiteetica.hibernate.model.InvestigacionSede" update="false" insert="false" fetch="select">
-            <column name="IdInvestigacion" length="10" />
-            <column name="IdSede" length="10" />
-        </many-to-one>
-        -->
-        <property name="idInvestigador" type="string">
-            <column name="IdInvestigador" length="10" />
+        <property name="fechaAprobacion" type="timestamp">
+            <column name="FechaAprobacion" length="23" />
         </property>
         <property name="idSede" type="string">
             <column name="IdSede" length="10" />
         </property>
-        <property name="fechaAprobacion" type="timestamp">
-            <column name="FechaAprobacion" length="23" />
+        <property name="idInvestigador" type="string">
+            <column name="IdInvestigador" length="10" />
         </property>
         <property name="paramEstado" type="string">
             <column name="ParamEstado" length="4" />

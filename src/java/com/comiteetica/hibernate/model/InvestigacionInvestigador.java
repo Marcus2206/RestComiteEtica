@@ -1,10 +1,8 @@
 package com.comiteetica.hibernate.model;
-// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
+// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -13,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,7 +33,6 @@ public class InvestigacionInvestigador implements java.io.Serializable {
     private Date fechaIngreso;
     private String usuarioModifica;
     private Date fechaModificacion;
-    private Set<Registro> registros = new HashSet<Registro>(0);
 
     public InvestigacionInvestigador() {
     }
@@ -47,7 +43,7 @@ public class InvestigacionInvestigador implements java.io.Serializable {
         this.investigador = investigador;
     }
 
-    public InvestigacionInvestigador(InvestigacionInvestigadorId id, Investigacion investigacion, Investigador investigador, String observacion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<Registro> registros) {
+    public InvestigacionInvestigador(InvestigacionInvestigadorId id, Investigacion investigacion, Investigador investigador, String observacion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
         this.id = id;
         this.investigacion = investigacion;
         this.investigador = investigador;
@@ -56,7 +52,6 @@ public class InvestigacionInvestigador implements java.io.Serializable {
         this.fechaIngreso = fechaIngreso;
         this.usuarioModifica = usuarioModifica;
         this.fechaModificacion = fechaModificacion;
-        this.registros = registros;
     }
 
     @EmbeddedId
@@ -73,7 +68,6 @@ public class InvestigacionInvestigador implements java.io.Serializable {
         this.id = id;
     }
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdInvestigacion", nullable = false, insertable = false, updatable = false)
     public Investigacion getInvestigacion() {
@@ -84,7 +78,6 @@ public class InvestigacionInvestigador implements java.io.Serializable {
         this.investigacion = investigacion;
     }
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdInvestigador", nullable = false, insertable = false, updatable = false)
     public Investigador getInvestigador() {
@@ -140,16 +133,6 @@ public class InvestigacionInvestigador implements java.io.Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
-    }
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "investigacionInvestigador")
-    public Set<Registro> getRegistros() {
-        return this.registros;
-    }
-
-    public void setRegistros(Set<Registro> registros) {
-        this.registros = registros;
     }
 
 }

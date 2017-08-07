@@ -45,7 +45,7 @@ public class CorrespondenciaController {
     private SerieCorrelativoService serieCorrelativoService;
 
     @RequestMapping(value = "/CorrespondenciaRead/{idCorrespondencia}", method = RequestMethod.GET, produces = "application/json")
-    public void readCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idCorrespondencia") String idCorrespondencia) {
+    public void readCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idCorrespondencia") String idCorrespondencia) {
         try {
             correspondeciaService.beginTransaction();
             Correspondencia correspondencia = correspondeciaService.read(idCorrespondencia);
@@ -88,7 +88,7 @@ public class CorrespondenciaController {
     }
 
     @RequestMapping(value = "/CorrespondenciaInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-    public void insertCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void insertCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             correspondeciaService.beginTransaction();
             Correspondencia correspondencia = (Correspondencia) jsonTransformer.fromJson(jsonEntrada, Correspondencia.class);

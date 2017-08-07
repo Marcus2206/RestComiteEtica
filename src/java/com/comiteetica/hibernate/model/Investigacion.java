@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
+// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
@@ -222,7 +222,6 @@ public class Investigacion implements java.io.Serializable {
     public Set<InvestigacionSede> getInvestigacionSedes() {
         return this.investigacionSedes;
     }
-
 
     public void setInvestigacionSedes(Set<InvestigacionSede> investigacionSedes) {
         this.investigacionSedes = investigacionSedes;

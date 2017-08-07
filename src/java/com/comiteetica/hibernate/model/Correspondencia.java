@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
+// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
@@ -21,8 +21,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Correspondencia",
-        schema = "dbo",
-        catalog = "ComiteEtica"
+         schema = "dbo",
+         catalog = "ComiteEtica"
 )
 public class Correspondencia implements java.io.Serializable {
 
@@ -36,11 +36,12 @@ public class Correspondencia implements java.io.Serializable {
     private Date fechaSesion;
     private Boolean enviarCorreo;
     private Boolean enviado;
+    private String equivalenciaCorrelativo;
     private String usuarioIngresa;
     private Date fechaIngreso;
     private String usuarioModifica;
     private Date fechaModificacion;
-
+    private Set<CorrespondenciaServicio> correspondenciaServicios = new HashSet<CorrespondenciaServicio>(0);
     private Set<CorrespondenciaFile> correspondenciaFiles = new HashSet<CorrespondenciaFile>(0);
 
     public Correspondencia() {
@@ -50,7 +51,7 @@ public class Correspondencia implements java.io.Serializable {
         this.idCorrespondencia = idCorrespondencia;
     }
 
-    public Correspondencia(String idCorrespondencia, Registro registro, Date fechaCorrespondencia, Date fechaCarta, String paramTipoServicio, String otro, String paramDistribucion, Date fechaSesion, Boolean enviarCorreo, Boolean enviado, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<CorrespondenciaFile> correspondenciaFiles) {
+    public Correspondencia(String idCorrespondencia, Registro registro, Date fechaCorrespondencia, Date fechaCarta, String paramTipoServicio, String otro, String paramDistribucion, Date fechaSesion, Boolean enviarCorreo, Boolean enviado, String equivalenciaCorrelativo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<CorrespondenciaServicio> correspondenciaServicios, Set<CorrespondenciaFile> correspondenciaFiles) {
         this.idCorrespondencia = idCorrespondencia;
         this.registro = registro;
         this.fechaCorrespondencia = fechaCorrespondencia;
@@ -61,10 +62,12 @@ public class Correspondencia implements java.io.Serializable {
         this.fechaSesion = fechaSesion;
         this.enviarCorreo = enviarCorreo;
         this.enviado = enviado;
+        this.equivalenciaCorrelativo = equivalenciaCorrelativo;
         this.usuarioIngresa = usuarioIngresa;
         this.fechaIngreso = fechaIngreso;
         this.usuarioModifica = usuarioModifica;
         this.fechaModificacion = fechaModificacion;
+        this.correspondenciaServicios = correspondenciaServicios;
         this.correspondenciaFiles = correspondenciaFiles;
     }
 
@@ -164,6 +167,15 @@ public class Correspondencia implements java.io.Serializable {
         this.enviado = enviado;
     }
 
+    @Column(name = "EquivalenciaCorrelativo", length = 20)
+    public String getEquivalenciaCorrelativo() {
+        return this.equivalenciaCorrelativo;
+    }
+
+    public void setEquivalenciaCorrelativo(String equivalenciaCorrelativo) {
+        this.equivalenciaCorrelativo = equivalenciaCorrelativo;
+    }
+
     @Column(name = "UsuarioIngresa", length = 50)
     public String getUsuarioIngresa() {
         return this.usuarioIngresa;
@@ -200,6 +212,16 @@ public class Correspondencia implements java.io.Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "correspondencia")
+    public Set<CorrespondenciaServicio> getCorrespondenciaServicios() {
+        return this.correspondenciaServicios;
+    }
+
+    public void setCorrespondenciaServicios(Set<CorrespondenciaServicio> correspondenciaServicios) {
+        this.correspondenciaServicios = correspondenciaServicios;
     }
 
     @JsonIgnore

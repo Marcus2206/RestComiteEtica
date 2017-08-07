@@ -14,9 +14,14 @@ import java.util.List;
  * @author rasec
  */
 public interface DistritoService {
-    public List<Distrito> getAllDistritoByDepartamentoProvincia(String idDepartamento,String idProvincia) throws BussinessException;
+
+    public List<Distrito> getAllDistritoByDepartamentoProvincia(String idDepartamento, String idProvincia) throws BussinessException;
+
     public void beginTransaction() throws BussinessException;
+
     public void commit() throws BussinessException;
+
     public void close() throws BussinessException;
+
     public void rollback() throws BussinessException;
 }

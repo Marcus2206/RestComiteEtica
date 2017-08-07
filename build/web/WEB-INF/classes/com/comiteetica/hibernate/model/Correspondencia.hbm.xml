@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 05-jul-2017 13:56:02 by Hibernate Tools 4.3.1 -->
+<!-- Generated 04-ago-2017 18:25:54 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="com.comiteetica.hibernate.model.Correspondencia" table="Correspondencia" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
         <id name="idCorrespondencia" type="string">
@@ -35,6 +35,9 @@
         <property name="enviado" type="java.lang.Boolean">
             <column name="Enviado" />
         </property>
+        <property name="equivalenciaCorrelativo" type="string">
+            <column name="EquivalenciaCorrelativo" length="20" />
+        </property>
         <property name="usuarioIngresa" type="string">
             <column name="UsuarioIngresa" length="50" />
         </property>
@@ -47,6 +50,12 @@
         <property name="fechaModificacion" type="timestamp">
             <column name="FechaModificacion" length="23" />
         </property>
+        <set name="correspondenciaServicios" table="CorrespondenciaServicio" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdCorrespondencia" length="10" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.CorrespondenciaServicio" />
+        </set>
         <set name="correspondenciaFiles" table="CorrespondenciaFile" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="IdCorrespondencia" length="10" not-null="true" />

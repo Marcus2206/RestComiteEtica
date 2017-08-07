@@ -26,7 +26,7 @@
     <context:annotation-config/>
     
     <bean id="multipartResolver"
-        class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
     
     <bean name="JsonTransformerImplJackson"  class="com.comiteetica.json.impl.JsonTransformerImplJackson" />
     
@@ -93,4 +93,15 @@
     <bean name="DistritoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.DistritoDaoImpl" />
     <bean name="DistritoServiceImpl"  class="com.comiteetica.hibernate.service.impl.DistritoServiceImpl" />
     
+    <bean name="FechaSesionDaoImpl"  class="com.comiteetica.hibernate.dao.impl.FechaSesionDaoImpl" />
+    <bean name="FechaSesionServiceImpl"  class="com.comiteetica.hibernate.service.impl.FechaSesionServiceImpl" />
+    
+    <bean name="PagoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.PagoDaoImpl" />
+    <bean name="PagoServiceImpl"  class="com.comiteetica.hibernate.service.impl.PagoServiceImpl" />
+    
+    <bean name="PagoDetalleDaoImpl"  class="com.comiteetica.hibernate.dao.impl.PagoDetalleDaoImpl" />
+    <bean name="PagoDetalleServiceImpl"  class="com.comiteetica.hibernate.service.impl.PagoDetalleServiceImpl" />
+    
+        <bean name="CorrespondenciaServicioDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CorrespondenciaServicioDaoImpl" />
+    <bean name="CorrespondenciaServicioServiceImpl"  class="com.comiteetica.hibernate.service.impl.CorrespondenciaServicioServiceImpl" />
 </beans>

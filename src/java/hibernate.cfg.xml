@@ -48,6 +48,7 @@ Contributor(s):
     <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
     <mapping resource="com/comiteetica/hibernate/model/Distrito.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Correspondencia.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/PagoDetalle.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/RegistroBitacora.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Coordinador.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Monitor.hbm.xml"/>
@@ -55,6 +56,8 @@ Contributor(s):
     <mapping resource="com/comiteetica/hibernate/model/Departamento.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Cro.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Provincia.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/FechaSesion.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/CorrespondenciaServicio.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/InvestigacionInvestigador.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Investigacion.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/InvestigacionMonitor.hbm.xml"/>
@@ -62,6 +65,7 @@ Contributor(s):
     <mapping resource="com/comiteetica/hibernate/model/Sede.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/SerieCorrelativo.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/ParametroDetalle.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/Pago.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/PatrocinadorCro.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Registro.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Patrocinador.hbm.xml"/>

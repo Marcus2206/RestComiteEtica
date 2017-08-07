@@ -1,17 +1,15 @@
 package com.comiteetica.hibernate.model;
-// Generated 05-jul-2017 13:55:59 by Hibernate Tools 4.3.1
+// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,18 +21,16 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Registro",
-        schema = "dbo",
-        catalog = "ComiteEtica"
+         schema = "dbo",
+         catalog = "ComiteEtica"
 )
 public class Registro implements java.io.Serializable {
 
     private String idRegistro;
     private Investigacion investigacion;
-//    private InvestigacionInvestigador investigacionInvestigador;
-//    private InvestigacionSede investigacionSede;
-    String idInvestigador;
-    String idSede;
     private Date fechaAprobacion;
+    private String idSede;
+    private String idInvestigador;
     private String paramEstado;
     private String observacion;
     private String farmacoExperimental;
@@ -60,14 +56,12 @@ public class Registro implements java.io.Serializable {
         this.idRegistro = idRegistro;
     }
 
-    public Registro(String idRegistro, Investigacion investigacion, String idInvestigador, String idSede, Date fechaAprobacion, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
+    public Registro(String idRegistro, Investigacion investigacion, Date fechaAprobacion, String idSede, String idInvestigador, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
         this.idRegistro = idRegistro;
         this.investigacion = investigacion;
-        //        this.investigacionInvestigador = investigacionInvestigador;
-        //        this.investigacionSede = investigacionSede;
-        this.idInvestigador = idInvestigador;
-        this.idSede = idSede;
         this.fechaAprobacion = fechaAprobacion;
+        this.idSede = idSede;
+        this.idInvestigador = idInvestigador;
         this.paramEstado = paramEstado;
         this.observacion = observacion;
         this.farmacoExperimental = farmacoExperimental;
@@ -98,7 +92,6 @@ public class Registro implements java.io.Serializable {
         this.idRegistro = idRegistro;
     }
 
-//    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdInvestigacion")
     public Investigacion getInvestigacion() {
@@ -109,28 +102,15 @@ public class Registro implements java.io.Serializable {
         this.investigacion = investigacion;
     }
 
-    @Column(name = "IdInvestigador", length = 10)
-    public String getIdInvestigador() {
-        return this.idInvestigador;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "FechaAprobacion", length = 23)
+    public Date getFechaAprobacion() {
+        return this.fechaAprobacion;
     }
 
-    public void setIdInvestigador(String idInvestigador) {
-        this.idInvestigador = idInvestigador;
+    public void setFechaAprobacion(Date fechaAprobacion) {
+        this.fechaAprobacion = fechaAprobacion;
     }
-//
-////    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumns({
-//        @JoinColumn(name = "IdInvestigacion", referencedColumnName = "IdInvestigacion", insertable = false, updatable = false)
-//        , 
-//                @JoinColumn(name = "IdInvestigador", referencedColumnName = "IdInvestigador", insertable = false, updatable = false)})
-//    public InvestigacionInvestigador getInvestigacionInvestigador() {
-//        return this.investigacionInvestigador;
-//    }
-//
-//    public void setInvestigacionInvestigador(InvestigacionInvestigador investigacionInvestigador) {
-//        this.investigacionInvestigador = investigacionInvestigador;
-//    }
 
     @Column(name = "IdSede", length = 10)
     public String getIdSede() {
@@ -140,28 +120,14 @@ public class Registro implements java.io.Serializable {
     public void setIdSede(String idSede) {
         this.idSede = idSede;
     }
-////    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumns({
-//        @JoinColumn(name = "IdInvestigacion", referencedColumnName = "IdInvestigacion", insertable = true, updatable = true, nullable = true)
-//        , 
-//        @JoinColumn(name = "IdSede", referencedColumnName = "IdSede", insertable = true, updatable = true, nullable = true)})
-//    public InvestigacionSede getInvestigacionSede() {
-//        return this.investigacionSede;
-//    }
-//
-//    public void setInvestigacionSede(InvestigacionSede investigacionSede) {
-//        this.investigacionSede = investigacionSede;
-//    }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "FechaAprobacion", length = 23)
-    public Date getFechaAprobacion() {
-        return this.fechaAprobacion;
+    @Column(name = "IdInvestigador", length = 10)
+    public String getIdInvestigador() {
+        return this.idInvestigador;
     }
 
-    public void setFechaAprobacion(Date fechaAprobacion) {
-        this.fechaAprobacion = fechaAprobacion;
+    public void setIdInvestigador(String idInvestigador) {
+        this.idInvestigador = idInvestigador;
     }
 
     @Column(name = "ParamEstado", length = 4)

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04-ago-2017 18:25:54 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.Pago" table="Pago" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <id name="idPago" type="string">
+            <column name="IdPago" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="costo" type="big_decimal">
+            <column name="Costo" precision="9" />
+        </property>
+        <property name="nroFactura" type="string">
+            <column name="NroFactura" length="20" />
+        </property>
+        <property name="observacion" type="string">
+            <column name="Observacion" length="150" />
+        </property>
+        <property name="paramEstadoPago" type="string">
+            <column name="ParamEstadoPago" length="4" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+        <set name="pagoDetalles" table="PagoDetalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdPago" length="10" not-null="true" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.PagoDetalle" />
+        </set>
+    </class>
+</hibernate-mapping>

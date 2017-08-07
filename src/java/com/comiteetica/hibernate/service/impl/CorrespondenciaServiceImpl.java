@@ -19,63 +19,68 @@ import org.springframework.transaction.annotation.Transactional;
  * @author rasec
  */
 @Service
-public class CorrespondenciaServiceImpl implements CorrespondenciaService{
+public class CorrespondenciaServiceImpl implements CorrespondenciaService {
 
     @Autowired
     private CorrespondenciaDao correspondenciaDao;
-    
+
     @Transactional
     @Override
-    public void beginTransaction() throws BussinessException{
+    public void beginTransaction() throws BussinessException {
         correspondenciaDao.beginTransaction();
     }
-    
+
     @Transactional
     @Override
-    public void commit() throws BussinessException{
+    public void commit() throws BussinessException {
         correspondenciaDao.commit();
     }
-    
+
     @Transactional
     @Override
-    public void close() throws BussinessException{
+    public void close() throws BussinessException {
         correspondenciaDao.close();
     }
-    
+
     @Transactional
     @Override
-    public void rollback() throws BussinessException{
+    public void rollback() throws BussinessException {
         correspondenciaDao.rollback();
     }
-    
+
+    @Transactional
     @Override
     public void create(Correspondencia correspondencia) throws BussinessException {
         correspondenciaDao.create(correspondencia);
     }
 
+    @Transactional
     @Override
     public Correspondencia read(String idCorrespondencia) throws BussinessException {
         return correspondenciaDao.read(idCorrespondencia);
     }
 
+    @Transactional
     @Override
     public void update(Correspondencia correspondencia) throws BussinessException {
         correspondenciaDao.update(correspondencia);
     }
 
+    @Transactional
     @Override
     public void delete(Correspondencia correspondencia) throws BussinessException {
         correspondenciaDao.delete(correspondencia);
     }
 
+    @Transactional
     @Override
     public List<Correspondencia> getAllCorrespondencia() throws BussinessException {
         return correspondenciaDao.getAllCorrespondencia();
     }
-    
+
+    @Transactional
     @Override
-    public List<Object> getAllCorrespondenciaList()throws BussinessException {
+    public List<Object> getAllCorrespondenciaList() throws BussinessException {
         return correspondenciaDao.getAllCorrespondenciaList();
     }
-            
 }

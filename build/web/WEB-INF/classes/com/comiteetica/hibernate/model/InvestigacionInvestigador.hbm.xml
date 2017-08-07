@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 05-jul-2017 13:56:02 by Hibernate Tools 4.3.1 -->
+<!-- Generated 04-ago-2017 18:25:54 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="com.comiteetica.hibernate.model.InvestigacionInvestigador" table="InvestigacionInvestigador" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
         <composite-id name="id" class="com.comiteetica.hibernate.model.InvestigacionInvestigadorId">
@@ -12,7 +12,7 @@
                 <column name="IdInvestigador" length="10" />
             </key-property>
         </composite-id>
-                <many-to-one name="investigacion" class="com.comiteetica.hibernate.model.Investigacion" update="false" insert="false" fetch="select">
+        <many-to-one name="investigacion" class="com.comiteetica.hibernate.model.Investigacion" update="false" insert="false" fetch="select">
             <column name="IdInvestigacion" length="10" not-null="true" />
         </many-to-one>
         <many-to-one name="investigador" class="com.comiteetica.hibernate.model.Investigador" update="false" insert="false" fetch="select">
@@ -33,12 +33,5 @@
         <property name="fechaModificacion" type="timestamp">
             <column name="FechaModificacion" length="23" />
         </property>
-        <set name="registros" table="Registro" lazy="true" fetch="select">
-            <key>
-                <column name="IdInvestigacion" length="10" />
-                <column name="IdInvestigador" length="10" />
-            </key>
-            <one-to-many class="com.comiteetica.hibernate.model.Registro" />
-        </set>
     </class>
 </hibernate-mapping>
