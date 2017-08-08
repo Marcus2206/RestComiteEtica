@@ -83,19 +83,14 @@ public class CorrespondenciaFileDaoImpl implements CorrespondenciaFileDao {
                         + "from CorrespondenciaFile cf\n"
                         + "where cf.id.idCorrespondencia = :idCorrespondencia")
                 .setString("idCorrespondencia", idCorrespondencia);
-        System.out.println("idCorrespondencia: " + idCorrespondencia);
         List<Object> nextFileDetalleQuery = query.list();
         int nextFileDetalle = 0;
 
-        System.out.println("size: " + nextFileDetalleQuery.size());
         if (nextFileDetalleQuery.size() > 0) {
 //            System.out.println(nextFileDetalleQuery.get(0));
             if (nextFileDetalleQuery.get(0) != null) {
-                System.out.println("nextFileDetalleQuery.get(0) != null--> " + nextFileDetalleQuery.get(0));
-
                 nextFileDetalle = (int) nextFileDetalleQuery.get(0) + 1;
             } else {
-                System.out.println("nextFileDetalleQuery.get(0) == null--> ");
                 nextFileDetalle = 1;
             }
         }

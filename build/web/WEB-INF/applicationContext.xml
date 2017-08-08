@@ -102,6 +102,9 @@
     <bean name="PagoDetalleDaoImpl"  class="com.comiteetica.hibernate.dao.impl.PagoDetalleDaoImpl" />
     <bean name="PagoDetalleServiceImpl"  class="com.comiteetica.hibernate.service.impl.PagoDetalleServiceImpl" />
     
-        <bean name="CorrespondenciaServicioDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CorrespondenciaServicioDaoImpl" />
+    <bean name="CorrespondenciaServicioDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CorrespondenciaServicioDaoImpl" />
     <bean name="CorrespondenciaServicioServiceImpl"  class="com.comiteetica.hibernate.service.impl.CorrespondenciaServicioServiceImpl" />
+    
+    <bean name="RegistroBitacoraDaoImpl"  class="com.comiteetica.hibernate.dao.impl.RegistroBitacoraDaoImpl" />
+    <bean name="RegistroBitacoraServiceImpl"  class="com.comiteetica.hibernate.service.impl.RegistroBitacoraServiceImpl" />
 </beans>
