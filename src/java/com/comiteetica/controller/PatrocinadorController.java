@@ -34,30 +34,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/Patrocinador")
 public class PatrocinadorController {
+
     @Autowired
     JsonTransformer jsonTransformer;
-    
+
     @Autowired
     PatrocinadorService patrocinadorService;
-    
+
     @Autowired
     SerieCorrelativoService serieCorrelativoService;
-    
-    
+
     @RequestMapping(value = "/PatrocinadorRead/{idPatrocinador}", method = RequestMethod.GET, produces = "application/json")
     public void readPatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idPatrocinador") String idPatrocinador) {
         try {
             patrocinadorService.beginTransaction();
             Patrocinador patrocinador = patrocinadorService.read(idPatrocinador);
-            String jsonSalida = jsonTransformer.toJson(patrocinador); 
+            String jsonSalida = jsonTransformer.toJson(patrocinador);
             patrocinadorService.commit();
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -65,28 +66,28 @@ public class PatrocinadorController {
                 patrocinadorService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(PatrocinadorController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-            
+
         } catch (Exception ex) {
-            try{
+            try {
                 patrocinadorService.rollback();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            System.out.println("catch "+ex.getMessage());
-        } finally{
-            try{
+            System.out.println("catch " + ex.getMessage());
+        } finally {
+            try {
                 patrocinadorService.close();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
 
     }
-    
+
     @RequestMapping(value = "/PatrocinadorUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public void updatePatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
@@ -95,14 +96,15 @@ public class PatrocinadorController {
             patrocinadorService.update(patrocinador);
             String jsonSalida = jsonTransformer.toJson(patrocinador);
             patrocinadorService.commit();
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -110,8 +112,8 @@ public class PatrocinadorController {
                 patrocinadorService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(PatrocinadorController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (Exception ee){
-                
+            } catch (Exception ee) {
+
             }
 
         } catch (IOException ex) {
@@ -122,18 +124,18 @@ public class PatrocinadorController {
                 patrocinadorService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(PatrocinadorController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-        }finally{
-            try{
+        } finally {
+            try {
                 patrocinadorService.close();
-            }catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
         }
     }
-    
+
     @RequestMapping(value = "/PatrocinadorDelete", method = RequestMethod.PUT, consumes = "application/json")
     public void deletePatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
@@ -141,15 +143,16 @@ public class PatrocinadorController {
             Patrocinador patrocinador = (Patrocinador) jsonTransformer.fromJson(jsonEntrada, Patrocinador.class);
             patrocinadorService.delete(patrocinador);
             patrocinadorService.commit();
-            
+
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             //httpServletResponse.setContentType("application/json; charset=UTF-8");
             //httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -157,8 +160,8 @@ public class PatrocinadorController {
                 patrocinadorService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(PatrocinadorController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -168,18 +171,18 @@ public class PatrocinadorController {
                 patrocinadorService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(PatrocinadorController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
-        }finally{
-            try{
+        } finally {
+            try {
                 patrocinadorService.close();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
     }
-    
+
     @RequestMapping(value = "/PatrocinadorFindAll", method = RequestMethod.GET, produces = "application/json")
     public void findAllPatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
@@ -191,11 +194,11 @@ public class PatrocinadorController {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -204,27 +207,27 @@ public class PatrocinadorController {
                 System.out.println("2do try ");
             } catch (IOException ex1) {
                 Logger.getLogger(PatrocinadorController.class.getName()).log(Level.SEVERE, null, ex1);
-                System.out.println("2do catch "+ex1.getMessage());
-            } catch(Exception ee){
-                
+                System.out.println("2do catch " + ex1.getMessage());
+            } catch (Exception ee) {
+
             }
-            
-            System.out.println("1er catch "+ex.getMessage());
-            
+
+            System.out.println("1er catch " + ex.getMessage());
+
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            try{
+            try {
                 patrocinadorService.rollback();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-            
-            System.out.println("3er catch "+ex.getMessage());
-        } finally{
-            try{
+
+            System.out.println("3er catch " + ex.getMessage());
+        } finally {
+            try {
                 patrocinadorService.close();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
 
@@ -232,23 +235,24 @@ public class PatrocinadorController {
 
     @RequestMapping(value = "/PatrocinadorInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insertPatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
-        
+
         try {
             patrocinadorService.beginTransaction();
             Patrocinador patrocinador = (Patrocinador) jsonTransformer.fromJson(jsonEntrada, Patrocinador.class);
             java.util.Date date = Date.from(Instant.now());
-            SerieCorrelativo seriecorrelativo=serieCorrelativoService.readNextSerieCorrelativo("PTR", date);
-            patrocinador.setIdPatrocinador(seriecorrelativo.getId().getIdSerie()+seriecorrelativo.getUltimoUsado());
+            SerieCorrelativo seriecorrelativo = serieCorrelativoService.readNextSerieCorrelativo("PTR", date);
+            patrocinador.setIdPatrocinador(seriecorrelativo.getId().getIdSerie() + seriecorrelativo.getUltimoUsado());
             patrocinadorService.create(patrocinador);
             seriecorrelativo.setFechaModificacion(date);
             serieCorrelativoService.update(seriecorrelativo);
             String jsonSalida = jsonTransformer.toJson(patrocinador);
             patrocinadorService.commit();
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -257,33 +261,32 @@ public class PatrocinadorController {
                 patrocinadorService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(PatrocinadorController.class.getName()).log(Level.SEVERE, null, ex1);
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-            System.out.println("catch 1"+ex.getMessage());
-            
+            System.out.println("catch 1" + ex.getMessage());
+
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             httpServletResponse.setContentType("text/plain; charset=UTF-8");
             try {
                 ex.printStackTrace(httpServletResponse.getWriter());
                 patrocinadorService.rollback();
-                System.out.println("try 3"+ex.getMessage());
+                System.out.println("try 3" + ex.getMessage());
             } catch (IOException ex1) {
                 Logger.getLogger(PatrocinadorController.class.getName()).log(Level.SEVERE, null, ex1);
-                System.out.println("catch 4"+ex1.getMessage());
-            } catch(Exception ee){
-                
+                System.out.println("catch 4" + ex1.getMessage());
+            } catch (Exception ee) {
+
             }
-            System.out.println("catch 3"+ex.getMessage());
+            System.out.println("catch 3" + ex.getMessage());
         } finally {
-            try{
+            try {
                 patrocinadorService.close();
-            }
-            catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
     }
-    
+
 }

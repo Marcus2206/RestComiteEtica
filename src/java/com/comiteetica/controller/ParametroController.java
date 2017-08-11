@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class ParametroController {
-    
+
     @Autowired
     private ParametroService parametroService;
-    
+
     @Autowired
     private JsonTransformer jsonTransformer;
-    
+
     @RequestMapping(value = "/ParametroRead/{idParametro}", method = RequestMethod.GET, produces = "application/json")
     public void readParametro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idParametro") String idParametro) {
         try {
@@ -42,18 +42,18 @@ public class ParametroController {
             System.out.println("antes de cargar");
             Parametro parametro = parametroService.read(idParametro);
             System.out.println("cargó parametro");
-            
+
             String jsonSalida = jsonTransformer.toJson(parametro);
             System.out.println(jsonSalida);
             parametroService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -61,48 +61,44 @@ public class ParametroController {
                 parametroService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(ParametroController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (Exception e){
-                
+            } catch (Exception e) {
+
             }
-            
+
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            System.out.println("catch "+ex.getMessage());
-            try{
+            System.out.println("catch " + ex.getMessage());
+            try {
                 parametroService.rollback();
-            }catch(Exception e){
-                
+            } catch (Exception e) {
+
             }
-        }finally{
-            try{
+        } finally {
+            try {
                 parametroService.close();
-            }catch (Exception e){
-                
+            } catch (Exception e) {
+
             }
         }
 
     }
-    
+
     @RequestMapping(value = "/ParametroFindAll", method = RequestMethod.GET, produces = "application/json")
     public void findAllParametro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        try {           
+        try {
             parametroService.beginTransaction();
             List<Parametro> parametros = parametroService.getAllParametro();
-            
-            //System.out.println("Listó"+productos.get(0).getMarca().getDescripcion());
-
             String jsonSalida = jsonTransformer.toJson(parametros);
             parametroService.commit();
-            //httpServletRequest.
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -111,29 +107,29 @@ public class ParametroController {
                 System.out.println("2do try ");
             } catch (IOException ex1) {
                 Logger.getLogger(ParametroController.class.getName()).log(Level.SEVERE, null, ex1);
-                System.out.println("2do catch "+ex1.getMessage());
-            } catch(Exception e){
-                
+                System.out.println("2do catch " + ex1.getMessage());
+            } catch (Exception e) {
+
             }
-            
-            System.out.println("1er catch "+ex.getMessage());
-            
+
+            System.out.println("1er catch " + ex.getMessage());
+
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            try{
+            try {
                 parametroService.rollback();
-            }catch(Exception e){
-                
+            } catch (Exception e) {
+
             }
-            System.out.println("3er catch "+ex.getMessage());
-        }finally{
-            try{
+            System.out.println("3er catch " + ex.getMessage());
+        } finally {
+            try {
                 parametroService.close();
-            }catch(Exception e){
-                
+            } catch (Exception e) {
+
             }
         }
 
     }
-    
+
 }

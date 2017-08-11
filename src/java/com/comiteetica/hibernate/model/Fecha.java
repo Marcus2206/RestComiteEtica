@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
+// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -30,7 +30,7 @@ public class Fecha  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name="id", nullable=false)
     public byte getId() {
         return this.id;
     }

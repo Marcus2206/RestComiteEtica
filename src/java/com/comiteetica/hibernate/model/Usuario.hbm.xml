@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 09-ago-2017 12:35:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.Usuario" table="Usuario" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <id name="idUsuario" type="int">
+            <column name="IdUsuario" />
+            <generator class="assigned" />
+        </id>
+        <property name="usuario" type="string">
+            <column name="Usuario" length="50" />
+        </property>
+        <property name="password" type="binary">
+            <column name="Password" />
+        </property>
+        <property name="perfil" type="string">
+            <column name="Perfil" length="4" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

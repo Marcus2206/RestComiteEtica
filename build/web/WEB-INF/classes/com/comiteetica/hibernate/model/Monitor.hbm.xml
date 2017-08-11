@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 04-ago-2017 18:25:54 by Hibernate Tools 4.3.1 -->
+<!-- Generated 09-ago-2017 12:35:40 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.comiteetica.hibernate.model.Monitor" table="Monitor" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+    <class name="com.comiteetica.hibernate.model.Monitor" table="Monitor" schema="dbo" catalog="ComiteEtica">
         <id name="idMonitor" type="string">
             <column name="IdMonitor" length="10" />
-            <generator class="assigned" />
+            <generator class="assigned"></generator>
         </id>
         <property name="apePaterno" type="string">
             <column name="ApePaterno" length="50" />

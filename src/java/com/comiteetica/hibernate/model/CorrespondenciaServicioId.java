@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
+// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -45,23 +45,6 @@ public class CorrespondenciaServicioId  implements java.io.Serializable {
     }
 
 
-   public boolean equals(Object other) {
-         if ( (this == other ) ) return true;
-		 if ( (other == null ) ) return false;
-		 if ( !(other instanceof CorrespondenciaServicioId) ) return false;
-		 CorrespondenciaServicioId castOther = ( CorrespondenciaServicioId ) other; 
-         
-		 return ( (this.getIdCorrespondencia()==castOther.getIdCorrespondencia()) || ( this.getIdCorrespondencia()!=null && castOther.getIdCorrespondencia()!=null && this.getIdCorrespondencia().equals(castOther.getIdCorrespondencia()) ) )
- && (this.getIdCorrespondenciaServicio()==castOther.getIdCorrespondenciaServicio());
-   }
-   
-   public int hashCode() {
-         int result = 17;
-         
-         result = 37 * result + ( getIdCorrespondencia() == null ? 0 : this.getIdCorrespondencia().hashCode() );
-         result = 37 * result + this.getIdCorrespondenciaServicio();
-         return result;
-   }   
 
 
 }

@@ -1,7 +1,7 @@
 package com.comiteetica.hibernate.model;
-// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
+// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.AttributeOverride;
@@ -27,7 +27,6 @@ import javax.persistence.TemporalType;
 public class ParametroDetalle implements java.io.Serializable {
 
     private ParametroDetalleId id;
-    @JsonBackReference
     private Parametro parametro;
     private String descripcion;
     private BigDecimal valor;
@@ -69,6 +68,7 @@ public class ParametroDetalle implements java.io.Serializable {
         this.id = id;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdParametro", nullable = false, insertable = false, updatable = false)
     public Parametro getParametro() {

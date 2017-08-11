@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
+// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -45,23 +45,6 @@ public class RegistroBitacoraId  implements java.io.Serializable {
     }
 
 
-   public boolean equals(Object other) {
-         if ( (this == other ) ) return true;
-		 if ( (other == null ) ) return false;
-		 if ( !(other instanceof RegistroBitacoraId) ) return false;
-		 RegistroBitacoraId castOther = ( RegistroBitacoraId ) other; 
-         
-		 return ( (this.getIdRegistro()==castOther.getIdRegistro()) || ( this.getIdRegistro()!=null && castOther.getIdRegistro()!=null && this.getIdRegistro().equals(castOther.getIdRegistro()) ) )
- && (this.getIdBitacora()==castOther.getIdBitacora());
-   }
-   
-   public int hashCode() {
-         int result = 17;
-         
-         result = 37 * result + ( getIdRegistro() == null ? 0 : this.getIdRegistro().hashCode() );
-         result = 37 * result + this.getIdBitacora();
-         return result;
-   }   
 
 
 }

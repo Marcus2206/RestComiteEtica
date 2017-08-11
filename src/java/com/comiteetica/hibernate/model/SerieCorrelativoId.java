@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
+// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -45,23 +45,6 @@ public class SerieCorrelativoId  implements java.io.Serializable {
     }
 
 
-   public boolean equals(Object other) {
-         if ( (this == other ) ) return true;
-		 if ( (other == null ) ) return false;
-		 if ( !(other instanceof SerieCorrelativoId) ) return false;
-		 SerieCorrelativoId castOther = ( SerieCorrelativoId ) other; 
-         
-		 return ( (this.getIdSerie()==castOther.getIdSerie()) || ( this.getIdSerie()!=null && castOther.getIdSerie()!=null && this.getIdSerie().equals(castOther.getIdSerie()) ) )
- && ( (this.getIdCorrelativo()==castOther.getIdCorrelativo()) || ( this.getIdCorrelativo()!=null && castOther.getIdCorrelativo()!=null && this.getIdCorrelativo().equals(castOther.getIdCorrelativo()) ) );
-   }
-   
-   public int hashCode() {
-         int result = 17;
-         
-         result = 37 * result + ( getIdSerie() == null ? 0 : this.getIdSerie().hashCode() );
-         result = 37 * result + ( getIdCorrelativo() == null ? 0 : this.getIdCorrelativo().hashCode() );
-         return result;
-   }   
 
 
 }

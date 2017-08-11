@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
+// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -45,23 +45,6 @@ public class ParametroDetalleId  implements java.io.Serializable {
     }
 
 
-   public boolean equals(Object other) {
-         if ( (this == other ) ) return true;
-		 if ( (other == null ) ) return false;
-		 if ( !(other instanceof ParametroDetalleId) ) return false;
-		 ParametroDetalleId castOther = ( ParametroDetalleId ) other; 
-         
-		 return ( (this.getIdParametro()==castOther.getIdParametro()) || ( this.getIdParametro()!=null && castOther.getIdParametro()!=null && this.getIdParametro().equals(castOther.getIdParametro()) ) )
- && ( (this.getIdParametroDetalle()==castOther.getIdParametroDetalle()) || ( this.getIdParametroDetalle()!=null && castOther.getIdParametroDetalle()!=null && this.getIdParametroDetalle().equals(castOther.getIdParametroDetalle()) ) );
-   }
-   
-   public int hashCode() {
-         int result = 17;
-         
-         result = 37 * result + ( getIdParametro() == null ? 0 : this.getIdParametro().hashCode() );
-         result = 37 * result + ( getIdParametroDetalle() == null ? 0 : this.getIdParametroDetalle().hashCode() );
-         return result;
-   }   
 
 
 }

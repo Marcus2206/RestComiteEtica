@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
+// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -49,7 +49,7 @@ public class FechaSesion  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="IdFechaSesion", unique=true, nullable=false)
+    @Column(name="IdFechaSesion", nullable=false)
     public int getIdFechaSesion() {
         return this.idFechaSesion;
     }

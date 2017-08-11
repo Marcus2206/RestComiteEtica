@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 04-ago-2017 18:25:51 by Hibernate Tools 4.3.1
+// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -45,23 +45,6 @@ public class ProvinciaId  implements java.io.Serializable {
     }
 
 
-   public boolean equals(Object other) {
-         if ( (this == other ) ) return true;
-		 if ( (other == null ) ) return false;
-		 if ( !(other instanceof ProvinciaId) ) return false;
-		 ProvinciaId castOther = ( ProvinciaId ) other; 
-         
-		 return ( (this.getIdDepartamento()==castOther.getIdDepartamento()) || ( this.getIdDepartamento()!=null && castOther.getIdDepartamento()!=null && this.getIdDepartamento().equals(castOther.getIdDepartamento()) ) )
- && ( (this.getIdProvincia()==castOther.getIdProvincia()) || ( this.getIdProvincia()!=null && castOther.getIdProvincia()!=null && this.getIdProvincia().equals(castOther.getIdProvincia()) ) );
-   }
-   
-   public int hashCode() {
-         int result = 17;
-         
-         result = 37 * result + ( getIdDepartamento() == null ? 0 : this.getIdDepartamento().hashCode() );
-         result = 37 * result + ( getIdProvincia() == null ? 0 : this.getIdProvincia().hashCode() );
-         return result;
-   }   
 
 
 }

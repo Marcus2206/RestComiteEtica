@@ -14,9 +14,14 @@ import java.util.List;
  * @author rasec
  */
 public interface SerieService {
-    public void create(Serie serie)throws BussinessException;
-    public Serie read(String idSede)throws BussinessException;
-    public void update(Serie serie)throws BussinessException;
-    public void delete(Serie serie)throws BussinessException;
-    public List<Serie> getAllSerie()throws BussinessException;
+
+    public void create(Serie serie) throws BussinessException;
+
+    public Serie read(String idSede) throws BussinessException;
+
+    public void update(Serie serie) throws BussinessException;
+
+    public void delete(Serie serie) throws BussinessException;
+
+    public List<Serie> getAllSerie() throws BussinessException;
 }
