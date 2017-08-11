@@ -57,9 +57,6 @@ public class RegistroDaoImpl implements RegistroDao {
     public Registro read(String idRegistro) {
         Registro registro = (Registro) sessionFactory.getCurrentSession().get(Registro.class, idRegistro);
         Hibernate.initialize(registro.getInvestigacion());
-//        Hibernate.initialize(registro.getInvestigacionInvestigador());
-//        Hibernate.initialize(registro.getInvestigacionSede());
-//        Hibernate.initialize(patrocinador.getCorrespondencias());
         return registro;
     }
 
