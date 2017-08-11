@@ -118,6 +118,10 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
     @Override
     public void createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso) {
+
+        if (usuarioRepetido(usuario)) {
+            return;
+        }
         String sqlQuery = "insert into Usuario(Usuario,[Password], perfil, usuarioIngresa,fechaIngreso) "
                 + "values(:usuario, PWDENCRYPT(:password), :perfil, :usuarioIngresa, :fechaIngreso)";
         sessionFactory.getCurrentSession()
@@ -130,13 +134,51 @@ public class UsuarioDaoImpl implements UsuarioDao {
                 .executeUpdate();
     }
 
+    public boolean usuarioRepetido(String usuario) {
+        String sqlQuery = "select	idUsuario\n"
+                + "from	usuario\n"
+                + "where usuario='" + usuario + "'";
+
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+                CallableStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                String sqlString = "{call uspGetJsonFromQuery(?)}";
+                statement = connection.prepareCall(sqlString);
+                statement.setString(1, sqlQuery);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getString(1));
+                }
+                return obj;
+            }
+        });
+
+        if (list != null) {
+            if (list.size() > 0) {
+                System.out.println(list.size());
+                if (list.get(0) != null) {
+                    System.out.println(list.get(0));
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     @Override
-    public void updateSql(String usuario, String password, String usuarioModifica, Date fechaModificacion) {
+    public void updateSql(int idUsuario, String password, String usuarioModifica, Date fechaModificacion) {
         String sqlQuery = "update Usuario set [Password]=PWDENCRYPT(:password), usuarioModifica=:usuarioModifica, "
-                + "fechaModificacion=:fechaModificacion   where usuario=:usuario";
+                + "fechaModificacion=:fechaModificacion   where idUsuario=:idUsuario";
         sessionFactory.getCurrentSession()
                 .createSQLQuery(sqlQuery)
-                .setString("usuario", usuario)
+                .setInteger("idUsuario", idUsuario)
                 .setString("password", password)
                 .setString("usuarioModifica", usuarioModifica)
                 .setDate("fechaModificacion", fechaModificacion)

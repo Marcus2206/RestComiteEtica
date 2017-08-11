@@ -40,8 +40,8 @@ public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
 
-    @RequestMapping(value = "/CorrespondenciaRead/{idUsuario}", method = RequestMethod.GET, produces = "application/json")
-    public void readCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idUsuario") int idUsuario) {
+    @RequestMapping(value = "/UsuarioRead/{idUsuario}", method = RequestMethod.GET, produces = "application/json")
+    public void readUsuario(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idUsuario") int idUsuario) {
         try {
             usuarioService.beginTransaction();
             Usuario usuario = usuarioService.read(idUsuario);
@@ -83,16 +83,111 @@ public class UsuarioController {
 
     }
 
+    @RequestMapping(value = "/UsuarioUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    public void updateUsuario(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+        try {
+            usuarioService.beginTransaction();
+            Usuario usuario = (Usuario) jsonTransformer.fromJson(jsonEntrada, Usuario.class);
+            usuarioService.update(usuario);
+            String jsonSalida = jsonTransformer.toJson(usuario);
+            usuarioService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                usuarioService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+
+        } catch (IOException ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                usuarioService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+        } finally {
+            try {
+                usuarioService.close();
+            } catch (Exception eee) {
+
+            }
+        }
+    }
+
+    @RequestMapping(value = "/PasswordUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    public void updatePassword(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+            @RequestParam("idUsuario") int idUsuario, @RequestParam("password") String password, @RequestParam("usuarioModifica") String usuarioModifica) {
+        try {
+            usuarioService.beginTransaction();
+//            Usuario usuario = (Usuario) jsonTransformer.fromJson(jsonEntrada, Usuario.class);
+            java.util.Date date = java.sql.Date.from(Instant.now());
+            usuarioService.updateSql(idUsuario, password, usuarioModifica, date);
+            usuarioService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println("");
+
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                usuarioService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+
+        } catch (IOException ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                usuarioService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+        } finally {
+            try {
+                usuarioService.close();
+            } catch (Exception eee) {
+
+            }
+        }
+    }
+
     @RequestMapping(value = "/UsuarioReadValidate", method = RequestMethod.GET, produces = "application/json")
     public void validateReadUsuario(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("usuario") String usuario, @RequestParam("password") String password) {
         try {
             usuarioService.beginTransaction();
-            String jsonSalida = "{}";
+            String jsonSalida = "[]";
             List<Object> user = usuarioService.readSql(usuario, password);
             if (user != null) {
                 if (user.size() > 0) {
                     if (user.get(0) != null) {
-                        jsonSalida = "" + ((String) user.get(0)) + "";
+                        jsonSalida = "[" + ((String) user.get(0)) + "]";
                     }
                 }
             }
@@ -142,7 +237,7 @@ public class UsuarioController {
             java.util.Date date = java.sql.Date.from(Instant.now());
             usuarioService.createSql(usuario, password, perfil, usuarioIngresa, date);
             usuarioService.commit();
-
+            usuarioService.beginTransaction();
             String jsonSalida = "{}";
             List<Object> user = usuarioService.readSql(usuario, password);
             if (user != null) {
@@ -152,7 +247,7 @@ public class UsuarioController {
                     }
                 }
             }
-
+            usuarioService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);

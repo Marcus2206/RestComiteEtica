@@ -85,8 +85,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void updateSql(String usuario, String password, String usuarioModifica, Date fechaModificacion) throws BussinessException {
-        usuarioDao.updateSql(usuario, password, usuarioModifica, fechaModificacion);
+    public void updateSql(int idUsuario, String password, String usuarioModifica, Date fechaModificacion) throws BussinessException {
+        usuarioDao.updateSql(idUsuario, password, usuarioModifica, fechaModificacion);
     }
 
 }

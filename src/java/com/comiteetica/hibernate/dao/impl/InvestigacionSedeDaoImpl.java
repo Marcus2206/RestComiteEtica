@@ -144,19 +144,8 @@ public class InvestigacionSedeDaoImpl implements InvestigacionSedeDao {
                 String sqlString = "{call uspGetJsonFromQuery(?)}";
                 statement = connection.prepareCall(sqlString);
                 statement.setString(1, sqlQuery);
-//                    statement.setTimestamp(2, new java.sql.Timestamp(fechaTrabajo.getTime()));
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-//                        SerieCorrelativo serieCorrelativo =new SerieCorrelativo();
-//                        SerieCorrelativoId id =new SerieCorrelativoId(resultSet.getString("IdSerie"),resultSet.getString("IdCorrelativo"));
-//                        serieCorrelativo.setId(id);
-//                        serieCorrelativo.setInicioPeriodo(resultSet.getTimestamp("InicioPeriodo"));
-//                        serieCorrelativo.setUltimoUsado(resultSet.getString("UltimoUsado"));
-//                        serieCorrelativo.setUsuarioIngresa(resultSet.getString("UsuarioIngresa"));
-//                        serieCorrelativo.setFechaIngreso(resultSet.getTimestamp("FechaIngreso"));
-//                        serieCorrelativo.setUsuarioModifica(resultSet.getString("UsuarioModifica"));
-//                        serieCorrelativo.setFechaModificacion(resultSet.getTimestamp("FechaModificacion"));
-//                        serieCorrelativoList.add(serieCorrelativo);
                     obj.add(resultSet.getString(1));
                 }
                 return obj;

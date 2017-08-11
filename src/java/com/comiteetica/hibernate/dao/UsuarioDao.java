@@ -39,5 +39,5 @@ public interface UsuarioDao {
 
     public List<Object> readSql(String usuario, String password);
 
-    public void updateSql(String usuario, String password, String usuarioModifica, Date fechaModificacion);
+    public void updateSql(int idUsuario, String password, String usuarioModifica, Date fechaModificacion);
 }

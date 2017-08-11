@@ -40,5 +40,5 @@ public interface UsuarioService {
 
     public List<Object> readSql(String usuario, String password) throws BussinessException;
 
-    public void updateSql(String usuario, String password, String usuarioModifica, Date fechaModificacion) throws BussinessException;
+    public void updateSql(int idUsuario, String password, String usuarioModifica, Date fechaModificacion) throws BussinessException;
 }
