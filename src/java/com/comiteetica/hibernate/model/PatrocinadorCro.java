@@ -75,7 +75,7 @@ public class PatrocinadorCro implements java.io.Serializable {
         this.id = id;
     }
 
-    @JsonIgnore
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdCro", nullable = false, insertable = false, updatable = false)
     public Cro getCro() {
@@ -86,7 +86,7 @@ public class PatrocinadorCro implements java.io.Serializable {
         this.cro = cro;
     }
 
-    @JsonIgnore
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdPatrocinador", nullable = false, insertable = false, updatable = false)
     public Patrocinador getPatrocinador() {
