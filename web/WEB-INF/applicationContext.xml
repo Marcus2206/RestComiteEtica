@@ -108,6 +108,9 @@
     <bean name="RegistroBitacoraDaoImpl"  class="com.comiteetica.hibernate.dao.impl.RegistroBitacoraDaoImpl" />
     <bean name="RegistroBitacoraServiceImpl"  class="com.comiteetica.hibernate.service.impl.RegistroBitacoraServiceImpl" />
     
-        <bean name="UsuarioDaoImpl"  class="com.comiteetica.hibernate.dao.impl.UsuarioDaoImpl" />
+    <bean name="UsuarioDaoImpl"  class="com.comiteetica.hibernate.dao.impl.UsuarioDaoImpl" />
     <bean name="UsuarioServiceImpl"  class="com.comiteetica.hibernate.service.impl.UsuarioServiceImpl" />
+    
+    <bean name="CorreoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CorreoDaoImpl" />
+    <bean name="CorreoServiceImpl"  class="com.comiteetica.hibernate.service.impl.CorreoServiceImpl" />
 </beans>

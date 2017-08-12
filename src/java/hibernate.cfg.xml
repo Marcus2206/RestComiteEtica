@@ -75,5 +75,6 @@ Contributor(s):
     <mapping resource="com/comiteetica/hibernate/model/Fecha.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/InvestigacionSede.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Usuario.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/Correo.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

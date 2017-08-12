@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 09-ago-2017 12:35:40 by Hibernate Tools 4.3.1 -->
+<!-- Generated 11-ago-2017 18:56:35 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.comiteetica.hibernate.model.Usuario" table="Usuario" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+    <class name="com.comiteetica.hibernate.model.Usuario" table="Usuario" schema="dbo" catalog="ComiteEtica">
         <id name="idUsuario" type="int">
             <column name="IdUsuario" />
-            <generator class="assigned" />
+            <generator class="assigned"></generator>
         </id>
         <property name="usuario" type="string">
             <column name="Usuario" length="50" />

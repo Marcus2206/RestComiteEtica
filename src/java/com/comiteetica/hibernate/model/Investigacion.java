@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
+// Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
@@ -22,8 +22,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Investigacion",
-         schema = "dbo",
-         catalog = "ComiteEtica"
+        schema = "dbo",
+        catalog = "ComiteEtica"
 )
 public class Investigacion implements java.io.Serializable {
 

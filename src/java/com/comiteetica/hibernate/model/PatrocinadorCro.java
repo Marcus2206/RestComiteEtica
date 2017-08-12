@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 09-ago-2017 12:35:36 by Hibernate Tools 4.3.1
+// Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
@@ -23,8 +23,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "PatrocinadorCro",
-        schema = "dbo",
-        catalog = "ComiteEtica"
+         schema = "dbo",
+         catalog = "ComiteEtica"
 )
 public class PatrocinadorCro implements java.io.Serializable {
 
@@ -75,7 +75,7 @@ public class PatrocinadorCro implements java.io.Serializable {
         this.id = id;
     }
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdCro", nullable = false, insertable = false, updatable = false)
     public Cro getCro() {
@@ -86,7 +86,7 @@ public class PatrocinadorCro implements java.io.Serializable {
         this.cro = cro;
     }
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdPatrocinador", nullable = false, insertable = false, updatable = false)
     public Patrocinador getPatrocinador() {

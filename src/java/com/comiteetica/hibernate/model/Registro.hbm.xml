@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 09-ago-2017 12:35:40 by Hibernate Tools 4.3.1 -->
+<!-- Generated 11-ago-2017 18:56:35 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="com.comiteetica.hibernate.model.Registro" table="Registro" schema="dbo" catalog="ComiteEtica">
         <id name="idRegistro" type="string">

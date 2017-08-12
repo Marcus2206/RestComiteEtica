@@ -3,10 +3,10 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 11-ago-2017 18:56:35 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.comiteetica.hibernate.model.Investigador" table="Investigador" schema="dbo" catalog="ComiteEtica">
-        <id name="idInvestigador" type="string">
-            <column name="IdInvestigador" length="10" />
-            <generator class="assigned"></generator>
+    <class name="com.comiteetica.hibernate.model.Correo" table="Correo" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <id name="idCorreo" type="int">
+            <column name="IdCorreo" />
+            <generator class="assigned" />
         </id>
         <property name="apePaterno" type="string">
             <column name="ApePaterno" length="50" />
@@ -17,11 +17,14 @@
         <property name="nombres" type="string">
             <column name="Nombres" length="100" />
         </property>
-        <property name="paramEspecialidadInvestigador" type="string">
-            <column name="ParamEspecialidadInvestigador" length="4" />
+        <property name="paramAreaTrabajo" type="string">
+            <column name="ParamAreaTrabajo" length="4" />
         </property>
         <property name="correo" type="string">
             <column name="Correo" length="150" />
+        </property>
+        <property name="estado" type="java.lang.Integer">
+            <column name="Estado" />
         </property>
         <property name="usuarioIngresa" type="string">
             <column name="UsuarioIngresa" length="50" />
@@ -35,11 +38,5 @@
         <property name="fechaModificacion" type="timestamp">
             <column name="FechaModificacion" length="23" />
         </property>
-        <set name="investigacionInvestigadors" table="InvestigacionInvestigador" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="IdInvestigador" length="10" not-null="true" />
-            </key>
-            <one-to-many class="com.comiteetica.hibernate.model.InvestigacionInvestigador" />
-        </set>
     </class>
 </hibernate-mapping>
