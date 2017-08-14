@@ -235,7 +235,7 @@ public class CorreoController {
     }
 
     @RequestMapping(value = "/CorreoDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteCorreo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idUsuario") int idCorreo) {
+    public void deleteCorreo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idCorreo") int idCorreo) {
         try {
 
             correoService.beginTransaction();

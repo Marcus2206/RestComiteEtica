@@ -84,11 +84,11 @@ public class CorreoDaoImpl implements CorreoDao {
                 + "		apePaterno,\n"
                 + "		apeMaterno,\n"
                 + "		nombres,\n"
-                + "		paramAreaTrabajo,\n"
+                + "		(select Descripcion from ParametroDetalle where IdParametro='P011' and IdParametroDetalle=paramAreaTrabajo) paramAreaTrabajo,\n"
                 + "		correo,\n"
-                + "		estado\n"
-                + "from	correo\n"
-                + "order by apePaterno asc";
+                + "		coalesce(estado,0) estado\n"
+                + "from	correo\n";
+//                + "order by apePaterno asc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override

@@ -51,59 +51,17 @@ public class SerieCorrelativoDaoImpl implements SerieCorrelativoDao{
     
     @Override
     public void create(SerieCorrelativo serieCorrelativo) {
-        
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        try{
-//            sessionFactory.getCurrentSession().beginTransaction();
             sessionFactory.getCurrentSession().save(serieCorrelativo);
-//            sessionFactory.getCurrentSession().getTransaction().commit();
-//        }catch(Exception e){
-//            sessionFactory.getCurrentSession().getTransaction().rollback();
-//        }finally{
-//            sessionFactory.getCurrentSession().close(); 
-//        }
-        
     }
 
     @Override
     public SerieCorrelativo read(SerieCorrelativoId serieCorrelativoId) {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        sessionFactory.openSession();
-//        sessionFactory.getCurrentSession().beginTransaction();
         SerieCorrelativo serieCorrelativo=(SerieCorrelativo)sessionFactory.getCurrentSession().get(SerieCorrelativo.class,serieCorrelativoId);
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        sessionFactory.getCurrentSession().close();
         return serieCorrelativo;
     }
     
     @Override
-    public SerieCorrelativo readNextSerieCorrelativo(String serieId, Date fechaTrabajo){
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        Session session=sessionFactory.openSession();
-        //sessionFactory.getCurrentSession().beginTransaction();
-        //System.out.println("sessionFactory.getCurrentSession().beginTransaction();");
-//        session.beginTransaction();
-        /*
-        Query query = sessionFactory.getCurrentSession().createSQLQuery(
-                "CALL uspGetSerieCorrelativo(:serie,:fechaTrabajo)")
-                .addEntity(SerieCorrelativo.class)
-                .setParameter("serie", serieId)
-                .setParameter("fechaTrabajo", fechaTrabajo);
-        System.out.println("tam: "+query.list().size());
-        */
-        
-        /*String queryString = "uspGetSerieCorrelativo '"+serieId+"','"+fechaTrabajo+"'";
-
-        Query query = sessionFactory.getCurrentSession().createSQLQuery(queryString);
-*/
-        
-        /*
-        CallableStatement callableStatement = session.connection().prepareCall("call GetMarketDataCDS(?,?)");
-        callableStatement.setString(1,"JPM");
-        callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
-        callableStatement.execute();
-        ResultSet resultSet=(ResultSet) callableStatement.getObject(1);*/
-        
+    public SerieCorrelativo readNextSerieCorrelativo(String serieId, Date fechaTrabajo){        
         List<SerieCorrelativo> list =sessionFactory.openSession().doReturningWork(new ReturningWork<List<SerieCorrelativo>>(){
                 @Override
                 public List<SerieCorrelativo> execute(Connection connection)throws SQLException {
@@ -130,18 +88,6 @@ public class SerieCorrelativoDaoImpl implements SerieCorrelativoDao{
                     return serieCorrelativoList;
                 }
         });
-        //query.list();
-
-        //List<SerieCorrelativo> result = query.list();
-        /*for(int i=0; i<result.size(); i++){
-                SerieCorrelativo serieCorrelativo = (SerieCorrelativo)result.get(i);
-                System.out.println(stock.getStockCode());
-        }*/
-    
-//        session.getTransaction().commit();
-//        session.close();
-        //sessionFactory.getCurrentSession().getTransaction().commit();
-        //sessionFactory.getCurrentSession().close();
         if(list!=null)
             return list.get(0);
         else
@@ -151,37 +97,23 @@ public class SerieCorrelativoDaoImpl implements SerieCorrelativoDao{
 
     @Override
     public void update(SerieCorrelativo serieCorrelativo) {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().update(serieCorrelativo);
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public void delete(SerieCorrelativo serieCorrelativo) {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().delete(serieCorrelativo);
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        sessionFactory.getCurrentSession().close();
     }
 
     @Override
     public List<SerieCorrelativo> getAllSerieCorrelativo() {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        sessionFactory.getCurrentSession().beginTransaction();
-
-        /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
                                 .createQuery("select "
                                                     +"idProducto, " 
                                                     +"nombre, " 
                                                     +"descripcion "  
                                             +"from    Producto p" );
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
+
         List<SerieCorrelativo> serieCorrelativos=new ArrayList<>();
         /*Realiza consulta y devuelve Object[]*/
         List<Object[]> list=query.list();
@@ -192,11 +124,6 @@ public class SerieCorrelativoDaoImpl implements SerieCorrelativoDao{
             serieCorrela.setUltimoUsado(serieCorrelativo[1].toString());
             serieCorrelativos.add(serieCorrela);
         });
-        
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        sessionFactory.getCurrentSession().close();
-        
         return serieCorrelativos;
     }
     

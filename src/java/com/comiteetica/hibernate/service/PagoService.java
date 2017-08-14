@@ -34,4 +34,6 @@ public interface PagoService {
     public void rollback() throws BussinessException;
 
     public List<Object> getAllPagoList() throws BussinessException;
+    
+        public int sendMail(String idPago) throws BussinessException;
 }

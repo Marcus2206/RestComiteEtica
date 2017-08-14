@@ -6,7 +6,8 @@
     <class name="com.comiteetica.hibernate.model.Correo" table="Correo" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
         <id name="idCorreo" type="int">
             <column name="IdCorreo" />
-            <generator class="assigned" />
+           <!-- <generator class="assigned" />-->
+            <generator class="identity" />
         </id>
         <property name="apePaterno" type="string">
             <column name="ApePaterno" length="50" />
@@ -23,7 +24,7 @@
         <property name="correo" type="string">
             <column name="Correo" length="150" />
         </property>
-        <property name="estado" type="java.lang.Integer">
+        <property name="estado" type="java.lang.Boolean">
             <column name="Estado" />
         </property>
         <property name="usuarioIngresa" type="string">

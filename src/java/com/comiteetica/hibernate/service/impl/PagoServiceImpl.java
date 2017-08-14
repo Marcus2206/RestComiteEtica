@@ -82,4 +82,9 @@ public class PagoServiceImpl implements PagoService {
         return pagoDao.getAllPagoList();
     }
 
+    @Transactional
+    @Override
+    public int sendMail(String idPago) throws BussinessException {
+        return pagoDao.sendMail(idPago);
+    }
 }

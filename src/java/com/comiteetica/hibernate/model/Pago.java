@@ -20,8 +20,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Pago",
-         schema = "dbo",
-         catalog = "ComiteEtica"
+        schema = "dbo",
+        catalog = "ComiteEtica"
 )
 public class Pago implements java.io.Serializable {
 
@@ -30,6 +30,7 @@ public class Pago implements java.io.Serializable {
     private String nroFactura;
     private String observacion;
     private String paramEstadoPago;
+    private Integer contador;
     private String usuarioIngresa;
     private Date fechaIngreso;
     private String usuarioModifica;
@@ -149,6 +150,15 @@ public class Pago implements java.io.Serializable {
 
     public void setPagoDetalles(Set<PagoDetalle> pagoDetalles) {
         this.pagoDetalles = pagoDetalles;
+    }
+
+    @Column(name = "Contador")
+    public Integer getContador() {
+        return this.contador;
+    }
+
+    public void setContador(Integer contador) {
+        this.contador = contador;
     }
 
 }

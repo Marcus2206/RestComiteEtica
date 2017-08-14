@@ -2,9 +2,12 @@ package com.comiteetica.hibernate.model;
 // Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,7 +30,7 @@ public class Correo  implements java.io.Serializable {
      private String nombres;
      private String paramAreaTrabajo;
      private String correo;
-     private Integer estado;
+     private boolean estado;
      private String usuarioIngresa;
      private Date fechaIngreso;
      private String usuarioModifica;
@@ -40,7 +43,7 @@ public class Correo  implements java.io.Serializable {
     public Correo(int idCorreo) {
         this.idCorreo = idCorreo;
     }
-    public Correo(int idCorreo, String apePaterno, String apeMaterno, String nombres, String paramAreaTrabajo, String correo, Integer estado, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
+    public Correo(int idCorreo, String apePaterno, String apeMaterno, String nombres, String paramAreaTrabajo, String correo, boolean estado, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
        this.idCorreo = idCorreo;
        this.apePaterno = apePaterno;
        this.apeMaterno = apeMaterno;
@@ -55,8 +58,7 @@ public class Correo  implements java.io.Serializable {
     }
    
      @Id 
-
-    
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="IdCorreo", unique=true, nullable=false)
     public int getIdCorreo() {
         return this.idCorreo;
@@ -118,11 +120,11 @@ public class Correo  implements java.io.Serializable {
 
     
     @Column(name="Estado")
-    public Integer getEstado() {
+    public boolean getEstado() {
         return this.estado;
     }
     
-    public void setEstado(Integer estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 

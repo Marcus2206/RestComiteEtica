@@ -20,6 +20,9 @@
         <property name="paramEstadoPago" type="string">
             <column name="ParamEstadoPago" length="4" />
         </property>
+        <property name="contador" type="java.lang.Integer">
+            <column name="Contador" />
+        </property>
         <property name="usuarioIngresa" type="string">
             <column name="UsuarioIngresa" length="50" />
         </property>

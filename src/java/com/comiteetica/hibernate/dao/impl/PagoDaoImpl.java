@@ -9,12 +9,17 @@ import com.comiteetica.hibernate.dao.PagoDao;
 import com.comiteetica.hibernate.model.Pago;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.jdbc.ReturningWork;
 import org.springframework.stereotype.Repository;
 
@@ -126,5 +131,68 @@ public class PagoDaoImpl implements PagoDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public int sendMail(String idPago) {
+//        
+//        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+//            @Override
+//            public List<Object> execute(Connection connection) throws SQLException {
+//                CallableStatement statement = null;
+//                List<Object> obj = new ArrayList<Object>();
+//                String sqlString = "{call uspCorreoPago(?)}";
+//                statement = connection.prepareCall(sqlString);
+//                statement.setString(1, idPago);
+//                ResultSet resultSet = statement.executeQuery();
+//                while (resultSet.next()) {
+//                    System.out.println("resultSet");
+//                    obj.add(resultSet.getInt(1));
+//
+//                }
+//                return obj;
+//            }
+//        });
+
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+                PreparedStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                Properties connectionProps = ((SessionFactoryImpl) sessionFactory).getProperties();
+                String url = (String) connectionProps.get("hibernate.connection.url");
+                String username = (String) connectionProps.get("hibernate.connection.username");
+                String password = (String) connectionProps.get("hibernate.connection.password");
+                 Properties cProps = new Properties();
+                cProps.put("user", username);
+                cProps.put("password", password);
+                Connection conn = null;
+                conn = DriverManager.getConnection(url, cProps);
+                statement = conn.prepareStatement("exec uspCorreoPago ?");
+                statement.setEscapeProcessing(true);
+                statement.setQueryTimeout(90);
+                statement.setString(1, idPago);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getInt(1));
+                }
+                return obj;
+            }
+        });
+
+        if (list != null) {
+            if (list.size() > 0) {
+                if (list.get(0) != null) {
+                    return (int) list.get(0);
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+
     }
 }

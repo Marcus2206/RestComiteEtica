@@ -34,4 +34,6 @@ public interface PagoDao {
 
     public List<Object> getAllPagoList();
 
+    public int sendMail(String idPago);
+
 }
