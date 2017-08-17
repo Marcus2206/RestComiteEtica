@@ -75,8 +75,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso) throws BussinessException {
-        usuarioDao.createSql(usuario, password, perfil, usuarioIngresa, fechaIngreso);
+    public int createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso, Boolean estado) throws BussinessException {
+        return usuarioDao.createSql(usuario, password, perfil, usuarioIngresa, fechaIngreso, estado);
     }
 
     @Override

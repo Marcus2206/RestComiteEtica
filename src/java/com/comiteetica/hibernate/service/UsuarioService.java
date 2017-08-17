@@ -36,7 +36,7 @@ public interface UsuarioService {
 
     public List<Object> getAllUsuarioList() throws BussinessException;
 
-    public void createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso) throws BussinessException;
+    public int createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso, Boolean estado) throws BussinessException;
 
     public List<Object> readSql(String usuario, String password) throws BussinessException;
 

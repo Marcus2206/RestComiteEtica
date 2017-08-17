@@ -113,4 +113,7 @@
     
     <bean name="CorreoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.CorreoDaoImpl" />
     <bean name="CorreoServiceImpl"  class="com.comiteetica.hibernate.service.impl.CorreoServiceImpl" />
+    
+    <bean name="NotificacionDaoImpl"  class="com.comiteetica.hibernate.dao.impl.NotificacionDaoImpl" />
+    <bean name="NotificacionServiceImpl"  class="com.comiteetica.hibernate.service.impl.NotificacionServiceImpl" />
 </beans>

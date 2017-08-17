@@ -117,13 +117,13 @@ public class UsuarioDaoImpl implements UsuarioDao {
     }
 
     @Override
-    public void createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso) {
+    public int createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso, Boolean estado) {
 
         if (usuarioRepetido(usuario)) {
-            return;
+            return 0;
         }
-        String sqlQuery = "insert into Usuario(Usuario,[Password], perfil, usuarioIngresa,fechaIngreso) "
-                + "values(:usuario, PWDENCRYPT(:password), :perfil, :usuarioIngresa, :fechaIngreso)";
+        String sqlQuery = "insert into Usuario(Usuario,[Password], perfil, usuarioIngresa,fechaIngreso, estado) "
+                + "values(:usuario, PWDENCRYPT(:password), :perfil, :usuarioIngresa, :fechaIngreso, :estado)";
         sessionFactory.getCurrentSession()
                 .createSQLQuery(sqlQuery)
                 .setString("usuario", usuario)
@@ -131,7 +131,9 @@ public class UsuarioDaoImpl implements UsuarioDao {
                 .setString("perfil", perfil)
                 .setString("usuarioIngresa", usuarioIngresa)
                 .setDate("fechaIngreso", fechaIngreso)
+                .setBoolean("estado", estado)
                 .executeUpdate();
+        return 1;
     }
 
     public boolean usuarioRepetido(String usuario) {
@@ -157,9 +159,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
         if (list != null) {
             if (list.size() > 0) {
-                System.out.println(list.size());
                 if (list.get(0) != null) {
-                    System.out.println(list.get(0));
                     return true;
                 } else {
                     return false;

@@ -231,23 +231,26 @@ public class UsuarioController {
     @RequestMapping(value = "/UsuarioInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insertUsuario(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
             @RequestParam("usuario") String usuario, @RequestParam("password") String password, @RequestParam("perfil") String perfil,
-            @RequestParam("usuarioIngresa") String usuarioIngresa) {
+            @RequestParam("usuarioIngresa") String usuarioIngresa, @RequestParam("estado") Boolean estado) {
         try {
             usuarioService.beginTransaction();
             java.util.Date date = java.sql.Date.from(Instant.now());
-            usuarioService.createSql(usuario, password, perfil, usuarioIngresa, date);
+            int i = usuarioService.createSql(usuario, password, perfil, usuarioIngresa, date, estado );
             usuarioService.commit();
-            usuarioService.beginTransaction();
             String jsonSalida = "{}";
-            List<Object> user = usuarioService.readSql(usuario, password);
-            if (user != null) {
-                if (user.size() > 0) {
-                    if (user.get(0) != null) {
-                        jsonSalida = "" + ((String) user.get(0)) + "";
+            if (i==1) {
+                usuarioService.beginTransaction();
+                
+                List<Object> user = usuarioService.readSql(usuario, password);
+                if (user != null) {
+                    if (user.size() > 0) {
+                        if (user.get(0) != null) {
+                            jsonSalida = "" + ((String) user.get(0)) + "";
+                        }
                     }
                 }
+                usuarioService.commit();
             }
-            usuarioService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);

@@ -35,7 +35,7 @@ public interface UsuarioDao {
 
     public List<Object> getAllUsuarioList();
 
-    public void createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso);
+    public int createSql(String usuario, String password, String perfil, String usuarioIngresa, Date fechaIngreso, Boolean estado);
 
     public List<Object> readSql(String usuario, String password);
 

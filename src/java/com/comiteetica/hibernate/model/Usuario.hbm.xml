@@ -17,6 +17,9 @@
         <property name="perfil" type="string">
             <column name="Perfil" length="4" />
         </property>
+        <property name="estado" type="java.lang.Boolean">
+            <column name="Estado" />
+        </property>
         <property name="usuarioIngresa" type="string">
             <column name="UsuarioIngresa" length="50" />
         </property>
