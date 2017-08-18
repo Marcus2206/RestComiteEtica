@@ -21,12 +21,13 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Registro",
-         schema = "dbo",
-         catalog = "ComiteEtica"
+        schema = "dbo",
+        catalog = "ComiteEtica"
 )
 public class Registro implements java.io.Serializable {
 
     private String idRegistro;
+    private String paramEstadoRegistro;
     private Investigacion investigacion;
     private Date fechaAprobacion;
     private String idSede;
@@ -56,8 +57,9 @@ public class Registro implements java.io.Serializable {
         this.idRegistro = idRegistro;
     }
 
-    public Registro(String idRegistro, Investigacion investigacion, Date fechaAprobacion, String idSede, String idInvestigador, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
+    public Registro(String idRegistro, String paramEstadoRegistro, Investigacion investigacion, Date fechaAprobacion, String idSede, String idInvestigador, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
         this.idRegistro = idRegistro;
+        this.paramEstadoRegistro = paramEstadoRegistro;
         this.investigacion = investigacion;
         this.fechaAprobacion = fechaAprobacion;
         this.idSede = idSede;
@@ -82,7 +84,6 @@ public class Registro implements java.io.Serializable {
     }
 
     @Id
-
     @Column(name = "IdRegistro", nullable = false, length = 10)
     public String getIdRegistro() {
         return this.idRegistro;
@@ -90,6 +91,15 @@ public class Registro implements java.io.Serializable {
 
     public void setIdRegistro(String idRegistro) {
         this.idRegistro = idRegistro;
+    }
+
+    @Column(name = "ParamEstadoRegistro", length = 4)
+    public String getParamEstadoRegistro() {
+        return this.paramEstadoRegistro;
+    }
+
+    public void setParamEstadoRegistro(String paramEstadoRegistro) {
+        this.paramEstadoRegistro = paramEstadoRegistro;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

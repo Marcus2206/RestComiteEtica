@@ -11,6 +11,9 @@
         <many-to-one name="investigacion" class="com.comiteetica.hibernate.model.Investigacion" fetch="select">
             <column name="IdInvestigacion" length="10" />
         </many-to-one>
+        <property name="paramEstadoRegistro" type="string">
+            <column name="ParamEstadoRegistro" length="4" />
+        </property>
         <property name="fechaAprobacion" type="timestamp">
             <column name="FechaAprobacion" length="23" />
         </property>

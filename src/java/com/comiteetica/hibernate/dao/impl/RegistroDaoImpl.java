@@ -104,6 +104,7 @@ public class RegistroDaoImpl implements RegistroDao {
                 + "		(select Nombre from Sede where IdSede=r.idSede)idSede,\n"
                 + "		(select ApePaterno+' '+ApeMaterno+', '+Nombres from Investigador where IdInvestigador=r.IdInvestigador)idInvestigador,\n"
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P006' and IdParametroDetalle=r.paramEstado)paramEstado,\n"
+                + "		(select Descripcion from ParametroDetalle where IdParametro='P012' and IdParametroDetalle=r.paramEstado)paramEstadoRegistro,\n"
                 + "		r.observacion,\n"
                 + "		r.farmacoExperimental,\n"
                 + "		r.placebo,\n"

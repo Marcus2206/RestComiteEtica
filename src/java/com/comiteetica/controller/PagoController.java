@@ -204,6 +204,7 @@ public class PagoController {
             pagoService.update(pago);
             String jsonSalida = jsonTransformer.toJson(pago);
             pagoService.commit();
+            
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
