@@ -82,4 +82,16 @@ public class CroServiceImpl implements CroService {
         return croDao.getCroByPatrocinador(idPatrocinador);
     }
 
+    @Transactional
+    @Override
+    public List<Object> getAllCroList() throws BussinessException {
+        return croDao.getAllCroList();
+    }
+
+    @Transactional
+    @Override
+    public List<Cro> getCroSinIdPatrocinador(String idPatrocinador) throws BussinessException {
+        return croDao.getCroSinIdPatrocinador(idPatrocinador);
+    }
+
 }

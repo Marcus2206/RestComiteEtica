@@ -34,4 +34,8 @@ public interface PatrocinadorCroDao {
     public void rollback();
 
     public List<Object> getAllPatrocinadorCroSqlList();
+    
+    public List<Object> getPatrocinadorByIdCro(String idCro);
+    
+   public List<Object> getCroByIdPatrocinador(String idPatrocinador); 
 }

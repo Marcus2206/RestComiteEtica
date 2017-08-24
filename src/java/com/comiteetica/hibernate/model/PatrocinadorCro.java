@@ -1,6 +1,7 @@
 package com.comiteetica.hibernate.model;
 // Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.HashSet;

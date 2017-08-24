@@ -34,4 +34,9 @@ public interface CroService {
     public void rollback() throws BussinessException;
 
     public List<Cro> getCroByPatrocinador(String idPatrocinador) throws BussinessException;
+
+    public List<Cro> getCroSinIdPatrocinador(String idPatrocinador) throws BussinessException;
+
+    public List<Object> getAllCroList() throws BussinessException;
+
 }

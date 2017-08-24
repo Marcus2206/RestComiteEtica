@@ -85,4 +85,15 @@ public class PatrocinadorCroServiceImpl implements PatrocinadorCroService {
         return patrocinadorCroDao.getAllPatrocinadorCro();
     }
 
+    @Transactional
+    @Override
+    public List<Object> getPatrocinadorByIdCro(String idCro) throws BussinessException {
+        return patrocinadorCroDao.getPatrocinadorByIdCro(idCro);
+    }
+
+    @Transactional
+    @Override
+    public List<Object> getCroByIdPatrocinador(String idPatrocinador) throws BussinessException {
+        return patrocinadorCroDao.getCroByIdPatrocinador(idPatrocinador);
+    }
 }

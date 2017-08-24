@@ -15,23 +15,28 @@ import java.util.List;
  * @author rasec
  */
 public interface PatrocinadorCroService {
-        public void create(PatrocinadorCro patrocinadorCro)throws BussinessException;
 
-    public PatrocinadorCro read(PatrocinadorCroId id)throws BussinessException;
+    public void create(PatrocinadorCro patrocinadorCro) throws BussinessException;
 
-    public void update(PatrocinadorCro patrocinadorCro)throws BussinessException;
+    public PatrocinadorCro read(PatrocinadorCroId id) throws BussinessException;
 
-    public void delete(PatrocinadorCro patrocinadorCro)throws BussinessException;
+    public void update(PatrocinadorCro patrocinadorCro) throws BussinessException;
 
-    public List<PatrocinadorCro> getAllPatrocinadorCro()throws BussinessException;
+    public void delete(PatrocinadorCro patrocinadorCro) throws BussinessException;
 
-    public void beginTransaction()throws BussinessException;
+    public List<PatrocinadorCro> getAllPatrocinadorCro() throws BussinessException;
 
-    public void commit()throws BussinessException;
+    public void beginTransaction() throws BussinessException;
 
-    public void close()throws BussinessException;
+    public void commit() throws BussinessException;
 
-    public void rollback()throws BussinessException;
+    public void close() throws BussinessException;
 
-    public List<Object> getAllPatrocinadorCroSqlList()throws BussinessException;
+    public void rollback() throws BussinessException;
+
+    public List<Object> getAllPatrocinadorCroSqlList() throws BussinessException;
+
+    public List<Object> getPatrocinadorByIdCro(String idCro) throws BussinessException;
+
+    public List<Object> getCroByIdPatrocinador(String idPatrocinador) throws BussinessException;
 }

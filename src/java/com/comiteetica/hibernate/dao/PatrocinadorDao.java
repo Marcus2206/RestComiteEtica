@@ -13,13 +13,24 @@ import java.util.List;
  * @author rasec
  */
 public interface PatrocinadorDao {
+
     public void create(Patrocinador patrocinador);
+
     public Patrocinador read(String idPatrocinador);
+
     public void update(Patrocinador patrocinador);
+
     public void delete(Patrocinador patrocinador);
+
     public List<Patrocinador> getAllPatrocinador();
+
     public void beginTransaction();
+
     public void commit();
+
     public void close();
+
     public void rollback();
+
+    public List<Patrocinador> getPatrocinadorSinIdCro(String idCro);
 }

@@ -88,43 +88,12 @@ public class CoordinadorDaoImpl implements CoordinadorDao{
 
     @Override
     public void update(Coordinador coordinador) {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        try{
-//        sessionFactory.getCurrentSession().beginTransaction();
-        sessionFactory.getCurrentSession().update(coordinador);
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        }catch(Exception e){
-//            sessionFactory.getCurrentSession().getTransaction().rollback();
-//            System.out.println("Error en: CoordinadorDaoImpl - update. "+e.getMessage());
-//        }finally{
-//            try{
-//                sessionFactory.getCurrentSession().close();
-//            }catch(Exception e1){
-//                System.out.println("Error en: CoordinadorDaoImpl - update - finally. "+e1.getMessage());
-//            }
-//        }
-        
-        
+        sessionFactory.getCurrentSession().update(coordinador);        
     }
 
     @Override
     public void delete(Coordinador coordinador) {
-        //SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-//        try{
-        //sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().delete(coordinador);
-        //sessionFactory.getCurrentSession().getTransaction().commit();
-//        }catch(Exception e){
-////            sessionFactory.getCurrentSession().getTransaction().rollback();
-//            System.out.println("Error en: CoordinadorDaoImpl - delete. "+e.getMessage());
-//        }finally{
-//            try{
-//                //sessionFactory.getCurrentSession().close();
-//            }catch(Exception e1){
-//                System.out.println("Error en: CoordinadorDaoImpl - delete - finally. "+e1.getMessage());
-//            }
-//        }
-        
     }
 
     @Override

@@ -146,8 +146,15 @@ public class CroController {
     public void findAllCro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             croService.beginTransaction();
-            List<Cro> cros = croService.getAllCro();
-            String jsonSalida = jsonTransformer.toJson(cros);
+            String jsonSalida = "[]";
+            List<Object> cros = croService.getAllCroList();
+            if (cros != null) {
+                if (cros.size() > 0) {
+                    if (cros.get(0) != null) {
+                        jsonSalida = "[" + ((String) cros.get(0)) + "]";
+                    }
+                }
+            }
             croService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -240,7 +247,7 @@ public class CroController {
     }
 
     @RequestMapping(value = "/CroDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deleteCro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             croService.beginTransaction();
             Cro cro = (Cro) jsonTransformer.fromJson(jsonEntrada, Cro.class);
@@ -325,6 +332,55 @@ public class CroController {
 
             }
         }
+    }
+    
+    @RequestMapping(value = "/CroSinIdPatrocinadorFind/{idPatrocinador}", method = RequestMethod.GET, produces = "application/json")
+    public void findCroSinIdPatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idPatrocinador") String idPatrocinador) {
+        try {
+            croService.beginTransaction();
+            List<Cro> coordinadors = croService.getCroSinIdPatrocinador(idPatrocinador);
+            croService.commit();
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+            String jsonSalida = jsonTransformer.toJson(coordinadors);
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+            
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                croService.rollback();
+                System.out.println("2do try ");
+            } catch (IOException ex1) {
+                Logger.getLogger(CroController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("2do catch "+ex1.getMessage());
+            } catch(Exception e){
+                
+            }
+            
+            System.out.println("1er catch "+ex.getMessage());
+            
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            try{
+                croService.rollback();
+            }catch(Exception e){
+                
+            }
+            System.out.println("3er catch "+ex.getMessage());
+        }finally{
+            try{
+                croService.close();
+            }catch(Exception e){
+                
+            }
+        }
 
     }
+    
 }

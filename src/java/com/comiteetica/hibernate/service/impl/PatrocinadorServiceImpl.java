@@ -19,35 +19,35 @@ import org.springframework.transaction.annotation.Transactional;
  * @author rasec
  */
 @Service
-public class PatrocinadorServiceImpl implements PatrocinadorService{
+public class PatrocinadorServiceImpl implements PatrocinadorService {
 
     @Autowired
     private PatrocinadorDao patrocinadorDao;
-    
+
     @Transactional
     @Override
-    public void beginTransaction() throws BussinessException{
+    public void beginTransaction() throws BussinessException {
         patrocinadorDao.beginTransaction();
     }
-    
+
     @Transactional
     @Override
-    public void commit() throws BussinessException{
+    public void commit() throws BussinessException {
         patrocinadorDao.commit();
     }
-    
+
     @Transactional
     @Override
-    public void close() throws BussinessException{
+    public void close() throws BussinessException {
         patrocinadorDao.close();
     }
-    
+
     @Transactional
     @Override
-    public void rollback() throws BussinessException{
+    public void rollback() throws BussinessException {
         patrocinadorDao.rollback();
     }
-    
+
     @Transactional
     @Override
     public void create(Patrocinador patrocinador) throws BussinessException {
@@ -77,5 +77,10 @@ public class PatrocinadorServiceImpl implements PatrocinadorService{
     public List<Patrocinador> getAllPatrocinador() throws BussinessException {
         return patrocinadorDao.getAllPatrocinador();
     }
-    
+
+        @Transactional
+    @Override
+        public List<Patrocinador> getPatrocinadorSinIdCro(String idCro)throws BussinessException {
+         return patrocinadorDao.getPatrocinadorSinIdCro(idCro);
+        }
 }

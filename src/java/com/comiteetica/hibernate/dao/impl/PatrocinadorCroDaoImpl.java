@@ -6,6 +6,8 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.PatrocinadorCroDao;
+import com.comiteetica.hibernate.model.Cro;
+import com.comiteetica.hibernate.model.Patrocinador;
 import com.comiteetica.hibernate.model.PatrocinadorCro;
 import com.comiteetica.hibernate.model.PatrocinadorCroId;
 import java.sql.CallableStatement;
@@ -129,5 +131,57 @@ public class PatrocinadorCroDaoImpl implements PatrocinadorCroDao {
         } else {
             return null;
         }
+    }
+   
+    @Override
+    public List<Object> getPatrocinadorByIdCro(String idCro) {
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select pc,p\n"
+                        + "from PatrocinadorCro pc\n"
+                        + "inner join pc.patrocinador p\n"
+                        + "where pc.id.idCro='"+idCro+"'");
+
+        //query.setFirstResult(ini);
+        //query.setMaxResults(fin);
+        /*Crea Objeto contenedor*/
+        List<Object> objetos = new ArrayList<>();
+        /*Realiza consulta y devuelve Object[]*/
+        List<Object[]> list = query.list();
+        /*Itera en cada fila*/
+        list.stream().forEach((objeto) -> {
+            Object[] o = new Object[2];
+            o[0] = (PatrocinadorCro) objeto[0];
+            o[1] = (Patrocinador) objeto[1];
+            objetos.add(o);
+        });
+
+        return objetos;
+    }
+    
+    @Override
+    public List<Object> getCroByIdPatrocinador(String idPatrocinador) {
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select pc,p\n"
+                        + "from PatrocinadorCro pc\n"
+                        + "inner join pc.cro p\n"
+                        + "where pc.id.idPatrocinador='"+idPatrocinador+"'");
+
+        //query.setFirstResult(ini);
+        //query.setMaxResults(fin);
+        /*Crea Objeto contenedor*/
+        List<Object> objetos = new ArrayList<>();
+        /*Realiza consulta y devuelve Object[]*/
+        List<Object[]> list = query.list();
+        /*Itera en cada fila*/
+        list.stream().forEach((objeto) -> {
+            Object[] o = new Object[2];
+            o[0] = (PatrocinadorCro) objeto[0];
+            o[1] = (Cro) objeto[1];
+            objetos.add(o);
+        });
+
+        return objetos;
     }
 }

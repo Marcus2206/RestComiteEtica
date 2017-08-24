@@ -32,4 +32,6 @@ public interface PatrocinadorService {
     public void close() throws BussinessException;
 
     public void rollback() throws BussinessException;
+
+    public List<Patrocinador> getPatrocinadorSinIdCro(String idCro)throws BussinessException;
 }

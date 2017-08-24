@@ -19,30 +19,30 @@ import org.springframework.stereotype.Repository;
  * @author rasec
  */
 @Repository
-public class PatrocinadorDaoImpl implements PatrocinadorDao{
+public class PatrocinadorDaoImpl implements PatrocinadorDao {
 
-    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-    
+    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
-    public void beginTransaction(){
+    public void beginTransaction() {
         sessionFactory.getCurrentSession().beginTransaction();
     }
-    
+
     @Override
-    public void commit(){
+    public void commit() {
         sessionFactory.getCurrentSession().getTransaction().commit();
     }
-    
+
     @Override
-    public void close(){
+    public void close() {
         sessionFactory.getCurrentSession().close();
     }
-    
+
     @Override
-    public void rollback(){
+    public void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
-    
+
     @Override
     public void create(Patrocinador patrocinador) {
         sessionFactory.getCurrentSession().save(patrocinador);
@@ -50,7 +50,7 @@ public class PatrocinadorDaoImpl implements PatrocinadorDao{
 
     @Override
     public Patrocinador read(String idPatrocinador) {
-        Patrocinador patrocinador=(Patrocinador)sessionFactory.getCurrentSession().get(Patrocinador.class,idPatrocinador);
+        Patrocinador patrocinador = (Patrocinador) sessionFactory.getCurrentSession().get(Patrocinador.class, idPatrocinador);
         return patrocinador;
     }
 
@@ -67,23 +67,38 @@ public class PatrocinadorDaoImpl implements PatrocinadorDao{
     @Override
     public List<Patrocinador> getAllPatrocinador() {
         /*Fabrica Query*/
-        Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select p "
-                                        + "from Patrocinador p "
-                                        + "order by p.nombre asc" );
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select p "
+                        + "from Patrocinador p "
+                        + "order by p.nombre asc");
 
-        List<Patrocinador> patrocinadors=query.list();
-        /*Realiza consulta y devuelve Object[]*/
-//        List<Object[]> list=query.list();
-//        /*Itera en cada fila*/
-//        list.stream().forEach((patrocinador)->{
-//            Patrocinador patro=new Patrocinador();
-//            patro.setIdPatrocinador(patrocinador[0].toString());
-//            patro.setNombre(patrocinador[1].toString());
-//            patrocinadors.add(patro);
-//        });        
+        List<Patrocinador> patrocinadors = query.list();
 
         return patrocinadors;
     }
-    
+
+    @Override
+    public List<Patrocinador> getPatrocinadorSinIdCro(String idCro) {
+        List<Patrocinador> patrocinadors = new ArrayList<>();
+
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select p.idPatrocinador, p.nombre \n"
+                        + "from Patrocinador p\n"
+                        + "where p.idPatrocinador not in(select distinct pc.id.idPatrocinador \n"
+                        + "from PatrocinadorCro pc\n"
+                        + "where pc.id.idCro='"+idCro+"')\n"
+                        + "");
+
+        List<Object[]> list = query.list();
+        /*Itera en cada fila*/
+        list.stream().forEach((pat) -> {
+            Patrocinador patr = new Patrocinador();
+            patr.setIdPatrocinador(pat[0].toString());
+            patr.setNombre(pat[1].toString());
+            patrocinadors.add(patr);
+        });
+
+        return patrocinadors;
+    }
 }

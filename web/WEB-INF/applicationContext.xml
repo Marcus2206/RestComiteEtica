@@ -116,4 +116,7 @@
     
     <bean name="NotificacionDaoImpl"  class="com.comiteetica.hibernate.dao.impl.NotificacionDaoImpl" />
     <bean name="NotificacionServiceImpl"  class="com.comiteetica.hibernate.service.impl.NotificacionServiceImpl" />
+    
+    <bean name="PatrocinadorCroDaoImpl"  class="com.comiteetica.hibernate.dao.impl.PatrocinadorCroDaoImpl" />
+    <bean name="PatrocinadorCroServiceImpl"  class="com.comiteetica.hibernate.service.impl.PatrocinadorCroServiceImpl" />
 </beans>
