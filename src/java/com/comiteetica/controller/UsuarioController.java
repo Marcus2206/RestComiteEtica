@@ -234,22 +234,28 @@ public class UsuarioController {
             @RequestParam("usuarioIngresa") String usuarioIngresa, @RequestParam("estado") Boolean estado) {
         try {
             usuarioService.beginTransaction();
+            System.out.println("usuarioService.beginTransaction();");
             java.util.Date date = java.sql.Date.from(Instant.now());
             int i = usuarioService.createSql(usuario, password, perfil, usuarioIngresa, date, estado );
-            usuarioService.commit();
+            System.out.println("i: "+i);
+//            usuarioService.commit();
+            System.out.println("usuarioService.commit();");
             String jsonSalida = "{}";
             if (i==1) {
-                usuarioService.beginTransaction();
-                
+//                usuarioService.beginTransaction();
+                System.out.println("usuarioService.beginTransaction();"+usuario+"///"+password);
                 List<Object> user = usuarioService.readSql(usuario, password);
+                System.out.println("List<Object> user");
                 if (user != null) {
                     if (user.size() > 0) {
                         if (user.get(0) != null) {
                             jsonSalida = "" + ((String) user.get(0)) + "";
+                            System.out.println("jsonSalida: "+jsonSalida);
                         }
                     }
                 }
                 usuarioService.commit();
+                System.out.println(" usuarioService.commit();: ");
             }
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -295,7 +301,7 @@ public class UsuarioController {
     @RequestMapping(value = "/UsuarioListFindAll", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
     public void findAllUsuarioList(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
-            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+            
             usuarioService.beginTransaction();
             String jsonSalida = "[]";
             List<Object> usuarios = usuarioService.getAllUsuarioList();
@@ -307,7 +313,7 @@ public class UsuarioController {
                 }
             }
             usuarioService.commit();
-
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);

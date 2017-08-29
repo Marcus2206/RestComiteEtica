@@ -18,6 +18,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,7 +143,7 @@ public class CoordinadorController {
     }
 
     @RequestMapping(value = "/CoordinadorFindAll", method = RequestMethod.GET, produces = "application/json")
-    public void findAllCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
+    public void findAllCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             coordinadorService.beginTransaction();
             List<Coordinador> coordinadors = coordinadorService.getAllCoordinador();

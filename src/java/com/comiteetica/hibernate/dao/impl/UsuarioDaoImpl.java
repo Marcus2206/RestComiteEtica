@@ -9,13 +9,17 @@ import com.comiteetica.hibernate.dao.UsuarioDao;
 import com.comiteetica.hibernate.model.Usuario;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.jdbc.ReturningWork;
 import org.springframework.stereotype.Repository;
 
@@ -85,8 +89,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
         String sqlQuery = "select	idUsuario,\n"
                 + "		usuario,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P010' and IdParametroDetalle=Perfil) perfil\n"
-                + "from	usuario\n"
+                + "		(select Descripcion from ParametroDetalle(nolock) where IdParametro='P010' and IdParametroDetalle=Perfil) perfil\n"
+                + "from	usuario(nolock)\n"
                 + "order by usuario asc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
@@ -122,23 +126,76 @@ public class UsuarioDaoImpl implements UsuarioDao {
         if (usuarioRepetido(usuario)) {
             return 0;
         }
-        String sqlQuery = "insert into Usuario(Usuario,[Password], perfil, usuarioIngresa,fechaIngreso, estado) "
-                + "values(:usuario, PWDENCRYPT(:password), :perfil, :usuarioIngresa, :fechaIngreso, :estado)";
-        sessionFactory.getCurrentSession()
-                .createSQLQuery(sqlQuery)
-                .setString("usuario", usuario)
-                .setString("password", password)
-                .setString("perfil", perfil)
-                .setString("usuarioIngresa", usuarioIngresa)
-                .setDate("fechaIngreso", fechaIngreso)
-                .setBoolean("estado", estado)
-                .executeUpdate();
-        return 1;
+//        String sqlQuery = "insert into Usuario(Usuario,[Password], perfil, usuarioIngresa,fechaIngreso, estado) "
+//                + "values(:usuario, PWDENCRYPT(:password), :perfil, :usuarioIngresa, :fechaIngreso, :estado)";
+//        sessionFactory.getCurrentSession()
+//                .createSQLQuery(sqlQuery)
+//                .setString("usuario", usuario)
+//                .setString("password", password)
+//                .setString("perfil", perfil)
+//                .setString("usuarioIngresa", usuarioIngresa)
+//                .setDate("fechaIngreso", fechaIngreso)
+//                .setBoolean("estado", estado)
+//                .executeUpdate();
+//        return 1;
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+
+//                CallableStatement statement = null;
+//                List<Object> obj = new ArrayList<Object>();
+//                String sqlString = "{call uspInsertUsuario(?,?,?,?,?)}";
+//                statement = connection.prepareCall(sqlString);
+//                statement.setString(1, usuario);
+//                statement.setString(2, password);
+//                statement.setString(3, perfil);
+//                statement.setBoolean(4, estado);
+//                statement.setString(5, usuarioIngresa);
+                PreparedStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                Properties connectionProps = ((SessionFactoryImpl) sessionFactory).getProperties();
+                String url = (String) connectionProps.get("hibernate.connection.url");
+                String username = (String) connectionProps.get("hibernate.connection.username");
+                String pass = (String) connectionProps.get("hibernate.connection.password");
+                Properties cProps = new Properties();
+                cProps.put("user", username);
+                cProps.put("password", pass);
+                Connection conn = null;
+                conn = DriverManager.getConnection(url, cProps);
+                statement = conn.prepareStatement("exec uspInsertUsuario ?,?,?,?,?");
+                statement.setEscapeProcessing(true);
+                statement.setQueryTimeout(90);
+                statement.setString(1, usuario);
+                statement.setString(2, password);
+                statement.setString(3, perfil);
+                statement.setBoolean(4, estado);
+                statement.setString(5, usuarioIngresa);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getString(1));
+                }
+                return obj;
+            }
+        });
+
+        if (list != null) {
+            if (list.size() > 0) {
+                if (list.get(0) != null) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
 
     public boolean usuarioRepetido(String usuario) {
         String sqlQuery = "select	idUsuario\n"
-                + "from	usuario\n"
+                + "from	usuario(nolock)\n"
                 + "where usuario='" + usuario + "'";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
@@ -174,53 +231,129 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
     @Override
     public void updateSql(int idUsuario, String password, String usuarioModifica, Date fechaModificacion) {
-        String sqlQuery = "update Usuario set [Password]=PWDENCRYPT(:password), usuarioModifica=:usuarioModifica, "
-                + "fechaModificacion=:fechaModificacion   where idUsuario=:idUsuario";
-        sessionFactory.getCurrentSession()
-                .createSQLQuery(sqlQuery)
-                .setInteger("idUsuario", idUsuario)
-                .setString("password", password)
-                .setString("usuarioModifica", usuarioModifica)
-                .setDate("fechaModificacion", fechaModificacion)
-                .executeUpdate();
+//        String sqlQuery = "update Usuario set [Password]=PWDENCRYPT(:password), usuarioModifica=:usuarioModifica, "
+//                + "fechaModificacion=:fechaModificacion   where idUsuario=:idUsuario";
+//        sessionFactory.getCurrentSession()
+//                .createSQLQuery(sqlQuery)
+//                .setInteger("idUsuario", idUsuario)
+//                .setString("password", password)
+//                .setString("usuarioModifica", usuarioModifica)
+//                .setDate("fechaModificacion", fechaModificacion)
+//                .executeUpdate();
+
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+//                CallableStatement statement = null;
+//                List<Object> obj = new ArrayList<Object>();
+//                String sqlString = "{call uspSelectUsuario(?,?) }";
+//                statement = connection.prepareCall(sqlString);
+//                statement.setString(1, usuario);
+//                statement.setString(2, password);
+                PreparedStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                Properties connectionProps = ((SessionFactoryImpl) sessionFactory).getProperties();
+                String url = (String) connectionProps.get("hibernate.connection.url");
+                String username = (String) connectionProps.get("hibernate.connection.username");
+                String pass = (String) connectionProps.get("hibernate.connection.password");
+                Properties cProps = new Properties();
+                cProps.put("user", username);
+                cProps.put("password", pass);
+                Connection conn = null;
+                conn = DriverManager.getConnection(url, cProps);
+                statement = conn.prepareStatement("exec uspUpdatePassUsuario ?,?,?");
+                statement.setEscapeProcessing(true);
+                statement.setQueryTimeout(90);
+                statement.setInt(1, idUsuario);
+                statement.setString(2, password);
+                statement.setString(3, usuarioModifica);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getInt(1));
+                }
+                return obj;
+            }
+        });
+
+//        return list;
     }
 
     @Override
     public List<Object> readSql(String usuario, String password) {
 
-        String sqlQuery = "select	idUsuario,\n"
-                + "		usuario,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P010' and IdParametroDetalle=Perfil) nperfil,\n"
-                + "                       perfil\n"
-                + "from	usuario\n"
-                + "where Usuario ='" + usuario + "' and PWDCOMPARE('" + password + "', [Password])= 1";
+//        String sqlQuery = "select	idUsuario,\n"
+//                + "		usuario,\n"
+//                + "		(select Descripcion from ParametroDetalle where IdParametro='P010' and IdParametroDetalle=Perfil) nperfil,\n"
+//                + "                       perfil\n"
+//                + "from	usuario\n"
+//                + "where Usuario ='" + usuario + "' and PWDCOMPARE('" + password + "', [Password])= 1";
+//
+//        List<Object> list = sessionFactory.openSession()
+//                .doReturningWork(new ReturningWork<List<Object>>() {
+//                    @Override
+//                    public List<Object> execute(Connection connection) throws SQLException {
+//                        CallableStatement statement = null;
+//                        List<Object> obj = new ArrayList<Object>();
+//                        String sqlString = "{call uspGetJsonFromQuery(?)}";
+//                        statement = connection.prepareCall(sqlString);
+//                        statement.setString(1, sqlQuery);
+//                        ResultSet resultSet = statement.executeQuery();
+//                        while (resultSet.next()) {
+//                            obj.add(resultSet.getString(1));
+//                        }
+//                        return obj;
+//                    }
+//                });
+//
+//        if (list != null) {
+//            if (list.size() > 0) {
+//                return list;
+//            } else {
+//                return null;
+//            }
+//        } else {
+//            return null;
+//        }
+//
+//    }
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+//                CallableStatement statement = null;
+//                List<Object> obj = new ArrayList<Object>();
+//                String sqlString = "{call uspSelectUsuario(?,?) }";
+//                statement = connection.prepareCall(sqlString);
+//                statement.setString(1, usuario);
+//                statement.setString(2, password);
+//                System.out.println("readSql");
+                
+                PreparedStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                Properties connectionProps = ((SessionFactoryImpl) sessionFactory).getProperties();
+                String url = (String) connectionProps.get("hibernate.connection.url");
+                String username = (String) connectionProps.get("hibernate.connection.username");
+                String pass = (String) connectionProps.get("hibernate.connection.password");
+                Properties cProps = new Properties();
+                cProps.put("user", username);
+                cProps.put("password", pass);
+                Connection conn = null;
+                conn = DriverManager.getConnection(url, cProps);
+                statement = conn.prepareStatement("exec uspSelectUsuario ?,?");
+                statement.setEscapeProcessing(true);
+                statement.setQueryTimeout(90);
+                statement.setString(1, usuario);
+                statement.setString(2, password);
 
-        List<Object> list = sessionFactory.openSession()
-                .doReturningWork(new ReturningWork<List<Object>>() {
-                    @Override
-                    public List<Object> execute(Connection connection) throws SQLException {
-                        CallableStatement statement = null;
-                        List<Object> obj = new ArrayList<Object>();
-                        String sqlString = "{call uspGetJsonFromQuery(?)}";
-                        statement = connection.prepareCall(sqlString);
-                        statement.setString(1, sqlQuery);
-                        ResultSet resultSet = statement.executeQuery();
-                        while (resultSet.next()) {
-                            obj.add(resultSet.getString(1));
-                        }
-                        return obj;
-                    }
-                });
-
-        if (list != null) {
-            if (list.size() > 0) {
-                return list;
-            } else {
-                return null;
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    System.out.println("resultSet.next()");
+                    obj.add(resultSet.getString(1));
+                    System.out.println(resultSet.getString(1));
+                }
+                return obj;
             }
-        } else {
-            return null;
-        }
+        });
 
+        return list;
     }
 }
