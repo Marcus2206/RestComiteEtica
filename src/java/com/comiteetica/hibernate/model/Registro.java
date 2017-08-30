@@ -43,6 +43,7 @@ public class Registro implements java.io.Serializable {
     private String visitaInspeccion;
     private Boolean estudioNinos;
     private String visitaInspeccionIns;
+    private String equivalenciaCorrelativo;
     private String usuarioIngresa;
     private Date fechaIngreso;
     private String usuarioModifica;
@@ -57,7 +58,7 @@ public class Registro implements java.io.Serializable {
         this.idRegistro = idRegistro;
     }
 
-    public Registro(String idRegistro, String paramEstadoRegistro, Investigacion investigacion, Date fechaAprobacion, String idSede, String idInvestigador, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
+    public Registro(String idRegistro, String paramEstadoRegistro, Investigacion investigacion, Date fechaAprobacion, String idSede, String idInvestigador, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String equivalenciaCorrelativo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
         this.idRegistro = idRegistro;
         this.paramEstadoRegistro = paramEstadoRegistro;
         this.investigacion = investigacion;
@@ -75,6 +76,7 @@ public class Registro implements java.io.Serializable {
         this.visitaInspeccion = visitaInspeccion;
         this.estudioNinos = estudioNinos;
         this.visitaInspeccionIns = visitaInspeccionIns;
+        this.equivalenciaCorrelativo=equivalenciaCorrelativo;
         this.usuarioIngresa = usuarioIngresa;
         this.fechaIngreso = fechaIngreso;
         this.usuarioModifica = usuarioModifica;
@@ -238,6 +240,15 @@ public class Registro implements java.io.Serializable {
 
     public void setVisitaInspeccionIns(String visitaInspeccionIns) {
         this.visitaInspeccionIns = visitaInspeccionIns;
+    }
+
+    @Column(name = "EquivalenciaCorrelativo", length = 20)
+    public String getEquivalenciaCorrelativo() {
+        return this.equivalenciaCorrelativo;
+    }
+
+    public void setEquivalenciaCorrelativo(String equivalenciaCorrelativo) {
+        this.equivalenciaCorrelativo = equivalenciaCorrelativo;
     }
 
     @Column(name = "UsuarioIngresa", length = 50)

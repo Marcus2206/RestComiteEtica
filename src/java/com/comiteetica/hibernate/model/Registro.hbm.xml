@@ -56,6 +56,9 @@
         <property name="visitaInspeccionIns" type="string">
             <column name="VisitaInspeccionIns" length="500" />
         </property>
+        <property name="equivalenciaCorrelativo" type="string">
+            <column name="EquivalenciaCorrelativo" length="20" />
+        </property>
         <property name="usuarioIngresa" type="string">
             <column name="UsuarioIngresa" length="50" />
         </property>

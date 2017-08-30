@@ -114,7 +114,8 @@ public class RegistroDaoImpl implements RegistroDao {
                 + "		r.fechaEas,\n"
                 + "		r.visitaInspeccion,\n"
                 + "		r.estudioNinos,\n"
-                + "		r.visitaInspeccionIns\n"
+                + "		r.visitaInspeccionIns,\n"
+                + "		r.equivalenciaCorrelativo\n"
                 + "from	Registro r\n"
                 + "order by idRegistro asc";
 
