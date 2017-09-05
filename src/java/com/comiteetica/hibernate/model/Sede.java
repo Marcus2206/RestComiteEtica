@@ -68,7 +68,7 @@ public class Sede implements java.io.Serializable {
         this.idSede = idSede;
     }
 
-    @Column(name = "Nombre", length = 150)
+    @Column(name = "Nombre", length = 500)
     public String getNombre() {
         return this.nombre;
     }

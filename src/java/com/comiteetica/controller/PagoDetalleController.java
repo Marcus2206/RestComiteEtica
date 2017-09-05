@@ -7,14 +7,17 @@ package com.comiteetica.controller;
 
 import com.comiteetica.hibernate.model.CorrespondenciaServicio;
 import com.comiteetica.hibernate.model.CorrespondenciaServicioId;
+import com.comiteetica.hibernate.model.Pago;
 import com.comiteetica.hibernate.model.PagoDetalle;
 import com.comiteetica.hibernate.model.PagoDetalleId;
 import com.comiteetica.hibernate.service.CorrespondenciaServicioService;
 import com.comiteetica.hibernate.service.PagoDetalleService;
+import com.comiteetica.hibernate.service.PagoService;
 import com.comiteetica.json.JsonTransformer;
 import com.comiteetica.persistencia.BussinessException;
 import com.comiteetica.persistencia.BussinessMessage;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +46,54 @@ public class PagoDetalleController {
     private PagoDetalleService pagoDetalleService;
 
     @Autowired
+    private PagoService pagoService;
+
+    @Autowired
     private CorrespondenciaServicioService correspondenciaServicioService;
+
+    @RequestMapping(value = "/PagoDetalleRead/{idPago}/{idPagoDetalle}", method = RequestMethod.GET, produces = "application/json")
+    public void readPagoDetalle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idPago") String idPago, @PathVariable("idPagoDetalle") int idPagoDetalle) {
+        try {
+            pagoDetalleService.beginTransaction();
+            PagoDetalleId id = new PagoDetalleId(idPago, idPagoDetalle);
+            PagoDetalle pagoDetalle = pagoDetalleService.read(id);
+            String jsonSalida = jsonTransformer.toJson(pagoDetalle);
+            pagoDetalleService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                pagoDetalleService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(PagoDetalleController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+
+        } catch (Exception ex) {
+            try {
+                pagoDetalleService.rollback();
+            } catch (Exception ee) {
+
+            }
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            System.out.println("catch " + ex.getMessage());
+        } finally {
+            try {
+                pagoDetalleService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+
+    }
 
     @RequestMapping(value = "/PagoDetalleInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insertPagoDetalle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
@@ -173,6 +223,71 @@ public class PagoDetalleController {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             //httpServletResponse.setContentType("application/json; charset=UTF-8");
             //httpServletResponse.getWriter().println(jsonSalida);
+
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                pagoDetalleService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(PagoDetalleController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception eee) {
+
+            }
+            System.out.println("1er catch " + ex.getMessage());
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                pagoDetalleService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(PagoDetalleController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception eee) {
+
+            }
+            System.out.println("1er catch " + ex.getMessage());
+        } finally {
+            try {
+                pagoDetalleService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+    }
+
+    @RequestMapping(value = "/PagoDetalleUpdate", method = RequestMethod.PUT, consumes = "application/json")
+    public void updatePagoDetalle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+            @RequestBody String jsonEntrada) {
+        try {
+
+            pagoDetalleService.beginTransaction();
+
+            PagoDetalle pagoDetalle = (PagoDetalle) jsonTransformer.fromJson(jsonEntrada, PagoDetalle.class);
+            pagoDetalleService.update(pagoDetalle);
+
+            CorrespondenciaServicioId idCS = new CorrespondenciaServicioId(pagoDetalle.getIdCorrespondencia(), pagoDetalle.getIdCorrespondenciaServicio());
+            CorrespondenciaServicio correspondenciaServicio = correspondenciaServicioService.read(idCS);
+            correspondenciaServicio.setCosto(pagoDetalle.getCosto());
+            correspondenciaServicioService.update(correspondenciaServicio);
+
+            List<PagoDetalle> listPagoDetalle = pagoDetalleService.getAllPagoDetalleByPago(pagoDetalle.getId().getIdPago());
+            BigDecimal total = new BigDecimal(0);
+            float valor = 0;
+            for (PagoDetalle pg : listPagoDetalle) {
+                total = total.add(pg.getCosto());
+            }
+            Pago pago = pagoService.read(pagoDetalle.getId().getIdPago());
+            pago.setCosto(total);
+            pagoService.update(pago);
+            pagoDetalleService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println("" + total.floatValue());
 
         } catch (BussinessException ex) {
             List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();

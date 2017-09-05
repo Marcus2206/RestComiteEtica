@@ -20,14 +20,16 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "RegistroBitacora",
-         schema = "dbo",
-         catalog = "ComiteEtica"
+        schema = "dbo",
+        catalog = "ComiteEtica"
 )
 public class RegistroBitacora implements java.io.Serializable {
 
     private RegistroBitacoraId id;
     private Registro registro;
     private String detalle;
+    private String paramTipoBitacora;
+    private String paramDetalleBitacora;
     private Date fecha;
     private String usuarioIngresa;
     private Date fechaIngreso;
@@ -42,10 +44,12 @@ public class RegistroBitacora implements java.io.Serializable {
         this.registro = registro;
     }
 
-    public RegistroBitacora(RegistroBitacoraId id, Registro registro, String detalle, Date fecha, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
+    public RegistroBitacora(RegistroBitacoraId id, Registro registro, String paramTipoBitacora, String paramDetalleBitacora, String detalle, Date fecha, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
         this.id = id;
         this.registro = registro;
         this.detalle = detalle;
+        this.paramTipoBitacora = paramTipoBitacora;
+        this.paramDetalleBitacora=paramDetalleBitacora;
         this.fecha = fecha;
         this.usuarioIngresa = usuarioIngresa;
         this.fechaIngreso = fechaIngreso;
@@ -87,6 +91,23 @@ public class RegistroBitacora implements java.io.Serializable {
         this.detalle = detalle;
     }
 
+    @Column(name = "ParamTipoBitacora", length = 4)
+    public String getParamTipoBitacora() {
+        return this.paramTipoBitacora;
+    }
+
+    public void setParamTipoBitacora(String paramTipoBitacora) {
+        this.paramTipoBitacora = paramTipoBitacora;
+    }
+
+       @Column(name = "ParamDetalleBitacora", length = 4)
+    public String getParamDetalleBitacora() {
+        return this.paramDetalleBitacora;
+    }
+
+    public void setParamDetalleBitacora(String paramDetalleBitacora) {
+        this.paramDetalleBitacora = paramDetalleBitacora;
+    }
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "Fecha", length = 23)
     public Date getFecha() {

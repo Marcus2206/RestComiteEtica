@@ -33,6 +33,8 @@ public interface PagoDetalleDao {
 
     public void rollback();
 
+    public List<PagoDetalle> getAllPagoDetalleByPago(String idPago);
+
     public List<Object> getAllPagoDetalleList();
 
     public int getNextPagoDetalleByIdPago(String idPago);

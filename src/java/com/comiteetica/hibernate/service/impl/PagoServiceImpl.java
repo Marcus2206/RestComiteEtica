@@ -84,7 +84,7 @@ public class PagoServiceImpl implements PagoService {
 
     @Transactional
     @Override
-    public int sendMail(String idPago) throws BussinessException {
-        return pagoDao.sendMail(idPago);
+    public int sendMail(String idPago, String copiaCorreo) throws BussinessException {
+        return pagoDao.sendMail(idPago,copiaCorreo);
     }
 }

@@ -63,18 +63,20 @@ Contributor(s):
     <mapping resource="com/comiteetica/hibernate/model/InvestigacionMonitor.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Investigador.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Sede.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/Usuario.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/Notificacion.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/SerieCorrelativo.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/ParametroDetalle.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Pago.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/PatrocinadorCro.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Registro.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/Correo.hbm.xml"/>
+    <mapping resource="com/comiteetica/hibernate/model/NotificacionHistorico.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Patrocinador.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/InvestigacionCoordinador.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Serie.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/CorrespondenciaFile.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/Fecha.hbm.xml"/>
     <mapping resource="com/comiteetica/hibernate/model/InvestigacionSede.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Usuario.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Correo.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

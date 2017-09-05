@@ -81,6 +81,12 @@ public class PagoDetalleServiceImpl implements PagoDetalleService {
 
     @Transactional
     @Override
+    public List<PagoDetalle> getAllPagoDetalleByPago(String idPago) throws BussinessException {
+        return pagoDetalleDao.getAllPagoDetalleByPago(idPago);
+    }
+
+    @Transactional
+    @Override
     public List<Object> getAllPagoDetalleList() throws BussinessException {
         return pagoDetalleDao.getAllPagoDetalleList();
     }

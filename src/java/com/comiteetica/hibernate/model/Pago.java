@@ -31,6 +31,7 @@ public class Pago implements java.io.Serializable {
     private String observacion;
     private String paramEstadoPago;
     private Integer contador;
+    private String copiaCorreo;
     private String usuarioIngresa;
     private Date fechaIngreso;
     private String usuarioModifica;
@@ -44,12 +45,14 @@ public class Pago implements java.io.Serializable {
         this.idPago = idPago;
     }
 
-    public Pago(String idPago, BigDecimal costo, String nroFactura, String observacion, String paramEstadoPago, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<PagoDetalle> pagoDetalles) {
+    public Pago(String idPago, BigDecimal costo, String nroFactura, String observacion, String paramEstadoPago, Integer contador, String copiaCorreo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<PagoDetalle> pagoDetalles) {
         this.idPago = idPago;
         this.costo = costo;
         this.nroFactura = nroFactura;
         this.observacion = observacion;
+        this.copiaCorreo = copiaCorreo;
         this.paramEstadoPago = paramEstadoPago;
+        this.contador = contador;
         this.usuarioIngresa = usuarioIngresa;
         this.fechaIngreso = fechaIngreso;
         this.usuarioModifica = usuarioModifica;
@@ -84,6 +87,15 @@ public class Pago implements java.io.Serializable {
 
     public void setNroFactura(String nroFactura) {
         this.nroFactura = nroFactura;
+    }
+
+    @Column(name = "NroFactura", length = 5000)
+    public String getCopiaCorreo() {
+        return this.copiaCorreo;
+    }
+
+    public void setCopiaCorreo(String copiaCorreo) {
+        this.copiaCorreo = copiaCorreo;
     }
 
     @Column(name = "Observacion", length = 150)

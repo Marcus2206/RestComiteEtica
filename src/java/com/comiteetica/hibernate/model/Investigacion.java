@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
+// Generated 03-sep-2017 15:25:44 by Hibernate Tools 4.3.1
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,13 +21,14 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Investigacion",
-        schema = "dbo",
-        catalog = "ComiteEtica"
+         schema = "dbo",
+         catalog = "ComiteEtica"
 )
 public class Investigacion implements java.io.Serializable {
 
     private String idInvestigacion;
-    private PatrocinadorCro patrocinadorCro;
+    private Cro cro;
+    private Patrocinador patrocinador;
     private String protocolo;
     private String titulo;
     private String paramEspecialidad;
@@ -51,9 +51,10 @@ public class Investigacion implements java.io.Serializable {
         this.idInvestigacion = idInvestigacion;
     }
 
-    public Investigacion(String idInvestigacion, PatrocinadorCro patrocinadorCro, String protocolo, String titulo, String paramEspecialidad, String paramFase, String paramTipoInvestigacion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<InvestigacionMonitor> investigacionMonitors, Set<InvestigacionCoordinador> investigacionCoordinadors, Set<InvestigacionInvestigador> investigacionInvestigadors, Set<Registro> registros, Set<InvestigacionSede> investigacionSedes) {
+    public Investigacion(String idInvestigacion, Cro cro, Patrocinador patrocinador, String protocolo, String titulo, String paramEspecialidad, String paramFase, String paramTipoInvestigacion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<InvestigacionMonitor> investigacionMonitors, Set<InvestigacionCoordinador> investigacionCoordinadors, Set<InvestigacionInvestigador> investigacionInvestigadors, Set<Registro> registros, Set<InvestigacionSede> investigacionSedes) {
         this.idInvestigacion = idInvestigacion;
-        this.patrocinadorCro = patrocinadorCro;
+        this.cro = cro;
+        this.patrocinador = patrocinador;
         this.protocolo = protocolo;
         this.titulo = titulo;
         this.paramEspecialidad = paramEspecialidad;
@@ -72,7 +73,7 @@ public class Investigacion implements java.io.Serializable {
 
     @Id
 
-    @Column(name = "IdInvestigacion", nullable = false, length = 10)
+    @Column(name = "IdInvestigacion", unique = true, nullable = false, length = 10)
     public String getIdInvestigacion() {
         return this.idInvestigacion;
     }
@@ -82,19 +83,26 @@ public class Investigacion implements java.io.Serializable {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name = "IdPatrocinador", referencedColumnName = "IdPatrocinador")
-        , 
-        @JoinColumn(name = "IdCro", referencedColumnName = "IdCro")})
-    public PatrocinadorCro getPatrocinadorCro() {
-        return this.patrocinadorCro;
+    @JoinColumn(name = "IdCro")
+    public Cro getCro() {
+        return this.cro;
     }
 
-    public void setPatrocinadorCro(PatrocinadorCro patrocinadorCro) {
-        this.patrocinadorCro = patrocinadorCro;
+    public void setCro(Cro cro) {
+        this.cro = cro;
     }
 
-    @Column(name = "Protocolo", length = 150)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IdPatrocinador")
+    public Patrocinador getPatrocinador() {
+        return this.patrocinador;
+    }
+
+    public void setPatrocinador(Patrocinador patrocinador) {
+        this.patrocinador = patrocinador;
+    }
+
+    @Column(name = "Protocolo", length = 1000)
     public String getProtocolo() {
         return this.protocolo;
     }

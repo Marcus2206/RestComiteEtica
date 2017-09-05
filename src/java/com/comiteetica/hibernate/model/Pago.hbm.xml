@@ -14,6 +14,9 @@
         <property name="nroFactura" type="string">
             <column name="NroFactura" length="20" />
         </property>
+        <property name="copiaCorreo" type="string">
+            <column name="CopiaCorreo" length="5000" />
+        </property>
         <property name="observacion" type="string">
             <column name="Observacion" length="150" />
         </property>

@@ -112,7 +112,7 @@ public class SedeDaoImpl implements SedeDao{
             Sede sed=new Sede();
             sed.setIdSede(sede[0].toString());
             sed.setNombre(sede[1].toString());
-            sed.setDireccion(sede[2].toString());
+            sed.setDireccion((String)sede[2]);
             sed.setIdDepartamento((String)sede[3]);
             sed.setIdProvincia((String)sede[4]);
             sed.setIdDistrito((String)sede[5]);
@@ -152,9 +152,9 @@ public class SedeDaoImpl implements SedeDao{
             Sede sed=new Sede();
             sed.setIdSede(sede[0].toString());
             sed.setNombre(sede[1].toString());
-            sed.setIdDepartamento(sede[2].toString());
-            sed.setIdProvincia(sede[3].toString());
-            sed.setIdDistrito(sede[4].toString());
+            sed.setIdDepartamento((String)sede[2]);
+            sed.setIdProvincia((String)sede[3]);
+            sed.setIdDistrito((String)sede[4]);
             sedes.add(sed);
         });
 

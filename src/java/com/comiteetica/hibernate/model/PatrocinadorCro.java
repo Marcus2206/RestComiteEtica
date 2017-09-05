@@ -1,11 +1,7 @@
 package com.comiteetica.hibernate.model;
-// Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
+// Generated 03-sep-2017 15:25:44 by Hibernate Tools 4.3.1
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -14,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,8 +19,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "PatrocinadorCro",
-        schema = "dbo",
-        catalog = "ComiteEtica"
+         schema = "dbo",
+         catalog = "ComiteEtica"
 )
 public class PatrocinadorCro implements java.io.Serializable {
 
@@ -38,7 +33,6 @@ public class PatrocinadorCro implements java.io.Serializable {
     private Date fechaIngreso;
     private String usuarioModifica;
     private Date fechaModificacion;
-    private Set<Investigacion> investigacions = new HashSet<Investigacion>(0);
 
     public PatrocinadorCro() {
     }
@@ -49,7 +43,7 @@ public class PatrocinadorCro implements java.io.Serializable {
         this.patrocinador = patrocinador;
     }
 
-    public PatrocinadorCro(PatrocinadorCroId id, Cro cro, Patrocinador patrocinador, String descripcion, String observacion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<Investigacion> investigacions) {
+    public PatrocinadorCro(PatrocinadorCroId id, Cro cro, Patrocinador patrocinador, String descripcion, String observacion, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
         this.id = id;
         this.cro = cro;
         this.patrocinador = patrocinador;
@@ -59,7 +53,6 @@ public class PatrocinadorCro implements java.io.Serializable {
         this.fechaIngreso = fechaIngreso;
         this.usuarioModifica = usuarioModifica;
         this.fechaModificacion = fechaModificacion;
-        this.investigacions = investigacions;
     }
 
     @EmbeddedId
@@ -150,16 +143,6 @@ public class PatrocinadorCro implements java.io.Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
-    }
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patrocinadorCro")
-    public Set<Investigacion> getInvestigacions() {
-        return this.investigacions;
-    }
-
-    public void setInvestigacions(Set<Investigacion> investigacions) {
-        this.investigacions = investigacions;
     }
 
 }

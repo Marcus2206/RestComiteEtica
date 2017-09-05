@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 03-sep-2017 15:25:47 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.NotificacionHistorico" table="NotificacionHistorico" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <id name="idNotificacion" type="int">
+            <column name="IdNotificacion" />
+            <generator class="assigned" />
+        </id>
+        <property name="idDocumento" type="string">
+            <column name="IdDocumento" length="10" />
+        </property>
+        <property name="tablaProcedencia" type="string">
+            <column name="TablaProcedencia" length="50" />
+        </property>
+        <property name="datosRelevante" type="string">
+            <column name="DatosRelevante" length="100" />
+        </property>
+        <property name="link1" type="string">
+            <column name="Link1" />
+        </property>
+        <property name="link2" type="string">
+            <column name="Link2" />
+        </property>
+        <property name="estadoNotificacion" type="java.lang.Integer">
+            <column name="EstadoNotificacion" />
+        </property>
+        <property name="usuario" type="string">
+            <column name="Usuario" length="50" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

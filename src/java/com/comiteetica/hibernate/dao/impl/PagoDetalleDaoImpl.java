@@ -73,39 +73,30 @@ public class PagoDetalleDaoImpl implements PagoDetalleDao {
     public List<PagoDetalle> getAllPagoDetalle() {
         /*Fabrica Query*/
         Query query = sessionFactory.getCurrentSession()
-                .createSQLQuery("select	c.idCorrespondencia,\n"
-                        + "		c.fechaCorrespondencia,\n"
-                        + "		c.fechaCarta,\n"
-                        + "		c.idRegistro,\n"
-                        + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=c.ParamTipoServicio)ParamTipoServicio,\n"
-                        + "		c.otro,\n"
-                        + "		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion)paramDistribucion,\n"
-                        + "		c.fechaSesion,\n"
-                        + "		c.enviarCorreo,\n"
-                        + "		c.enviado\n"
-                        + "from	Correspondencia c\n"
-                        + "order by idCorrespondencia");
+                .createSQLQuery("select pd from PagoDetalle where pd.id.Pago=:idPago")
+                        .setString("idPago", null);
 
-        List<PagoDetalle> pagoDetalles = new ArrayList<>();
-        List<Object[]> list = query.list();
+        List<PagoDetalle> pagoDetalles = query.list();
+//        List<Object[]> list = query.list();
+        return pagoDetalles;
+    }
+    
+       @Override
+    public List<PagoDetalle> getAllPagoDetalleByPago(String idPago) {
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select pd from PagoDetalle pd where pd.id.idPago=:idPago")
+                        .setString("idPago", idPago);
+
+        List<PagoDetalle> pagoDetalles = query.list();
+//        List<Object[]> list = query.list();
         return pagoDetalles;
     }
 
     @Override
     public List<Object> getAllPagoDetalleList() {
 
-        String sqlQuery = "select	c.idCorrespondencia,\n"
-                + "		c.fechaCorrespondencia,\n"
-                + "		c.fechaCarta,\n"
-                + "		c.idRegistro idRegistro,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=c.ParamTipoServicio)paramTipoServicio,\n"
-                + "		c.otro,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion)paramDistribucion,\n"
-                + "		c.fechaSesion,\n"
-                + "		cast(c.enviarCorreo as int)enviarCorreo,\n"
-                + "		cast(c.enviado as int )enviado\n"
-                + "from	Correspondencia c\n"
-                + "order by idCorrespondencia";
+        String sqlQuery = "";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override

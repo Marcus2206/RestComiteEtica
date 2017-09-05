@@ -90,4 +90,10 @@ public class RegistroBitacoraServiceImpl implements RegistroBitacoraService {
     public int getNextBitacoraByIdRegistro(String idRegistro) throws BussinessException {
         return registroBitacoraDao.getNextBitacoraByIdRegistro(idRegistro);
     }
+
+    @Transactional
+    @Override
+    public List<Object> getAllBitacoraByIdRegistroList(String idRegistro) throws BussinessException {
+        return registroBitacoraDao.getAllBitacoraByIdRegistroList(idRegistro);
+    }
 }

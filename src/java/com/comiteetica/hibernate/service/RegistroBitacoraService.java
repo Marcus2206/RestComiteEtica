@@ -37,4 +37,6 @@ public interface RegistroBitacoraService {
     public List<RegistroBitacora> getAllBitacoraByIdRegistro(String idRegistro) throws BussinessException;
 
     public int getNextBitacoraByIdRegistro(String idRegistro) throws BussinessException;
+    
+    public List<Object> getAllBitacoraByIdRegistroList(String idRegistro) throws BussinessException;
 }

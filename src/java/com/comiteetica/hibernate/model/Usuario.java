@@ -22,7 +22,8 @@ public class Usuario implements java.io.Serializable {
 
     private int idUsuario;
     private String usuario;
-    private byte[] password;
+//    @JsonIgnore
+//    private byte[] password;
     private String perfil;
     private Boolean estado;
     private String usuarioIngresa;
@@ -37,10 +38,10 @@ public class Usuario implements java.io.Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(int idUsuario, String usuario, byte[] password, String perfil, Boolean estado, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
+    public Usuario(int idUsuario, String usuario,/* byte[] password, String perfil, */Boolean estado, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
-        this.password = password;
+//        this.password = password;
         this.perfil = perfil;
         this.estado = estado;
         this.usuarioIngresa = usuarioIngresa;
@@ -69,15 +70,14 @@ public class Usuario implements java.io.Serializable {
         this.usuario = usuario;
     }
 
-    @Column(name = "Password")
-    public byte[] getPassword() {
-        return this.password;
-    }
-
-    @JsonIgnore
-    public void setPassword(byte[] password) {
-        this.password = password;
-    }
+//    @Column(name = "Password")
+//    public byte[] getPassword() {
+//        return this.password;
+//    }
+//
+//    public void setPassword(byte[] password) {
+//        this.password = password;
+//    }
 
     @Column(name = "Perfil", length = 4)
     public String getPerfil() {

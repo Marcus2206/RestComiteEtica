@@ -90,14 +90,13 @@ public class RegistroBitacoraController {
         }
     }
 
-    
     @RequestMapping(value = "/RegistroBitacoraDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteRegistroBitacora(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, 
-            @RequestParam("idRegistro") String idRegistro,@RequestParam("idBitacora") int idBitacora) {
+    public void deleteRegistroBitacora(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+            @RequestParam("idRegistro") String idRegistro, @RequestParam("idBitacora") int idBitacora) {
         try {
 
             registroBitacoraService.beginTransaction();
-            RegistroBitacoraId id=new RegistroBitacoraId(idRegistro, idBitacora);
+            RegistroBitacoraId id = new RegistroBitacoraId(idRegistro, idBitacora);
             RegistroBitacora registroBitacora = registroBitacoraService.read(id);
             registroBitacoraService.delete(registroBitacora);
             registroBitacoraService.commit();
@@ -141,15 +140,21 @@ public class RegistroBitacoraController {
             }
         }
     }
-    
-    
+
     @RequestMapping(value = "/RegistroBitacoraFindAllByIdRegistro/{idRegistro}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
-    public void findAllByIdCorrepondenciaCorrespondenciaFile(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, 
+    public void findAllByIdCorrepondenciaCorrespondenciaFile(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
             @PathVariable String idRegistro) {
         try {
-            registroBitacoraService.beginTransaction();
-            List<RegistroBitacora> correspondenciaFiles = registroBitacoraService.getAllBitacoraByIdRegistro(idRegistro);
-            String jsonSalida = jsonTransformer.toJson(correspondenciaFiles);
+            registroBitacoraService.beginTransaction();//getAllBitacoraByIdRegistroList
+            String jsonSalida = "[]";
+            List<Object> registroBitacoras = registroBitacoraService.getAllBitacoraByIdRegistroList(idRegistro);
+            if (registroBitacoras != null) {
+                if (registroBitacoras.size() > 0) {
+                    if (registroBitacoras.get(0) != null) {
+                        jsonSalida = "[" + ((String) registroBitacoras.get(0)) + "]";
+                    }
+                }
+            }
             registroBitacoraService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -189,5 +194,5 @@ public class RegistroBitacoraController {
             }
         }
     }
-    
+
 }

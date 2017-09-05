@@ -293,11 +293,56 @@ public class PagoController {
     }
     
     
-    @RequestMapping(value = "/MailSend", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-    public void sendMail(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idPago") String idPago) {
+    @RequestMapping(value = "/MailSendCopia", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    public void sendMailCopia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idPago") String idPago, @RequestParam("copiaCorreo") String copiaCorreo) {
         try {
             pagoService.beginTransaction();
-            int flag=pagoService.sendMail(idPago);
+            int flag=pagoService.sendMail(idPago,copiaCorreo);
+            pagoService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(""+flag+"");
+
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                pagoService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(PagoController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+
+        } catch (IOException ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                pagoService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(PagoController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+        } finally {
+            try {
+                pagoService.close();
+            } catch (Exception eee) {
+
+            }
+        }
+    }
+    
+     @RequestMapping(value = "/MailSendConta", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    public void sendMailConta(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idPago") String idPago) {
+        try {
+            pagoService.beginTransaction();
+            int flag=pagoService.sendMail(idPago,"");
             Pago pago=pagoService.read(idPago);
             pago.setContador(pago.getContador()+1);
             pagoService.update(pago);
