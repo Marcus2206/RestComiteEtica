@@ -56,7 +56,9 @@ public class InvestigacionDaoImpl implements InvestigacionDao {
     @Override
     public Investigacion read(String idInvestigacion) {
         Investigacion investigacion = (Investigacion) sessionFactory.getCurrentSession().get(Investigacion.class, idInvestigacion);
-        Hibernate.initialize(investigacion.getPatrocinadorCro());
+        Hibernate.initialize(investigacion.getPatrocinador());
+        Hibernate.initialize(investigacion.getCro());
+        
         return investigacion;
     }
 

@@ -11,9 +11,9 @@
         <property name="usuario" type="string">
             <column name="Usuario" length="50" />
         </property>
-        <property name="password" type="binary">
+<!--        <property name="password" type="binary">
             <column name="Password" />
-        </property>
+        </property>-->
         <property name="perfil" type="string">
             <column name="Perfil" length="4" />
         </property>

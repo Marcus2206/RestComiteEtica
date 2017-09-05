@@ -35,5 +35,5 @@ public interface PagoService {
 
     public List<Object> getAllPagoList() throws BussinessException;
     
-        public int sendMail(String idPago) throws BussinessException;
+        public int sendMail(String idPago, String copiaCorreo) throws BussinessException;
 }

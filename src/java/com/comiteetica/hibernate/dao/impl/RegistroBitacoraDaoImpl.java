@@ -10,9 +10,15 @@ import com.comiteetica.hibernate.model.CorrespondenciaFile;
 import com.comiteetica.hibernate.model.CorrespondenciaFileId;
 import com.comiteetica.hibernate.model.RegistroBitacora;
 import com.comiteetica.hibernate.model.RegistroBitacoraId;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.jdbc.ReturningWork;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -108,6 +114,49 @@ public class RegistroBitacoraDaoImpl implements RegistroBitacoraDao {
                 .setString("idRegistro", idRegistro);
         List<RegistroBitacora> registroBitacoras = query.list();
         return registroBitacoras;
+    }
+
+    @Override
+    public List<Object> getAllBitacoraByIdRegistroList(String idRegistro) {
+        /*Fabrica Query*/
+        String sqlQuery = "select	idRegistro,\n"
+                + "		idBitacora,\n"
+                + "		detalle,\n"
+                + "		convert(varchar(10),fecha,103)fecha,\n"
+                + "		(select descripcion from parametrodetalle where idParametro='P013' and idParametroDetalle=paramTipoBitacora)paramTipoBitacora,\n"
+                + "		(case when paramTipoBitacora='PD04' then\n"
+                + "		(select descripcion from parametrodetalle where idParametro='P007' and idParametroDetalle=ParamDetalleBitacora)\n"
+                + "		when paramTipoBitacora='PD05' then\n"
+                + "		(select descripcion from parametrodetalle where idParametro='P014' and idParametroDetalle=ParamDetalleBitacora)\n"
+                + "		else '' end) paramDetalleBitacora\n"
+                + "from	RegistroBitacora \n"
+                + "where	idRegistro='" + idRegistro + "'";
+
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+                CallableStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                String sqlString = "{call uspGetJsonFromQuery(?)}";
+                statement = connection.prepareCall(sqlString);
+                statement.setString(1, sqlQuery);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getString(1));
+                }
+                return obj;
+            }
+        });
+
+        if (list != null) {
+            if (list.size() > 0) {
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
 }

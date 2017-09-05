@@ -1,8 +1,7 @@
 package com.comiteetica.hibernate.model;
-// Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
+// Generated 03-sep-2017 15:25:44 by Hibernate Tools 4.3.1
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,8 +19,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Cro",
-         schema = "dbo",
-         catalog = "ComiteEtica"
+        schema = "dbo",
+        catalog = "ComiteEtica"
 )
 public class Cro implements java.io.Serializable {
 
@@ -32,6 +31,7 @@ public class Cro implements java.io.Serializable {
     private String usuarioModifica;
     private Date fechaModificacion;
     private Set<PatrocinadorCro> patrocinadorCros = new HashSet<PatrocinadorCro>(0);
+    private Set<Investigacion> investigacions = new HashSet<Investigacion>(0);
 
     public Cro() {
     }
@@ -40,7 +40,7 @@ public class Cro implements java.io.Serializable {
         this.idCro = idCro;
     }
 
-    public Cro(String idCro, String nombre, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<PatrocinadorCro> patrocinadorCros) {
+    public Cro(String idCro, String nombre, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<PatrocinadorCro> patrocinadorCros, Set<Investigacion> investigacions) {
         this.idCro = idCro;
         this.nombre = nombre;
         this.usuarioIngresa = usuarioIngresa;
@@ -48,11 +48,12 @@ public class Cro implements java.io.Serializable {
         this.usuarioModifica = usuarioModifica;
         this.fechaModificacion = fechaModificacion;
         this.patrocinadorCros = patrocinadorCros;
+        this.investigacions = investigacions;
     }
 
     @Id
 
-    @Column(name = "IdCro", nullable = false, length = 10)
+    @Column(name = "IdCro", unique = true, nullable = false, length = 10)
     public String getIdCro() {
         return this.idCro;
     }
@@ -116,6 +117,16 @@ public class Cro implements java.io.Serializable {
 
     public void setPatrocinadorCros(Set<PatrocinadorCro> patrocinadorCros) {
         this.patrocinadorCros = patrocinadorCros;
+    }
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cro")
+    public Set<Investigacion> getInvestigacions() {
+        return this.investigacions;
+    }
+
+    public void setInvestigacions(Set<Investigacion> investigacions) {
+        this.investigacions = investigacions;
     }
 
 }

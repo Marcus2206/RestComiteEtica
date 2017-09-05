@@ -35,6 +35,7 @@ public class JsonTransformerImplJackson implements JsonTransformer {
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
             objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException ex) {
             throw new RuntimeException(ex);

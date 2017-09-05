@@ -37,4 +37,6 @@ public interface RegistroBitacoraDao {
 
     public int getNextBitacoraByIdRegistro(String idRegistro);
 
+    public List<Object> getAllBitacoraByIdRegistroList(String idRegistro);
+
 }

@@ -134,26 +134,7 @@ public class PagoDaoImpl implements PagoDao {
     }
 
     @Override
-    public int sendMail(String idPago) {
-//        
-//        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
-//            @Override
-//            public List<Object> execute(Connection connection) throws SQLException {
-//                CallableStatement statement = null;
-//                List<Object> obj = new ArrayList<Object>();
-//                String sqlString = "{call uspCorreoPago(?)}";
-//                statement = connection.prepareCall(sqlString);
-//                statement.setString(1, idPago);
-//                ResultSet resultSet = statement.executeQuery();
-//                while (resultSet.next()) {
-//                    System.out.println("resultSet");
-//                    obj.add(resultSet.getInt(1));
-//
-//                }
-//                return obj;
-//            }
-//        });
-
+    public int sendMail(String idPago, String copiaCorreo) {
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
             public List<Object> execute(Connection connection) throws SQLException {
@@ -168,10 +149,11 @@ public class PagoDaoImpl implements PagoDao {
                 cProps.put("password", password);
                 Connection conn = null;
                 conn = DriverManager.getConnection(url, cProps);
-                statement = conn.prepareStatement("exec uspCorreoPago ?");
+                statement = conn.prepareStatement("exec uspCorreoPago ?,?");
                 statement.setEscapeProcessing(true);
                 statement.setQueryTimeout(90);
                 statement.setString(1, idPago);
+                statement.setString(2, copiaCorreo);
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     obj.add(resultSet.getInt(1));

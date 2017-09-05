@@ -34,6 +34,8 @@ public interface PagoDetalleService {
 
     public void rollback() throws BussinessException;
 
+    public List<PagoDetalle> getAllPagoDetalleByPago(String idPago) throws BussinessException;
+
     public List<Object> getAllPagoDetalleList() throws BussinessException;
 
     public int getNextPagoDetalleByIdPago(String idPago) throws BussinessException;

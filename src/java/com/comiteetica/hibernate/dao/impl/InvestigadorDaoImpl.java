@@ -117,9 +117,9 @@ public class InvestigadorDaoImpl implements InvestigadorDao{
         list.stream().forEach((investigador)->{
             Investigador inv=new Investigador();
             inv.setIdInvestigador(investigador[0].toString());
-            inv.setApePaterno(investigador[1].toString());
-            inv.setApeMaterno(investigador[2].toString());
-            inv.setNombres(investigador[3].toString());
+            inv.setApePaterno((String)investigador[1]);
+            inv.setApeMaterno((String)investigador[2]);
+            inv.setNombres((String)investigador[3]);
             investigadors.add(inv);
         });
 

@@ -1,5 +1,5 @@
 package com.comiteetica.hibernate.model;
-// Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
+// Generated 03-sep-2017 15:25:44 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -45,6 +45,23 @@ public class PatrocinadorCroId  implements java.io.Serializable {
     }
 
 
+   public boolean equals(Object other) {
+         if ( (this == other ) ) return true;
+		 if ( (other == null ) ) return false;
+		 if ( !(other instanceof PatrocinadorCroId) ) return false;
+		 PatrocinadorCroId castOther = ( PatrocinadorCroId ) other; 
+         
+		 return ( (this.getIdPatrocinador()==castOther.getIdPatrocinador()) || ( this.getIdPatrocinador()!=null && castOther.getIdPatrocinador()!=null && this.getIdPatrocinador().equals(castOther.getIdPatrocinador()) ) )
+ && ( (this.getIdCro()==castOther.getIdCro()) || ( this.getIdCro()!=null && castOther.getIdCro()!=null && this.getIdCro().equals(castOther.getIdCro()) ) );
+   }
+   
+   public int hashCode() {
+         int result = 17;
+         
+         result = 37 * result + ( getIdPatrocinador() == null ? 0 : this.getIdPatrocinador().hashCode() );
+         result = 37 * result + ( getIdCro() == null ? 0 : this.getIdCro().hashCode() );
+         return result;
+   }   
 
 
 }

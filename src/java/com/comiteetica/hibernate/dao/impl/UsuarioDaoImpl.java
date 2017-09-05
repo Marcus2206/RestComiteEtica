@@ -89,7 +89,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
         String sqlQuery = "select	idUsuario,\n"
                 + "		usuario,\n"
-                + "		(select Descripcion from ParametroDetalle(nolock) where IdParametro='P010' and IdParametroDetalle=Perfil) perfil\n"
+                + "		(select Descripcion from ParametroDetalle(nolock) where IdParametro='P010' and IdParametroDetalle=Perfil) perfil,\n"
+                + "		(case when estado=0 then 'Inactivo' when estado=1 then 'Activo' end)estado\n"
                 + "from	usuario(nolock)\n"
                 + "order by usuario asc";
 

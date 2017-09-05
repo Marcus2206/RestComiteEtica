@@ -18,6 +18,12 @@
         <property name="detalle" type="string">
             <column name="Detalle" length="500" />
         </property>
+        <property name="paramTipoBitacora" type="string">
+            <column name="ParamTipoBitacora" length="4" />
+        </property>
+        <property name="paramDetalleBitacora" type="string">
+            <column name="ParamDetalleBitacora" length="4" />
+        </property>
         <property name="fecha" type="timestamp">
             <column name="Fecha" length="23" />
         </property>

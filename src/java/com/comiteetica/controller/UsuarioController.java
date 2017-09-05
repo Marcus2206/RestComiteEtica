@@ -87,9 +87,12 @@ public class UsuarioController {
     public void updateUsuario(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             usuarioService.beginTransaction();
+            System.out.println("jsonEntrada"+jsonEntrada);
             Usuario usuario = (Usuario) jsonTransformer.fromJson(jsonEntrada, Usuario.class);
+//             System.out.println("Usuario"+usuario.getPassword());
             usuarioService.update(usuario);
             String jsonSalida = jsonTransformer.toJson(usuario);
+            System.out.println("jsonSalida"+jsonSalida);
             usuarioService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -194,6 +197,7 @@ public class UsuarioController {
             usuarioService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
+            System.out.println("validateReadUsuario"+jsonSalida);
             httpServletResponse.getWriter().println(jsonSalida);
         } catch (BussinessException ex) {
             List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
