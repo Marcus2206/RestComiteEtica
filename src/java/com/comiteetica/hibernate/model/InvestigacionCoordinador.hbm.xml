@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 11-ago-2017 18:56:35 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.comiteetica.hibernate.model.InvestigacionCoordinador" table="InvestigacionCoordinador" schema="dbo" catalog="ComiteEtica">
+        <composite-id name="id" class="com.comiteetica.hibernate.model.InvestigacionCoordinadorId">
+            <key-property name="idInvestigacion" type="string">
+                <column name="IdInvestigacion" length="10" />
+            </key-property>
+            <key-property name="idCoordinador" type="string">
+                <column name="IdCoordinador" length="10" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="coordinador" class="com.comiteetica.hibernate.model.Coordinador" update="false" insert="false" fetch="select">
+            <column name="IdCoordinador" length="10" not-null="true" />
+        </many-to-one>
+        <many-to-one name="investigacion" class="com.comiteetica.hibernate.model.Investigacion" update="false" insert="false" fetch="select">
+            <column name="IdInvestigacion" length="10" not-null="true" />
+        </many-to-one>
+        <property name="observacion" type="string">
+            <column name="Observacion" length="250" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>
