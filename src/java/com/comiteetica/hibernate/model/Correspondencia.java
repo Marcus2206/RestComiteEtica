@@ -27,6 +27,7 @@ import javax.persistence.TemporalType;
 public class Correspondencia implements java.io.Serializable {
 
     private String idCorrespondencia;
+    private String correlativoInterno;
     private Registro registro;
     private Date fechaCorrespondencia;
     private Date fechaCarta;
@@ -51,8 +52,9 @@ public class Correspondencia implements java.io.Serializable {
         this.idCorrespondencia = idCorrespondencia;
     }
 
-    public Correspondencia(String idCorrespondencia, Registro registro, Date fechaCorrespondencia, Date fechaCarta, String paramTipoServicio, String otro, String paramDistribucion, Date fechaSesion, Boolean enviarCorreo, Boolean enviado, String equivalenciaCorrelativo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<CorrespondenciaServicio> correspondenciaServicios, Set<CorrespondenciaFile> correspondenciaFiles) {
+    public Correspondencia(String idCorrespondencia, String correlativoInterno, Registro registro, Date fechaCorrespondencia, Date fechaCarta, String paramTipoServicio, String otro, String paramDistribucion, Date fechaSesion, Boolean enviarCorreo, Boolean enviado, String equivalenciaCorrelativo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<CorrespondenciaServicio> correspondenciaServicios, Set<CorrespondenciaFile> correspondenciaFiles) {
         this.idCorrespondencia = idCorrespondencia;
+        this.correlativoInterno=correlativoInterno;
         this.registro = registro;
         this.fechaCorrespondencia = fechaCorrespondencia;
         this.fechaCarta = fechaCarta;
@@ -120,7 +122,16 @@ public class Correspondencia implements java.io.Serializable {
     public void setParamTipoServicio(String paramTipoServicio) {
         this.paramTipoServicio = paramTipoServicio;
     }
+    
+    @Column(name = "CorrelativoInterno", length = 20)
+    public String getCorrelativoInterno() {
+        return this.correlativoInterno;
+    }
 
+    public void setCorrelativoInterno(String correlativoInterno) {
+        this.correlativoInterno = correlativoInterno;
+    }
+    
     @Column(name = "Otro", length = 250)
     public String getOtro() {
         return this.otro;

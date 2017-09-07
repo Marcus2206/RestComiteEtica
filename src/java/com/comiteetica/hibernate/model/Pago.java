@@ -154,7 +154,7 @@ public class Pago implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pago")
     public Set<PagoDetalle> getPagoDetalles() {
         return this.pagoDetalles;

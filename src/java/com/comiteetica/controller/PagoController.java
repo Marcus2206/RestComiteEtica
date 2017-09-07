@@ -5,8 +5,13 @@
  */
 package com.comiteetica.controller;
 
+import com.comiteetica.hibernate.model.CorrespondenciaServicio;
+import com.comiteetica.hibernate.model.CorrespondenciaServicioId;
 import com.comiteetica.hibernate.model.Pago;
+import com.comiteetica.hibernate.model.PagoDetalleId;
 import com.comiteetica.hibernate.model.SerieCorrelativo;
+import com.comiteetica.hibernate.service.CorrespondenciaServicioService;
+import com.comiteetica.hibernate.service.PagoDetalleService;
 import com.comiteetica.hibernate.service.PagoService;
 import com.comiteetica.hibernate.service.SerieCorrelativoService;
 import com.comiteetica.json.JsonTransformer;
@@ -41,6 +46,12 @@ public class PagoController {
 
     @Autowired
     private PagoService pagoService;
+
+    @Autowired
+    private PagoDetalleService pagoDetalleService;
+
+    @Autowired
+    private CorrespondenciaServicioService correspondenciaServicioService;
 
     @Autowired
     private SerieCorrelativoService serieCorrelativoService;
@@ -92,6 +103,7 @@ public class PagoController {
     public void insertPago(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             pagoService.beginTransaction();
+            System.out.println(jsonEntrada);
             Pago pago = (Pago) jsonTransformer.fromJson(jsonEntrada, Pago.class);
             java.util.Date date = Date.from(Instant.now());
             SerieCorrelativo seriecorrelativo = serieCorrelativoService.readNextSerieCorrelativo("PGO", date);
@@ -99,6 +111,24 @@ public class PagoController {
             pagoService.create(pago);
             seriecorrelativo.setFechaModificacion(date);
             serieCorrelativoService.update(seriecorrelativo);
+            System.out.println(pago.getPagoDetalles().size());
+
+            pago.getPagoDetalles().forEach((pagoDetalle) -> {
+                try {
+                    PagoDetalleId id = pagoDetalle.getId();
+                    id.setIdPago(pago.getIdPago());
+                    id.setIdPagoDetalle(pagoDetalleService.getNextPagoDetalleByIdPago(id.getIdPago()));
+                    pagoDetalleService.create(pagoDetalle);
+//                    String jsonSalida = jsonTransformer.toJson(pagoDetalle);
+
+                    CorrespondenciaServicioId idCS = new CorrespondenciaServicioId(pagoDetalle.getIdCorrespondencia(), pagoDetalle.getIdCorrespondenciaServicio());
+                    CorrespondenciaServicio correspondenciaServicio = correspondenciaServicioService.read(idCS);
+                    correspondenciaServicio.setTransferido(1);
+                    correspondenciaServicioService.update(correspondenciaServicio);
+                } catch (Exception e) {
+                }
+            });
+
             String jsonSalida = jsonTransformer.toJson(pago);
             pagoService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -204,7 +234,7 @@ public class PagoController {
             pagoService.update(pago);
             String jsonSalida = jsonTransformer.toJson(pago);
             pagoService.commit();
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -291,17 +321,16 @@ public class PagoController {
             }
         }
     }
-    
-    
+
     @RequestMapping(value = "/MailSendCopia", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public void sendMailCopia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idPago") String idPago, @RequestParam("copiaCorreo") String copiaCorreo) {
         try {
             pagoService.beginTransaction();
-            int flag=pagoService.sendMail(idPago,copiaCorreo);
+            int flag = pagoService.sendMail(idPago, copiaCorreo);
             pagoService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
-            httpServletResponse.getWriter().println(""+flag+"");
+            httpServletResponse.getWriter().println("" + flag + "");
 
         } catch (BussinessException ex) {
             List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
@@ -337,20 +366,20 @@ public class PagoController {
             }
         }
     }
-    
-     @RequestMapping(value = "/MailSendConta", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+
+    @RequestMapping(value = "/MailSendConta", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public void sendMailConta(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idPago") String idPago) {
         try {
             pagoService.beginTransaction();
-            int flag=pagoService.sendMail(idPago,"");
-            Pago pago=pagoService.read(idPago);
-            pago.setContador(pago.getContador()+1);
+            int flag = pagoService.sendMail(idPago, "");
+            Pago pago = pagoService.read(idPago);
+            pago.setContador(pago.getContador() + 1);
             pagoService.update(pago);
             pagoService.commit();
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
-            httpServletResponse.getWriter().println(""+flag+"");
+            httpServletResponse.getWriter().println("" + flag + "");
 
         } catch (BussinessException ex) {
             List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
