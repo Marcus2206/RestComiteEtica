@@ -29,6 +29,11 @@ public class Pago implements java.io.Serializable {
     private BigDecimal costo;
     private String nroFactura;
     private String observacion;
+    private String opcionFacturacion;
+    private String idProveedor;
+    private String razonSocial;
+    private String ruc;
+    private String direccion;
     private String paramEstadoPago;
     private Integer contador;
     private String copiaCorreo;
@@ -105,6 +110,52 @@ public class Pago implements java.io.Serializable {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
+    }
+
+    
+    @Column(name = "OpcionFacturacion", length = 2)
+    public String getOpcionFacturacion() {
+        return this.opcionFacturacion;
+    }
+
+    public void setOpcionFacturacion(String opcionFacturacion) {
+        this.opcionFacturacion = opcionFacturacion;
+    }
+
+     @Column(name = "IdProveedor", length = 10)
+    public String getIdProveedor() {
+        return this.idProveedor;
+    }
+
+    public void setIdProveedor(String idProveedor) {
+        this.idProveedor = idProveedor;
+    }
+    
+    @Column(name = "RazonSocial", length = 500)
+    public String getRazonSocial() {
+        return this.razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    @Column(name = "Ruc", length = 11)
+    public String getRuc() {
+        return this.ruc;
+    }
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
+
+    @Column(name = "Direccion", length = 100)
+    public String getDireccion() {
+        return this.direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     @Column(name = "ParamEstadoPago", length = 4)

@@ -11,6 +11,15 @@
         <property name="nombre" type="string">
             <column name="Nombre" length="150" />
         </property>
+        <property name="razonSocial" type="string">
+            <column name="RazonSocial" length="500" />
+        </property>
+        <property name="ruc" type="string">
+            <column name="Ruc" length="11" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="Direccion" length="100" />
+        </property>
         <property name="usuarioIngresa" type="string">
             <column name="UsuarioIngresa" length="50" />
         </property>

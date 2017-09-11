@@ -19,13 +19,16 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Patrocinador",
-         schema = "dbo",
-         catalog = "ComiteEtica"
+        schema = "dbo",
+        catalog = "ComiteEtica"
 )
 public class Patrocinador implements java.io.Serializable {
 
     private String idPatrocinador;
     private String nombre;
+    private String razonSocial;
+    private String ruc;
+    private String direccion;
     private String usuarioIngresa;
     private Date fechaIngreso;
     private String usuarioModifica;
@@ -69,6 +72,33 @@ public class Patrocinador implements java.io.Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Column(name = "RazonSocial", length = 500)
+    public String getRazonSocial() {
+        return this.razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    @Column(name = "Ruc", length = 11)
+    public String getRuc() {
+        return this.ruc;
+    }
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
+
+    @Column(name = "Direccion", length = 100)
+    public String getDireccion() {
+        return this.direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     @Column(name = "UsuarioIngresa", length = 50)

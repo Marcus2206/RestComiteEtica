@@ -20,6 +20,21 @@
         <property name="observacion" type="string">
             <column name="Observacion" length="150" />
         </property>
+        <property name="idProveedor" type="string">
+            <column name="IdProveedor" length="10" />
+        </property>
+        <property name="opcionFacturacion" type="string">
+            <column name="OpcionFacturacion" length="2" />
+        </property>
+        <property name="razonSocial" type="string">
+            <column name="RazonSocial" length="500" />
+        </property>
+        <property name="ruc" type="string">
+            <column name="Ruc" length="11" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="Direccion" length="100" />
+        </property>
         <property name="paramEstadoPago" type="string">
             <column name="ParamEstadoPago" length="4" />
         </property>
