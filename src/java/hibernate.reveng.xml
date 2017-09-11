@@ -40,39 +40,39 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-reverse-engineering>
-  <schema-selection match-catalog="ComiteEtica" match-schema="dbo"/>
-  <table-filter match-name="Serie"/>
-  <table-filter match-name="Fecha"/>
-  <table-filter match-name="InvestigacionMonitor"/>
-  <table-filter match-name="Coordinador"/>
-  <table-filter match-name="Usuario"/>
-  <table-filter match-name="Correspondencia"/>
-  <table-filter match-name="Registro"/>
-  <table-filter match-name="RegistroBitacora"/>
-  <table-filter match-name="FechaSesion"/>
-  <table-filter match-name="Departamento"/>
-  <table-filter match-name="Provincia"/>
-  <table-filter match-name="Pago"/>
-  <table-filter match-name="Cro"/>
-  <table-filter match-name="CorrespondenciaServicio"/>
-  <table-filter match-name="Investigador"/>
-  <table-filter match-name="Sede"/>
-  <table-filter match-name="CorrespondenciaFile"/>
-  <table-filter match-name="InvestigacionInvestigador"/>
-  <table-filter match-name="Monitor"/>
-  <table-filter match-name="ParametroDetalle"/>
-  <table-filter match-name="Investigacion"/>
-  <table-filter match-name="Parametro"/>
-  <table-filter match-name="InvestigacionSede"/>
-  <table-filter match-name="InvestigacionCoordinador"/>
-  <table-filter match-name="Correo"/>
-  <table-filter match-name="PatrocinadorCro"/>
-  <table-filter match-name="PagoDetalle"/>
-  <table-filter match-name="Notificacion"/>
-  <table-filter match-name="Distrito"/>
-  <table-filter match-name="SerieCorrelativo"/>
-  <table-filter match-name="Patrocinador"/>
-  <table-filter match-name="NotificacionHistorico"/>
+    <schema-selection match-catalog="ComiteEtica" match-schema="dbo"/>
+    <table-filter match-name="Serie"/>
+    <table-filter match-name="Fecha"/>
+    <table-filter match-name="InvestigacionMonitor"/>
+    <table-filter match-name="Coordinador"/>
+    <table-filter match-name="Usuario"/>
+    <table-filter match-name="Correspondencia"/>
+    <table-filter match-name="Registro"/>
+    <table-filter match-name="RegistroBitacora"/>
+    <table-filter match-name="FechaSesion"/>
+    <table-filter match-name="Departamento"/>
+    <table-filter match-name="Provincia"/>
+    <table-filter match-name="Pago"/>
+    <table-filter match-name="Cro"/>
+    <table-filter match-name="CorrespondenciaServicio"/>
+    <table-filter match-name="Investigador"/>
+    <table-filter match-name="Sede"/>
+    <table-filter match-name="CorrespondenciaFile"/>
+    <table-filter match-name="InvestigacionInvestigador"/>
+    <table-filter match-name="Monitor"/>
+    <table-filter match-name="ParametroDetalle"/>
+    <table-filter match-name="Investigacion"/>
+    <table-filter match-name="Parametro"/>
+    <table-filter match-name="InvestigacionSede"/>
+    <table-filter match-name="InvestigacionCoordinador"/>
+    <table-filter match-name="Correo"/>
+    <table-filter match-name="PatrocinadorCro"/>
+    <table-filter match-name="PagoDetalle"/>
+    <table-filter match-name="Notificacion"/>
+    <table-filter match-name="Distrito"/>
+    <table-filter match-name="SerieCorrelativo"/>
+    <table-filter match-name="Patrocinador"/>
+    <table-filter match-name="NotificacionHistorico"/>
     <table-filter match-name="FormatoLinea"/>
-      <table-filter match-name="Formato"/>
+    <table-filter match-name="Formato"/>
 </hibernate-reverse-engineering>

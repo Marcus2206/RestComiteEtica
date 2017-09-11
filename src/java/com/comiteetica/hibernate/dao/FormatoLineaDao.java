@@ -6,8 +6,9 @@
 package com.comiteetica.hibernate.dao;
 
 import com.comiteetica.hibernate.model.FormatoLinea;
+import com.comiteetica.hibernate.model.FormatoLineaId;
 import java.util.List;
-import model.FormatoLineaId;
+//import model.FormatoLineaId;
 
 /**
  *

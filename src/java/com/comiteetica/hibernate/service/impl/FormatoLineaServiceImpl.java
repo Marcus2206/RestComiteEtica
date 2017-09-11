@@ -7,10 +7,11 @@ package com.comiteetica.hibernate.service.impl;
 
 import com.comiteetica.hibernate.dao.FormatoLineaDao;
 import com.comiteetica.hibernate.model.FormatoLinea;
+import com.comiteetica.hibernate.model.FormatoLineaId;
 import com.comiteetica.hibernate.service.FormatoLineaService;
 import com.comiteetica.persistencia.BussinessException;
 import java.util.List;
-import model.FormatoLineaId;
+//import model.FormatoLineaId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

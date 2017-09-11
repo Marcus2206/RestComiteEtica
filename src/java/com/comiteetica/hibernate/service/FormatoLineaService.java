@@ -6,9 +6,10 @@
 package com.comiteetica.hibernate.service;
 
 import com.comiteetica.hibernate.model.FormatoLinea;
+import com.comiteetica.hibernate.model.FormatoLineaId;
 import com.comiteetica.persistencia.BussinessException;
 import java.util.List;
-import model.FormatoLineaId;
+//import model.FormatoLineaId;
 
 /**
  *

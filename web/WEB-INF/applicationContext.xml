@@ -119,4 +119,10 @@
     
     <bean name="PatrocinadorCroDaoImpl"  class="com.comiteetica.hibernate.dao.impl.PatrocinadorCroDaoImpl" />
     <bean name="PatrocinadorCroServiceImpl"  class="com.comiteetica.hibernate.service.impl.PatrocinadorCroServiceImpl" />
+    
+    <bean name="FormatoDaoImpl"  class="com.comiteetica.hibernate.dao.impl.FormatoDaoImpl" />
+    <bean name="FormatoServiceImpl"  class="com.comiteetica.hibernate.service.impl.FormatoServiceImpl" />
+    
+    <bean name="FormatoLineaDaoImpl"  class="com.comiteetica.hibernate.dao.impl.FormatoLineaDaoImpl" />
+    <bean name="FormatoLineaServiceImpl"  class="com.comiteetica.hibernate.service.impl.FormatoLineaServiceImpl" />
 </beans>

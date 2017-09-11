@@ -1,4 +1,4 @@
-package model;
+package com.comiteetica.hibernate.model;
 // Generated 11-sep-2017 10:52:48 by Hibernate Tools 4.3.1
 
 

@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 11-sep-2017 10:52:52 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="model.Formato" table="Formato" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+    <class name="com.comiteetica.hibernate.model.Formato" table="Formato" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
         <id name="idFormato" type="int">
             <column name="IdFormato" />
             <generator class="assigned" />
@@ -27,7 +27,7 @@
             <key>
                 <column name="IdFormato" not-null="true" />
             </key>
-            <one-to-many class="model.FormatoLinea" />
+            <one-to-many class="com.comiteetica.hibernate.model.FormatoLinea" />
         </set>
     </class>
 </hibernate-mapping>
