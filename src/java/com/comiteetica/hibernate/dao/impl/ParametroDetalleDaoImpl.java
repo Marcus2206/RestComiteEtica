@@ -19,30 +19,30 @@ import org.springframework.stereotype.Repository;
  * @author rasec
  */
 @Repository
-public class ParametroDetalleDaoImpl implements ParametroDetalleDao{
-    
-    SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
-    
+public class ParametroDetalleDaoImpl implements ParametroDetalleDao {
+
+    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
-    public void beginTransaction(){
+    public void beginTransaction() {
         sessionFactory.getCurrentSession().beginTransaction();
     }
-    
+
     @Override
-    public void commit(){
+    public void commit() {
         sessionFactory.getCurrentSession().getTransaction().commit();
     }
-    
+
     @Override
-    public void close(){
+    public void close() {
         sessionFactory.getCurrentSession().close();
     }
-    
+
     @Override
-    public void rollback(){
+    public void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
-    
+
     @Override
     public void create(ParametroDetalle parametroDetalle) {
         sessionFactory.getCurrentSession().save(parametroDetalle);
@@ -50,7 +50,7 @@ public class ParametroDetalleDaoImpl implements ParametroDetalleDao{
 
     @Override
     public ParametroDetalle read(ParametroDetalleId parametroDetalleId) {
-        ParametroDetalle parametroDetalle=(ParametroDetalle)sessionFactory.getCurrentSession().get(ParametroDetalle.class,parametroDetalleId);
+        ParametroDetalle parametroDetalle = (ParametroDetalle) sessionFactory.getCurrentSession().get(ParametroDetalle.class, parametroDetalleId);
         return parametroDetalle;
     }
 
@@ -67,52 +67,82 @@ public class ParametroDetalleDaoImpl implements ParametroDetalleDao{
     @Override
     public List<ParametroDetalle> getAllParametroDetalle() {
         /*Fabrica Query*/
-        Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select "
-                                                    +"idProducto, " 
-                                                    +"nombre, " 
-                                                    +"descripcion "  
-                                            +"from    Producto p" );
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select "
+                        + "idProducto, "
+                        + "nombre, "
+                        + "descripcion "
+                        + "from    Producto p");
         //query.setFirstResult(ini);
         //query.setMaxResults(fin);
         /*Crea Objeto contenedor*/
-        List<ParametroDetalle> parametroDetalles=new ArrayList<>();
+        List<ParametroDetalle> parametroDetalles = new ArrayList<>();
         /*Realiza consulta y devuelve Object[]*/
-        List<Object[]> list=query.list();
+        List<Object[]> list = query.list();
         /*Itera en cada fila*/
-        list.stream().forEach((parametroDetalle)->{
-            ParametroDetalle paramDetalle=new ParametroDetalle();
-            paramDetalle.setId((ParametroDetalleId)parametroDetalle[0]);
+        list.stream().forEach((parametroDetalle) -> {
+            ParametroDetalle paramDetalle = new ParametroDetalle();
+            paramDetalle.setId((ParametroDetalleId) parametroDetalle[0]);
             paramDetalle.setDescripcion(parametroDetalle[1].toString());
             parametroDetalles.add(paramDetalle);
         });
-        
+
         //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
         return parametroDetalles;
     }
-    
+
     @Override
     public List<ParametroDetalle> getParametroDetalleByIdParametro(String idParametro) {
         /*Fabrica Query*/
-        Query query=sessionFactory.getCurrentSession()
-                                .createQuery("select pd "
-                                            + "from ParametroDetalle pd "
-                                            + "where pd.id.idParametro=:idParametro" )
-                                .setString("idParametro", idParametro);
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select pd "
+                        + "from ParametroDetalle pd "
+                        + "where pd.id.idParametro=:idParametro")
+                .setString("idParametro", idParametro);
 
         /*Crea Objeto contenedor*/
-        List<ParametroDetalle> parametroDetalles=new ArrayList<>();
+        List<ParametroDetalle> parametroDetalles = new ArrayList<>();
         /*Realiza consulta y devuelve Object[]*/
-        List<Object[]> list=query.list();
+        List<Object[]> list = query.list();
         /*Itera en cada fila*/
-        list.stream().forEach((parametroDetalle)->{
-            ParametroDetalle paramDetalle=new ParametroDetalle();
-            paramDetalle.setId((ParametroDetalleId)parametroDetalle[0]);
+        list.stream().forEach((parametroDetalle) -> {
+            ParametroDetalle paramDetalle = new ParametroDetalle();
+            paramDetalle.setId((ParametroDetalleId) parametroDetalle[0]);
             paramDetalle.setDescripcion(parametroDetalle[1].toString());
             parametroDetalles.add(paramDetalle);
         });
-        
+
         //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
         return parametroDetalles;
+    }
+
+    @Override
+    public String getNextParametroDetalleByIdParametro(String idParametro) {
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select max(pd.id.idParametroDetalle) \n"
+                        + "from ParametroDetalle pd\n"
+                        + "where pd.id.idParametro=:idParametro")
+                .setString("idParametro", idParametro);
+        List<Object> nextParametroDetalleQuery = query.list();
+        String paramDet="PD01";
+
+        if (nextParametroDetalleQuery.size() > 0) {
+//            System.out.println(nextFileDetalleQuery.get(0));
+            if (nextParametroDetalleQuery.get(0) != null) {
+                paramDet=(String)nextParametroDetalleQuery.get(0);//PD09
+                paramDet=paramDet.substring(2, 4);//09
+                int nextParametroDetalle = 0;
+                nextParametroDetalle = Integer.parseInt(paramDet) + 1;//10
+                //PD 001
+                //PD 0012
+                paramDet=("00"+nextParametroDetalle);//0010
+                paramDet="PD"+paramDet.substring(paramDet.length()-2, paramDet.length());
+            } else {
+                paramDet = "PD01";
+            }
+        }
+
+        return paramDet;
     }
 }

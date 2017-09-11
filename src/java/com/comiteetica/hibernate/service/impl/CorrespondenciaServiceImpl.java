@@ -83,4 +83,9 @@ public class CorrespondenciaServiceImpl implements CorrespondenciaService {
     public List<Object> getAllCorrespondenciaList() throws BussinessException {
         return correspondenciaDao.getAllCorrespondenciaList();
     }
+        @Transactional
+    @Override
+    public List<Object> getDatosHojaRuta(String idCorrespondencia) throws BussinessException {
+        return correspondenciaDao.getDatosHojaRuta(idCorrespondencia);
+    }
 }

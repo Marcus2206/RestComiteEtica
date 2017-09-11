@@ -135,8 +135,6 @@ public class CorreoController {
             correoService.beginTransaction();
             Correo correo = (Correo) jsonTransformer.fromJson(jsonString, Correo.class);
             correoService.create(correo);
-            correoService.commit();
-            correoService.beginTransaction();
             String jsonSalida = jsonTransformer.toJson(correo);
             correoService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);

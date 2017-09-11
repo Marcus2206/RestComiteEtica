@@ -31,6 +31,8 @@ public interface CorrespondenciaDao {
     public void close();
 
     public void rollback();
-    
+
     List<Object> getAllCorrespondenciaList();
+
+    public List<Object> getDatosHojaRuta(String idCorrespondencia);
 }

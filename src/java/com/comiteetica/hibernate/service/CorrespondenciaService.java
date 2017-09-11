@@ -34,4 +34,6 @@ public interface CorrespondenciaService {
     public void rollback() throws BussinessException;
 
     public List<Object> getAllCorrespondenciaList() throws BussinessException;
+
+    public List<Object> getDatosHojaRuta(String idCorrespondencia) throws BussinessException;
 }

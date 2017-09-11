@@ -13,13 +13,26 @@ import java.util.List;
  * @author rasec
  */
 public interface ParametroDao {
+
     public void create(Parametro parametro);
+
     public Parametro read(String idParametro);
+
     public void update(Parametro parametro);
+
     public void delete(Parametro parametro);
+
     public List<Parametro> getAllParametro();
+
     public void beginTransaction();
+
     public void commit();
+
     public void close();
+
     public void rollback();
+
+    public List<Object> getAllParametroListSql();
+
+    public String getNextIdParametro();
 }

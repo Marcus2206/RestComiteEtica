@@ -20,35 +20,35 @@ import org.springframework.transaction.annotation.Transactional;
  * @author rasec
  */
 @Service
-public class ParametroDetalleServiceImpl implements ParametroDetalleService{
+public class ParametroDetalleServiceImpl implements ParametroDetalleService {
 
     @Autowired
     private ParametroDetalleDao parametroDetalleDao;
-    
+
     @Transactional
     @Override
-    public void beginTransaction() throws BussinessException{
+    public void beginTransaction() throws BussinessException {
         parametroDetalleDao.beginTransaction();
     }
-    
+
     @Transactional
     @Override
-    public void commit() throws BussinessException{
+    public void commit() throws BussinessException {
         parametroDetalleDao.commit();
     }
-    
+
     @Transactional
     @Override
-    public void close() throws BussinessException{
+    public void close() throws BussinessException {
         parametroDetalleDao.close();
     }
-    
+
     @Transactional
     @Override
-    public void rollback() throws BussinessException{
+    public void rollback() throws BussinessException {
         parametroDetalleDao.rollback();
     }
-    
+
     @Transactional
     @Override
     public void create(ParametroDetalle parametroDetalle) throws BussinessException {
@@ -78,10 +78,17 @@ public class ParametroDetalleServiceImpl implements ParametroDetalleService{
     public List<ParametroDetalle> getAllParametroDetalle() throws BussinessException {
         return parametroDetalleDao.getAllParametroDetalle();
     }
-    
+
     @Transactional
     @Override
     public List<ParametroDetalle> getParametroDetalleByIdParametro(String idParametro) throws BussinessException {
         return parametroDetalleDao.getParametroDetalleByIdParametro(idParametro);
     }
+
+    @Transactional
+    @Override
+    public String getNextParametroDetalleByIdParametro(String idParametro) throws BussinessException {
+        return parametroDetalleDao.getNextParametroDetalleByIdParametro(idParametro);
+    }
+
 }

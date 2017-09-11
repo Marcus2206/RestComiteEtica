@@ -93,6 +93,54 @@ public class CorrespondenciaDaoImpl implements CorrespondenciaDao {
         return correspondencias;
     }
 
+    /*
+    
+select	convert(varchar(10),FechaCorrespondencia,103) fechaCorrespondencia,
+		coalesce(d.ApePaterno,'')+' '+coalesce(d.ApeMaterno,'')+', '+coalesce(d.Nombres,'')investigador,
+		coalesce(c.protocolo,'') protocolo,
+		coalesce(b.EquivalenciaCorrelativo,'') correlativo,
+		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=ParamDistribucion) distribucion
+from	Correspondencia a
+left join Registro b on a.IdRegistro=b.IdRegistro
+left join Investigacion c on c.IdInvestigacion=b.IdInvestigacion
+left join Investigador d on d.IdInvestigador=b.IdInvestigador
+where IdCorrespondencia='CRP1707098'
+     */
+    @Override
+    public List<Object> getDatosHojaRuta(String idCorrespondencia) {
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createSQLQuery("select	convert(varchar(10),FechaCorrespondencia,103) fechaCorrespondencia,\n"
+                        + "		coalesce(d.ApePaterno,'')+' '+coalesce(d.ApeMaterno,'')+', '+coalesce(d.Nombres,'')investigador,\n"
+                        + "		coalesce(c.protocolo,'') protocolo,\n"
+                        + "		coalesce(b.EquivalenciaCorrelativo,'') correlativo,\n"
+                        + "		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=ParamDistribucion) distribucion,\n"
+                        + "		coalesce(otro,'')otro,\n"
+                        + "		idCorrespondencia\n"
+                        + "from	Correspondencia a\n"
+                        + "left join Registro b on a.IdRegistro=b.IdRegistro\n"
+                        + "left join Investigacion c on c.IdInvestigacion=b.IdInvestigacion\n"
+                        + "left join Investigador d on d.IdInvestigador=b.IdInvestigador\n"
+                        + "where IdCorrespondencia=:idCorrespondencia")
+                .setString("idCorrespondencia", idCorrespondencia);
+
+        List<Correspondencia> correspondencias = new ArrayList<>();
+        List<Object[]> list = query.list();
+        List<Object> l=new ArrayList();
+        list.stream().forEach((lista) -> {
+            List<Object> obj=new ArrayList();
+                obj.add((String)lista[0]);
+                obj.add((String)lista[1]);
+                obj.add((String)lista[2]);
+                obj.add((String)lista[3]);
+                obj.add((String)lista[4]);
+                obj.add((String)lista[5]);
+                obj.add((String)lista[6]);
+                l.add(obj);
+        });
+        return l;
+    }
+
     @Override
     public List<Object> getAllCorrespondenciaList() {
 

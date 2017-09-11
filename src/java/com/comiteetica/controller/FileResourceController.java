@@ -5,6 +5,26 @@
  */
 package com.comiteetica.controller;
 
+import com.comiteetica.hibernate.model.CorrespondenciaFile;
+import com.comiteetica.hibernate.model.CorrespondenciaFileId;
+import com.comiteetica.hibernate.model.SerieCorrelativo;
+import com.comiteetica.hibernate.service.CorrespondenciaFileService;
+import com.comiteetica.hibernate.service.CorrespondenciaService;
+import com.comiteetica.hibernate.service.SerieCorrelativoService;
+import com.comiteetica.json.JsonTransformer;
+import com.comiteetica.persistencia.BussinessException;
+import com.comiteetica.persistencia.BussinessMessage;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
 import org.springframework.util.FileCopyUtils;
 import java.io.FileOutputStream;
@@ -15,10 +35,17 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +68,7 @@ public class FileResourceController {
             throws IOException {
         if (!file.isEmpty()) {
             /*Directorio único por correspondencia.*/
-            File directorio = new File("d:/Repositorio/Correspondencia/" + idCorrespondencia);
+            File directorio = new File("c:/Repositorio/Correspondencia/" + idCorrespondencia);
             ServletContext context = httpServletRequest.getServletContext();
             String appPath = context.getRealPath("");
             /*Se valida si existe, si no existe, se crea.*/
@@ -173,7 +200,7 @@ public class FileResourceController {
         /*Nombre a UTF-8*/
         String nombreUTF8 = new String(carpeta.getBytes("ISO-8859-1"), "UTF-8");
         try {
-            deleteFolder(new File("D:/Repositorio/Correspondencia/" + nombreUTF8));
+            deleteFolder(new File("C:/Repositorio/Correspondencia/" + nombreUTF8));
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/undefined; charset=UTF-8");
             httpServletResponse.getWriter().println("");
@@ -202,6 +229,305 @@ public class FileResourceController {
         } else {
             //if file, then delete it
             fileDel.delete();
+        }
+    }
+
+    String ruta = "C:/Repositorio/Correspondencia/";
+    @Autowired
+    CorrespondenciaFileService correspondenciaFileService;
+
+    @Autowired
+    CorrespondenciaService correspondenciaService;
+
+    @Autowired
+    private JsonTransformer jsonTransformer;
+
+    @Autowired
+    private SerieCorrelativoService serieCorrelativoService;
+
+    private Font BOLD_UNDERLINED = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD | Font.UNDERLINE);
+
+    private Font BOLD = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD);
+
+    private Font NORMAL = new Font(Font.FontFamily.TIMES_ROMAN, 9);
+
+    @RequestMapping(value = "/HojaRuta", method = RequestMethod.POST)
+    public void createPdf(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse, @RequestParam("idCorrespondencia") String idCorrespondencia) throws DocumentException, IOException {
+        try {
+
+            correspondenciaFileService.beginTransaction();
+            String dirHojaRuta;
+            dirHojaRuta = ruta + idCorrespondencia;
+            File directorio = new File(dirHojaRuta);
+            ServletContext context = httpServletRequest.getServletContext();
+            String appPath = context.getRealPath("");
+            /*Se valida si existe, si no existe, se crea.*/
+            if (!directorio.exists()) {
+                try {
+                    directorio.mkdir();
+                } catch (SecurityException se) {
+                }
+            }
+
+            java.util.Date date = Date.from(Instant.now());
+            SerieCorrelativo serieCorrelativo = serieCorrelativoService.readNextSerieCorrelativo("HRT", date);
+
+            String nombreArchivo = serieCorrelativo.getId().getIdSerie() + serieCorrelativo.getUltimoUsado() + ".pdf";
+            dirHojaRuta = dirHojaRuta + "/" + nombreArchivo;
+// step 1
+            Document document = new Document();
+            document.setPageSize(PageSize.A6);
+            // step 2
+            System.out.println(dirHojaRuta);
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dirHojaRuta));
+            // step 3
+            document.open();
+            // step 4
+//            document.add(new Paragraph("Hoja de Ruta"));
+            // step 5
+            List<Object> list = correspondenciaService.getDatosHojaRuta(idCorrespondencia);
+            list.stream().forEach((lista) -> {
+
+                ArrayList temp = (ArrayList) lista;
+                try {
+                    generarHojaRuta(document, writer, temp);
+//                    document.add(new Paragraph(temp.get(0).toString()));
+//                    document.add(new Paragraph(temp.get(1).toString()));
+//                    document.add(new Paragraph(temp.get(2).toString()));
+//                    document.add(new Paragraph(temp.get(3).toString()));
+//                    document.add(new Paragraph(temp.get(4).toString()));
+                } catch (Exception e) {
+
+                }
+            });
+
+            document.close();
+
+            CorrespondenciaFile correspondenciaFile = new CorrespondenciaFile();
+            CorrespondenciaFileId id = new CorrespondenciaFileId();
+            id.setIdCorrespondencia(idCorrespondencia);
+            id.setFileDetalle(correspondenciaFileService.getNextFileDetalleByIdCorrespondencia(idCorrespondencia));
+            correspondenciaFile.setId(id);
+            correspondenciaFile.setDireccion(dirHojaRuta);
+            correspondenciaFile.setNombreArchivo(nombreArchivo);
+
+            correspondenciaFileService.create(correspondenciaFile);
+            String jsonSalida = jsonTransformer.toJson(correspondenciaFile);
+            serieCorrelativo.setFechaModificacion(date);
+            serieCorrelativoService.update(serieCorrelativo);
+            correspondenciaFileService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                correspondenciaFileService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(FileResourceController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+            }
+            System.out.println("catch 1" + ex.getMessage());
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                correspondenciaFileService.rollback();
+                System.out.println("try 3" + ex.getMessage());
+            } catch (IOException ex1) {
+                Logger.getLogger(FileResourceController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("catch 4" + ex1.getMessage());
+            } catch (Exception ee) {
+
+            }
+            System.out.println("catch 3" + ex.getMessage());
+        } finally {
+            try {
+                correspondenciaFileService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+    }
+
+    void generarHojaRuta(Document d, PdfWriter writer, ArrayList al) {
+        try {
+
+            Paragraph parrafo = new Paragraph();
+            /*Agregando título en negrita y centrado*/
+            parrafo.add(new Chunk("COMITÉ DE ÉTICA", BOLD_UNDERLINED));
+            parrafo.setAlignment(Element.ALIGN_CENTER);
+            d.add(parrafo);
+
+            /*Agregando Etiqueta Fecha*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Fecha", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 350f, 60f, 10f, parrafo);
+
+            /*Agregando Etiqueta Correlativo Interno*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("No.", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_RIGHT);
+            addNewRectangulo(writer, d, 260f, 350f, 15f, 10f, parrafo);
+
+            /*Agregando Fecha valor*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk(al.get(0).toString(), NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 340f, 80f, 10f, parrafo);
+
+            /*Agregando correlativo ruta valor*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk(al.get(6).toString(), NORMAL));
+            parrafo.setAlignment(Element.ALIGN_RIGHT);
+            addNewRectangulo(writer, d, 260f, 340f, 80f, 10f, parrafo);
+
+            /*Agregando investigador principal*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Investigador Principal: " + al.get(1).toString(), NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 325f, 260f, 10f, parrafo);
+
+            /*Agregando Protocolo*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Protocolo: " + al.get(2).toString(), NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 310f, 260f, 10f, parrafo);
+
+            /*Agregando correlativo Investigacion( REG) interno*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Correlativo: " + al.get(3).toString(), NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 295f, 260f, 10f, parrafo);
+
+            /*Agregando observación*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Ref.: " + al.get(5).toString(), NORMAL));
+            parrafo.setAlignment(Element.ALIGN_JUSTIFIED);
+            addNewRectangulo(writer, d, 15f, 280f, 260f, 60f, parrafo);
+
+            /*Revisado por: */
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Revisador por:                        Fecha", BOLD));
+            parrafo.setAlignment(Element.ALIGN_RIGHT);
+            addNewRectangulo(writer, d, 15f, 220f, 260f, 10f, parrafo);
+
+            /*Drs.*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Dr. Salomón Zavala:", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 200f, 260f, 10f, parrafo);
+
+            /*Línea 1: */
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("           .................................              ...................", BOLD));
+            parrafo.setAlignment(Element.ALIGN_RIGHT);
+            addNewRectangulo(writer, d, 45f, 200f, 260f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Dra. Marilú Chiang", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 180f, 260f, 10f, parrafo);
+
+            /*Línea 2: */
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("           .................................              ...................", BOLD));
+            parrafo.setAlignment(Element.ALIGN_RIGHT);
+            addNewRectangulo(writer, d, 45f, 180f, 260f, 10f, parrafo);
+
+//            /*Agregando Distribución*/
+//            parrafo = new Paragraph();
+//            parrafo.add(new Chunk("Acciones a Tomar: " + al.get(4).toString(), NORMAL));
+//            parrafo.setAlignment(Element.ALIGN_LEFT);
+//            addNewRectangulo(writer, d, 15f, 150f, 260f, 10f, parrafo);
+
+            /*Agregando Distribución*/
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk("Acciones a Tomar: ", BOLD));
+            parrafo.setAlignment(Element.ALIGN_CENTER);
+            addNewRectangulo(writer, d, 15f, 150f, 260f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            Font zapfdingbats = new Font(Font.FontFamily.ZAPFDINGBATS, 14);
+            Chunk chunk = new Chunk("o", zapfdingbats);
+            parrafo.add(chunk);
+            parrafo.add(new Chunk("Fotocopiar para reunión de Comité", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 130f, 260f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            zapfdingbats = new Font(Font.FontFamily.ZAPFDINGBATS, 14);
+            chunk = new Chunk("o", zapfdingbats);
+            parrafo.add(chunk);
+            parrafo.add(new Chunk("Archivar", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_RIGHT);
+            addNewRectangulo(writer, d, 200f, 130f, 100f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            zapfdingbats = new Font(Font.FontFamily.ZAPFDINGBATS, 14);
+            chunk = new Chunk("o", zapfdingbats);
+            parrafo.add(chunk);
+            parrafo.add(new Chunk("Contestar", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_LEFT);
+            addNewRectangulo(writer, d, 15f, 110f, 100f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            zapfdingbats = new Font(Font.FontFamily.ZAPFDINGBATS, 14);
+            chunk = new Chunk("o", zapfdingbats);
+            parrafo.add(chunk);
+            parrafo.add(new Chunk("Revisar en próxima reunion del Comité", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_RIGHT);
+            addNewRectangulo(writer, d, 50f, 110f, 260f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk(".....................................................................................................................", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_JUSTIFIED);
+            addNewRectangulo(writer, d, 15f, 90f, 280f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk(".....................................................................................................................",NORMAL));
+            parrafo.setAlignment(Element.ALIGN_JUSTIFIED);
+            addNewRectangulo(writer, d, 15f, 70f, 280f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk(".....................................................................................................................", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_JUSTIFIED);
+            addNewRectangulo(writer, d, 15f, 50f, 280f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk(".....................................................................................................................", NORMAL));
+            parrafo.setAlignment(Element.ALIGN_JUSTIFIED);
+            addNewRectangulo(writer, d, 15f, 30f, 280f, 10f, parrafo);
+
+            parrafo = new Paragraph();
+            parrafo.add(new Chunk(".....................................................................................................................",  NORMAL));
+            parrafo.setAlignment(Element.ALIGN_JUSTIFIED);
+            addNewRectangulo(writer, d, 15f, 10f, 280f, 10f, parrafo);
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    void addNewRectangulo(PdfWriter writer, Document d, float x, float y, float xx, float yy, Paragraph parrafo) {
+        try {
+            PdfContentByte cb = writer.getDirectContent();
+            cb.rectangle(x, y, xx, yy);
+//            cb.stroke();
+
+            Rectangle rect = new Rectangle(x, y + 18f, xx, yy);
+            ColumnText ct = new ColumnText(cb);
+            ct.setSimpleColumn(rect);
+            ct.addElement(parrafo);
+            ct.go();
+        } catch (Exception e) {
         }
     }
 }

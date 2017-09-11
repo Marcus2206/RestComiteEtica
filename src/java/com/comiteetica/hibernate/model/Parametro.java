@@ -2,6 +2,7 @@ package com.comiteetica.hibernate.model;
 // Generated 11-ago-2017 18:56:32 by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +32,7 @@ public class Parametro  implements java.io.Serializable {
      private Date fechaIngreso;
      private String usuarioModifica;
      private Date fechaModificacion;
+     @JsonManagedReference
      private Set<ParametroDetalle> parametroDetalles = new HashSet<ParametroDetalle>(0);
 
     public Parametro() {

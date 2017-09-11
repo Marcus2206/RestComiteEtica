@@ -19,35 +19,35 @@ import org.springframework.transaction.annotation.Transactional;
  * @author rasec
  */
 @Service
-public class ParametroServiceImpl implements ParametroService{
-    
+public class ParametroServiceImpl implements ParametroService {
+
     @Autowired
     private ParametroDao parametroDao;
 
     @Transactional
     @Override
-    public void beginTransaction() throws BussinessException{
+    public void beginTransaction() throws BussinessException {
         parametroDao.beginTransaction();
     }
-    
+
     @Transactional
     @Override
-    public void commit() throws BussinessException{
+    public void commit() throws BussinessException {
         parametroDao.commit();
     }
-    
+
     @Transactional
     @Override
-    public void close() throws BussinessException{
+    public void close() throws BussinessException {
         parametroDao.close();
     }
-    
+
     @Transactional
     @Override
-    public void rollback() throws BussinessException{
+    public void rollback() throws BussinessException {
         parametroDao.rollback();
     }
-    
+
     @Transactional
     @Override
     public void create(Parametro parametro) throws BussinessException {
@@ -77,5 +77,16 @@ public class ParametroServiceImpl implements ParametroService{
     public List<Parametro> getAllParametro() throws BussinessException {
         return parametroDao.getAllParametro();
     }
-    
+
+    @Transactional
+    @Override
+    public List<Object> getAllParametroListSql() throws BussinessException {
+        return parametroDao.getAllParametroListSql();
+    }
+
+    @Transactional
+    @Override
+    public String getNextIdParametro() throws BussinessException {
+        return parametroDao.getNextIdParametro();
+    }
 }
