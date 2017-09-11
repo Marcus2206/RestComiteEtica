@@ -40,43 +40,45 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-configuration>
-  <session-factory>
-    <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-    <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ComiteEtica</property>
-    <property name="hibernate.connection.username">sa</property>
-    <property name="hibernate.connection.password">sistemas123</property>
-    <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
-    <mapping resource="com/comiteetica/hibernate/model/Distrito.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Correspondencia.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/PagoDetalle.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/RegistroBitacora.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Coordinador.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Monitor.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Parametro.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Departamento.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Cro.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Provincia.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/FechaSesion.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/CorrespondenciaServicio.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/InvestigacionInvestigador.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Investigacion.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/InvestigacionMonitor.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Investigador.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Sede.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Usuario.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Notificacion.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/SerieCorrelativo.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/ParametroDetalle.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Pago.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/PatrocinadorCro.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Registro.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Correo.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/NotificacionHistorico.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Patrocinador.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/InvestigacionCoordinador.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Serie.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/CorrespondenciaFile.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/Fecha.hbm.xml"/>
-    <mapping resource="com/comiteetica/hibernate/model/InvestigacionSede.hbm.xml"/>
-  </session-factory>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ComiteEtica</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password">sistemas123</property>
+        <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
+        <mapping resource="com/comiteetica/hibernate/model/Distrito.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Correspondencia.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/PagoDetalle.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/RegistroBitacora.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Coordinador.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Monitor.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Parametro.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Departamento.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Cro.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Provincia.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/FechaSesion.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/CorrespondenciaServicio.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/InvestigacionInvestigador.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Investigacion.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/InvestigacionMonitor.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Investigador.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Sede.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Usuario.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Notificacion.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/SerieCorrelativo.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/ParametroDetalle.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Pago.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/PatrocinadorCro.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Registro.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Correo.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/NotificacionHistorico.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Patrocinador.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/InvestigacionCoordinador.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Serie.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/CorrespondenciaFile.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Fecha.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/InvestigacionSede.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/Formato.hbm.xml"/>
+        <mapping resource="com/comiteetica/hibernate/model/FormatoLinea.hbm.xml"/>
+    </session-factory>
 </hibernate-configuration>

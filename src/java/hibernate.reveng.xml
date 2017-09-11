@@ -73,4 +73,6 @@ Contributor(s):
   <table-filter match-name="SerieCorrelativo"/>
   <table-filter match-name="Patrocinador"/>
   <table-filter match-name="NotificacionHistorico"/>
+    <table-filter match-name="FormatoLinea"/>
+      <table-filter match-name="Formato"/>
 </hibernate-reverse-engineering>

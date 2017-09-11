@@ -1,0 +1,36 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.comiteetica.hibernate.service;
+
+import com.comiteetica.hibernate.model.Formato;
+import com.comiteetica.persistencia.BussinessException;
+import java.util.List;
+
+/**
+ *
+ * @author rasec
+ */
+public interface FormatoService {
+        public void create(Formato formato)throws BussinessException;
+
+    public Formato read(int idFormato)throws BussinessException;
+
+    public void update(Formato formato)throws BussinessException;
+
+    public void delete(Formato formato)throws BussinessException;
+
+    public List<Formato> getAllFormato()throws BussinessException;
+
+    public void beginTransaction()throws BussinessException;
+
+    public void commit()throws BussinessException;
+
+    public void close()throws BussinessException;
+
+    public void rollback()throws BussinessException;
+
+    public List<Object> getAllFormatoList() throws BussinessException;
+}

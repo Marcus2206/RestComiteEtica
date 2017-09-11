@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 11-sep-2017 10:52:52 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.FormatoLinea" table="FormatoLinea" schema="dbo" catalog="ComiteEtica" optimistic-lock="version">
+        <composite-id name="id" class="model.FormatoLineaId">
+            <key-property name="idFormato" type="int">
+                <column name="IdFormato" />
+            </key-property>
+            <key-property name="idFormatoLinea" type="int">
+                <column name="IdFormatoLinea" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="formato" class="model.Formato" update="false" insert="false" fetch="select">
+            <column name="IdFormato" not-null="true" />
+        </many-to-one>
+        <property name="contenido" type="string">
+            <column name="Contenido" />
+        </property>
+        <property name="estilo" type="string">
+            <column name="Estilo" length="500" />
+        </property>
+        <property name="alineacion" type="string">
+            <column name="Alineacion" length="500" />
+        </property>
+        <property name="color" type="string">
+            <column name="Color" length="500" />
+        </property>
+        <property name="usuarioIngresa" type="string">
+            <column name="UsuarioIngresa" length="50" />
+        </property>
+        <property name="fechaIngreso" type="timestamp">
+            <column name="FechaIngreso" length="23" />
+        </property>
+        <property name="usuarioModifica" type="string">
+            <column name="UsuarioModifica" length="50" />
+        </property>
+        <property name="fechaModificacion" type="timestamp">
+            <column name="FechaModificacion" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>
