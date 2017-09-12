@@ -20,6 +20,9 @@
         <property name="paramTipoServicio" type="string">
             <column name="ParamTipoServicio" length="4" />
         </property>
+        <property name="protocolo" type="string">
+            <column name="Protocolo" length="1000" />
+        </property>
         <property name="correlativoInterno" type="string">
             <column name="CorrelativoInterno" length="20" />
         </property>

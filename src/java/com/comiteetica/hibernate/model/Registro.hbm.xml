@@ -17,12 +17,12 @@
         <property name="fechaAprobacion" type="timestamp">
             <column name="FechaAprobacion" length="23" />
         </property>
-        <property name="idSede" type="string">
+        <many-to-one name="sede" class="com.comiteetica.hibernate.model.Sede" fetch="select">
             <column name="IdSede" length="10" />
-        </property>
-        <property name="idInvestigador" type="string">
+        </many-to-one>
+        <many-to-one name="investigador" class="com.comiteetica.hibernate.model.Investigador" fetch="select">
             <column name="IdInvestigador" length="10" />
-        </property>
+        </many-to-one>
         <property name="paramEstado" type="string">
             <column name="ParamEstado" length="4" />
         </property>

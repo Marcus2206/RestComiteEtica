@@ -30,8 +30,8 @@ public class Registro implements java.io.Serializable {
     private String paramEstadoRegistro;
     private Investigacion investigacion;
     private Date fechaAprobacion;
-    private String idSede;
-    private String idInvestigador;
+    private Sede sede;
+    private Investigador investigador;
     private String paramEstado;
     private String observacion;
     private String farmacoExperimental;
@@ -58,13 +58,13 @@ public class Registro implements java.io.Serializable {
         this.idRegistro = idRegistro;
     }
 
-    public Registro(String idRegistro, String paramEstadoRegistro, Investigacion investigacion, Date fechaAprobacion, String idSede, String idInvestigador, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String equivalenciaCorrelativo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
+    public Registro(String idRegistro, String paramEstadoRegistro, Investigacion investigacion, Date fechaAprobacion, Sede sede, Investigador investigador, String paramEstado, String observacion, String farmacoExperimental, Boolean placebo, String pacienteEas, String easLocal, String paramNotificacion, Date fechaEas, String visitaInspeccion, Boolean estudioNinos, String visitaInspeccionIns, String equivalenciaCorrelativo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<RegistroBitacora> registroBitacoras, Set<Correspondencia> correspondencias) {
         this.idRegistro = idRegistro;
         this.paramEstadoRegistro = paramEstadoRegistro;
         this.investigacion = investigacion;
         this.fechaAprobacion = fechaAprobacion;
-        this.idSede = idSede;
-        this.idInvestigador = idInvestigador;
+        this.sede = sede;
+        this.investigador = investigador;
         this.paramEstado = paramEstado;
         this.observacion = observacion;
         this.farmacoExperimental = farmacoExperimental;
@@ -76,7 +76,7 @@ public class Registro implements java.io.Serializable {
         this.visitaInspeccion = visitaInspeccion;
         this.estudioNinos = estudioNinos;
         this.visitaInspeccionIns = visitaInspeccionIns;
-        this.equivalenciaCorrelativo=equivalenciaCorrelativo;
+        this.equivalenciaCorrelativo = equivalenciaCorrelativo;
         this.usuarioIngresa = usuarioIngresa;
         this.fechaIngreso = fechaIngreso;
         this.usuarioModifica = usuarioModifica;
@@ -124,22 +124,24 @@ public class Registro implements java.io.Serializable {
         this.fechaAprobacion = fechaAprobacion;
     }
 
-    @Column(name = "IdSede", length = 10)
-    public String getIdSede() {
-        return this.idSede;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IdSede")
+    public Sede getSede() {
+        return this.sede;
     }
 
-    public void setIdSede(String idSede) {
-        this.idSede = idSede;
+    public void setSede(Sede sede) {
+        this.sede = sede;
     }
 
-    @Column(name = "IdInvestigador", length = 10)
-    public String getIdInvestigador() {
-        return this.idInvestigador;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IdInvestigador")
+    public Investigador getInvestigador() {
+        return this.investigador;
     }
 
-    public void setIdInvestigador(String idInvestigador) {
-        this.idInvestigador = idInvestigador;
+    public void setInvestigador(Investigador investigador) {
+        this.investigador = investigador;
     }
 
     @Column(name = "ParamEstado", length = 4)

@@ -57,6 +57,8 @@ public class RegistroDaoImpl implements RegistroDao {
     public Registro read(String idRegistro) {
         Registro registro = (Registro) sessionFactory.getCurrentSession().get(Registro.class, idRegistro);
         Hibernate.initialize(registro.getInvestigacion());
+        Hibernate.initialize(registro.getInvestigador());
+        Hibernate.initialize(registro.getSede());
         return registro;
     }
 
@@ -99,24 +101,28 @@ public class RegistroDaoImpl implements RegistroDao {
     public List<Object> getAllRegistroList() {
 
         String sqlQuery = "select	r.idRegistro,\n"
-                + "		r.fechaAprobacion,\n"
-                + "		(select Protocolo+' - '+Titulo from Investigacion where IdInvestigacion=r.IdInvestigacion)idInvestigacion,\n"
-                + "		(select Nombre from Sede where IdSede=r.idSede)idSede,\n"
-                + "		(select ApePaterno+' '+ApeMaterno+', '+Nombres from Investigador where IdInvestigador=r.IdInvestigador)idInvestigador,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P006' and IdParametroDetalle=r.paramEstado)paramEstado,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P012' and IdParametroDetalle=r.paramEstado)paramEstadoRegistro,\n"
-                + "		r.observacion,\n"
-                + "		r.farmacoExperimental,\n"
-                + "		r.placebo,\n"
-                + "		r.pacienteEas,\n"
-                + "		r.easLocal,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P007' and IdParametroDetalle=r.paramNotificacion)paramNotificacion,\n"
-                + "		r.fechaEas,\n"
-                + "		r.visitaInspeccion,\n"
-                + "		r.estudioNinos,\n"
-                + "		r.visitaInspeccionIns,\n"
-                + "		r.equivalenciaCorrelativo\n"
+                + "                      CONVERt(varchar(10),r.fechaAprobacion,103)fechaAprobacion,\n"
+                + "                      coalesce(Protocolo,'')protocolo,\n"
+                + "		coalesce(Titulo,'') titulo,\n"
+                + "		coalesce(s.Nombre,'')nombreSede,\n"
+                + "		coalesce(iv.ApePaterno,'')+' '+coalesce(iv.ApeMaterno,'')+', '+coalesce(iv.Nombres,'')nombreInvestigador,\n"
+                + "        (select Descripcion from ParametroDetalle where IdParametro='P006' and IdParametroDetalle=r.paramEstado)paramEstado,\n"
+                + "        (select Descripcion from ParametroDetalle where IdParametro='P012' and IdParametroDetalle=r.paramEstado)paramEstadoRegistro,\n"
+                + "        r.observacion,\n"
+                + "        r.farmacoExperimental,\n"
+                + "        (case when r.placebo=0 then 'NO' when r.placebo=0 then 'SI' end)placebo,\n"
+                + "        r.pacienteEas,\n"
+                + "        r.easLocal,\n"
+                + "        (select Descripcion from ParametroDetalle where IdParametro='P007' and IdParametroDetalle=r.paramNotificacion)paramNotificacion,\n"
+                + "        CONVERt(varchar(10),r.fechaEas,103)fechaEas,\n"
+                + "        r.visitaInspeccion,\n"
+                + "		(case when r.estudioNinos=0 then 'NO' when r.estudioNinos=0 then 'SI' end)estudioNinos,\n"
+                + "        r.visitaInspeccionIns,\n"
+                + "        r.equivalenciaCorrelativo\n"
                 + "from	Registro r\n"
+                + "left join Investigacion i on r.IdInvestigacion=i.IdInvestigacion\n"
+                + "left join Sede s on s.IdSede=r.IdSede\n"
+                + "left join Investigador iv on iv.IdInvestigador=r.IdInvestigador\n"
                 + "order by idRegistro asc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {

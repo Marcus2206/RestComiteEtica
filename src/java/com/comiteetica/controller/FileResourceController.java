@@ -145,7 +145,6 @@ public class FileResourceController {
         response.setContentType(APPLICATION_ContentType + "; charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
         response.setHeader("Content-Length", String.valueOf(file.length()));
-        System.out.println("file.getAbsolutePath():" + file.getAbsolutePath());
         FileCopyUtils.copy(in, response.getOutputStream());
     }
 
@@ -158,7 +157,6 @@ public class FileResourceController {
         if (!file.exists()) {
             throw new FileNotFoundException("file with path: " + nombreUTF8 + " was not found.");
         } else {
-            System.out.println(nombreUTF8);
         }
         return file;
     }
@@ -186,7 +184,6 @@ public class FileResourceController {
 
     private void deleteFile(String fileLocation) throws IOException {
         File file = new File(fileLocation);
-        System.out.println();
         file.delete();
 
     }
@@ -279,7 +276,6 @@ public class FileResourceController {
             Document document = new Document();
             document.setPageSize(PageSize.A6);
             // step 2
-            System.out.println(dirHojaRuta);
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dirHojaRuta));
             // step 3
             document.open();

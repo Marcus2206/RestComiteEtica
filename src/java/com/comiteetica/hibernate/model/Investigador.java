@@ -19,8 +19,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Investigador",
-         schema = "dbo",
-         catalog = "ComiteEtica"
+        schema = "dbo",
+        catalog = "ComiteEtica"
 )
 public class Investigador implements java.io.Serializable {
 
@@ -35,6 +35,7 @@ public class Investigador implements java.io.Serializable {
     private String usuarioModifica;
     private Date fechaModificacion;
     private Set<InvestigacionInvestigador> investigacionInvestigadors = new HashSet<InvestigacionInvestigador>(0);
+    private Set<Registro> registros = new HashSet<Registro>(0);
 
     public Investigador() {
     }
@@ -159,6 +160,16 @@ public class Investigador implements java.io.Serializable {
 
     public void setInvestigacionInvestigadors(Set<InvestigacionInvestigador> investigacionInvestigadors) {
         this.investigacionInvestigadors = investigacionInvestigadors;
+    }
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "investigador")
+    public Set<Registro> getRegistros() {
+        return this.registros;
+    }
+
+    public void setRegistros(Set<Registro> registros) {
+        this.registros = registros;
     }
 
 }

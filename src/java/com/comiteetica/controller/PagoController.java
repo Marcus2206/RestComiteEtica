@@ -103,7 +103,6 @@ public class PagoController {
     public void insertPago(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             pagoService.beginTransaction();
-            System.out.println(jsonEntrada);
             Pago pago = (Pago) jsonTransformer.fromJson(jsonEntrada, Pago.class);
             java.util.Date date = Date.from(Instant.now());
             SerieCorrelativo seriecorrelativo = serieCorrelativoService.readNextSerieCorrelativo("PGO", date);
@@ -111,16 +110,12 @@ public class PagoController {
             pagoService.create(pago);
             seriecorrelativo.setFechaModificacion(date);
             serieCorrelativoService.update(seriecorrelativo);
-            System.out.println(pago.getPagoDetalles().size());
-
-            pago.getPagoDetalles().forEach((pagoDetalle) -> {
+            pago.getPagoDetalles().stream().forEach((pagoDetalle) -> {
                 try {
                     PagoDetalleId id = pagoDetalle.getId();
                     id.setIdPago(pago.getIdPago());
                     id.setIdPagoDetalle(pagoDetalleService.getNextPagoDetalleByIdPago(id.getIdPago()));
                     pagoDetalleService.create(pagoDetalle);
-//                    String jsonSalida = jsonTransformer.toJson(pagoDetalle);
-
                     CorrespondenciaServicioId idCS = new CorrespondenciaServicioId(pagoDetalle.getIdCorrespondencia(), pagoDetalle.getIdCorrespondenciaServicio());
                     CorrespondenciaServicio correspondenciaServicio = correspondenciaServicioService.read(idCS);
                     correspondenciaServicio.setTransferido(1);

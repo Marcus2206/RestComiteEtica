@@ -21,8 +21,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Correspondencia",
-         schema = "dbo",
-         catalog = "ComiteEtica"
+        schema = "dbo",
+        catalog = "ComiteEtica"
 )
 public class Correspondencia implements java.io.Serializable {
 
@@ -32,6 +32,7 @@ public class Correspondencia implements java.io.Serializable {
     private Date fechaCorrespondencia;
     private Date fechaCarta;
     private String paramTipoServicio;
+    private String protocolo;
     private String otro;
     private String paramDistribucion;
     private Date fechaSesion;
@@ -54,7 +55,7 @@ public class Correspondencia implements java.io.Serializable {
 
     public Correspondencia(String idCorrespondencia, String correlativoInterno, Registro registro, Date fechaCorrespondencia, Date fechaCarta, String paramTipoServicio, String otro, String paramDistribucion, Date fechaSesion, Boolean enviarCorreo, Boolean enviado, String equivalenciaCorrelativo, String usuarioIngresa, Date fechaIngreso, String usuarioModifica, Date fechaModificacion, Set<CorrespondenciaServicio> correspondenciaServicios, Set<CorrespondenciaFile> correspondenciaFiles) {
         this.idCorrespondencia = idCorrespondencia;
-        this.correlativoInterno=correlativoInterno;
+        this.correlativoInterno = correlativoInterno;
         this.registro = registro;
         this.fechaCorrespondencia = fechaCorrespondencia;
         this.fechaCarta = fechaCarta;
@@ -122,7 +123,7 @@ public class Correspondencia implements java.io.Serializable {
     public void setParamTipoServicio(String paramTipoServicio) {
         this.paramTipoServicio = paramTipoServicio;
     }
-    
+
     @Column(name = "CorrelativoInterno", length = 20)
     public String getCorrelativoInterno() {
         return this.correlativoInterno;
@@ -131,7 +132,16 @@ public class Correspondencia implements java.io.Serializable {
     public void setCorrelativoInterno(String correlativoInterno) {
         this.correlativoInterno = correlativoInterno;
     }
-    
+
+    @Column(name = "Protocolo", length = 1000)
+    public String getProtocolo() {
+        return this.protocolo;
+    }
+
+    public void setProtocolo(String protocolo) {
+        this.protocolo = protocolo;
+    }
+
     @Column(name = "Otro", length = 250)
     public String getOtro() {
         return this.otro;

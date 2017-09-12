@@ -41,5 +41,11 @@
             </key>
             <one-to-many class="com.comiteetica.hibernate.model.InvestigacionInvestigador" />
         </set>
+        <set name="registros" table="Registro" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdInvestigador" length="10" />
+            </key>
+            <one-to-many class="com.comiteetica.hibernate.model.Registro" />
+        </set>
     </class>
 </hibernate-mapping>
