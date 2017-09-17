@@ -137,7 +137,6 @@ public class PagoDetalleDaoImpl implements PagoDetalleDao {
         int nextFileDetalle = 0;
 
         if (nextPagoDetalleQuery.size() > 0) {
-//            System.out.println(nextFileDetalleQuery.get(0));
             if (nextPagoDetalleQuery.get(0) != null) {
                 nextFileDetalle = (int) nextPagoDetalleQuery.get(0) + 1;
             } else {

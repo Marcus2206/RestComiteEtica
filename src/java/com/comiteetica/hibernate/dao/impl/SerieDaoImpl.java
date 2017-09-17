@@ -86,7 +86,6 @@ public class SerieDaoImpl implements SerieDao{
             series.add(ser);
         });
         
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
         sessionFactory.getCurrentSession().getTransaction().commit();
         sessionFactory.getCurrentSession().close();
         

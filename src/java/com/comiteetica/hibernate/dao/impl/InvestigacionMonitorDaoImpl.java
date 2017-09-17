@@ -85,8 +85,7 @@ public class InvestigacionMonitorDaoImpl implements InvestigacionMonitorDao{
             invMonitor.setObservacion(investigacionInvestigador[1].toString());
             investigacionMonitors.add(invMonitor);
         });
-        
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());
+
         sessionFactory.getCurrentSession().getTransaction().commit();
         sessionFactory.getCurrentSession().close();
         

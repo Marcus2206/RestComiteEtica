@@ -90,8 +90,6 @@ public class FormatosController {
             }
         }
         String myWord = myDoc.getContent();
-//        System.out.println("asdasdasdasd: " + myDoc.getContent() + "kokokokokok");
-
         File fileObj = new File("d:/Repositorio/prueba.doc");
 
         PrintWriter writer = null;

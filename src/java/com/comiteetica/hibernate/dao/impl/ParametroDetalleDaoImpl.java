@@ -86,8 +86,7 @@ public class ParametroDetalleDaoImpl implements ParametroDetalleDao {
             paramDetalle.setDescripcion(parametroDetalle[1].toString());
             parametroDetalles.add(paramDetalle);
         });
-
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
+     
         return parametroDetalles;
     }
 
@@ -111,8 +110,7 @@ public class ParametroDetalleDaoImpl implements ParametroDetalleDao {
             paramDetalle.setDescripcion(parametroDetalle[1].toString());
             parametroDetalles.add(paramDetalle);
         });
-
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
+   
         return parametroDetalles;
     }
 
@@ -128,7 +126,6 @@ public class ParametroDetalleDaoImpl implements ParametroDetalleDao {
         String paramDet="PD01";
 
         if (nextParametroDetalleQuery.size() > 0) {
-//            System.out.println(nextFileDetalleQuery.get(0));
             if (nextParametroDetalleQuery.get(0) != null) {
                 paramDet=(String)nextParametroDetalleQuery.get(0);//PD09
                 paramDet=paramDet.substring(2, 4);//09

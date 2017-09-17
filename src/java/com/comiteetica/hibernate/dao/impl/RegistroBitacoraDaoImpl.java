@@ -93,7 +93,6 @@ public class RegistroBitacoraDaoImpl implements RegistroBitacoraDao {
         int nextFileDetalle = 0;
 
         if (nextBitacoraQuery.size() > 0) {
-//            System.out.println(nextFileDetalleQuery.get(0));
             if (nextBitacoraQuery.get(0) != null) {
                 nextFileDetalle = (int) nextBitacoraQuery.get(0) + 1;
             } else {

@@ -83,19 +83,17 @@ public class ParametroController {
     }
 
     @RequestMapping(value = "/ParametroUpdate", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-    public void updateCorreo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void updateParametro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             parametroService.beginTransaction();
             Parametro parametro = (Parametro) jsonTransformer.fromJson(jsonEntrada, Parametro.class);
             if (parametro.getParametroDetalles() != null) {
                 parametro.getParametroDetalles().forEach((para) -> {
                     if (para.getValor() != null) {
-                        System.out.println(para.getValor());
                     }
 
                 });
             } else {
-                System.out.println("null");
             }
 
             parametroService.update(parametro);

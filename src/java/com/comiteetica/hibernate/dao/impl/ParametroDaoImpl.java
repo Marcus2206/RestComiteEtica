@@ -136,7 +136,6 @@ public class ParametroDaoImpl implements ParametroDao {
         String param="P001";
 
         if (nextParametroQuery.size() > 0) {
-//            System.out.println(nextFileDetalleQuery.get(0));
             if (nextParametroQuery.get(0) != null) {
                 param=(String)nextParametroQuery.get(0);//P001
                 param=param.substring(1, 4);//001

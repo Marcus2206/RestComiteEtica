@@ -96,7 +96,8 @@ public class CroDaoImpl implements CroDao {
     public List<Object> getAllCroList() {
 
         String sqlQuery = "select	idCro,\n"
-                + "		nombre \n"
+                + "		nombre, \n"
+                + "		ruc \n"
                 + "from	cro\n"
                 + "order by Nombre";
 

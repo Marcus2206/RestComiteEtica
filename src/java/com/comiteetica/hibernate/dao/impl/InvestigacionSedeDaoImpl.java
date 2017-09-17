@@ -94,35 +94,10 @@ public class InvestigacionSedeDaoImpl implements InvestigacionSedeDao {
             invSede.setObservacion(investigacionSede[1].toString());
             investigacionSedes.add(invSede);
         });
-
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
+ 
         return investigacionSedes;
     }
 
-//    @Override
-//    public List<Object> getInvestigacionSedeByIdInvestigacion(String idInvestigacion) {
-//        /*Fabrica Query*/
-//        Query query=sessionFactory.getCurrentSession()
-//                                .createQuery("select invs,s " +
-//                                             "	from InvestigacionSede invs " +
-//                                             "inner join invs.sede s " +
-//                                             "where  invs.id.idInvestigacion=:idInvestigacion" )
-//                                            .setString("idInvestigacion", idInvestigacion);
-//
-//        /*Crea Objeto contenedor*/
-//        List<Object> objetos=new ArrayList<>();
-//        /*Realiza consulta y devuelve Object[]*/
-//        List<Object[]> list=query.list();
-//        /*Itera en cada fila*/
-//        list.stream().forEach((objeto)->{
-//            Object[] o=new Object[2];
-//            o[0]=(InvestigacionSede)objeto[0];
-//            o[1]=(Sede)objeto[1];
-//            objetos.add(o);
-//        });
-//   
-//        return objetos;
-//    }
     @Override
     public List<Object> getInvestigacionSedeByIdInvestigacion(String idInvestigacion) {
 
@@ -151,17 +126,7 @@ public class InvestigacionSedeDaoImpl implements InvestigacionSedeDao {
                 return obj;
             }
         });
-        //query.list();
-
-        //List<SerieCorrelativo> result = query.list();
-        /*for(int i=0; i<result.size(); i++){
-                SerieCorrelativo serieCorrelativo = (SerieCorrelativo)result.get(i);
-                System.out.println(stock.getStockCode());
-        }*/
-//        session.getTransaction().commit();
-//        session.close();
-        //sessionFactory.getCurrentSession().getTransaction().commit();
-        //sessionFactory.getCurrentSession().close();
+       
         if (list != null) {
             if (list.size() > 0) {
                 return list;

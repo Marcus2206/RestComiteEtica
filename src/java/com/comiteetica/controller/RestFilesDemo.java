@@ -76,7 +76,6 @@ public class RestFilesDemo  {
 //    private void writeFile(byte[] content, String filename) throws IOException {
 //        File file = new File(filename);
 //        if (!file.exists()) {
-//            System.out.println("not exist> " + file.getAbsolutePath());
 //            file.createNewFile();
 //        }
 //        FileOutputStream fop = new FileOutputStream(file);

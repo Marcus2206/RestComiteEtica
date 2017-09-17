@@ -39,76 +39,7 @@ public class InvestigacionSedeController {
     
     @Autowired
     private InvestigacionSedeService investigacionSedeService;
-    
-        //    @RequestMapping(value = "/Investigacion/{idInvestigacion}/{idCoordinador}", method = RequestMethod.GET, produces = "application/json")
-//    public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idInvestigacion") String idInvestigacion,@PathVariable("idCoordinador") String idCoordinador) {
-//        try {
-//            System.out.println("antes de cargar");
-//            InvestigacionCoordinadorId investigacionCoordinadorId=new InvestigacionCoordinadorId(idInvestigacion,idCoordinador);
-//            InvestigacionCoordinador investigacionCoordinador = investigacionInvestigadorService.read(investigacionCoordinadorId);
-//            System.out.println("cargó investigacionCoordinador");
-//            String jsonSalida = jsonTransformer.toJson(investigacionCoordinador);
-//            System.out.println(jsonSalida);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            httpServletResponse.getWriter().println(jsonSalida);
-//            
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//            } catch (IOException ex1) {
-//                Logger.getLogger(InvestigadorController.class.getName()).log(Level.SEVERE, null, ex1);
-//            }
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            System.out.println("catch "+ex.getMessage());
-//        }
-//
-//    }
-//    
-//    @RequestMapping(value = "/InvestigacionCoordinadorRead/", method = RequestMethod.PATCH, produces = "application/json",consumes = "application/json")
-//    public void readInvestigacionCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idInvestigacion") String idInvestigacion,@PathVariable("idCoordinador") String idCoordinador) {
-//        try {
-//            System.out.println("antes de cargar");
-//            InvestigacionCoordinadorId investigacionCoordinadorId=new InvestigacionCoordinadorId(idInvestigacion,idCoordinador);
-//            InvestigacionCoordinador investigacionCoordinador = investigacionCoordinadorService.read(investigacionCoordinadorId);
-//            System.out.println("cargó investigacionCoordinador");
-//            String jsonSalida = jsonTransformer.toJson(investigacionCoordinador);
-//            System.out.println(jsonSalida);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            httpServletResponse.getWriter().println(jsonSalida);
-//            
-//        } catch (BussinessException ex) {
-//            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
-//            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-//            
-//            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            httpServletResponse.setContentType("application/json; charset=UTF-8");
-//            try {
-//                httpServletResponse.getWriter().println(jsonSalida);
-//            } catch (IOException ex1) {
-//                Logger.getLogger(InvestigadorController.class.getName()).log(Level.SEVERE, null, ex1);
-//            }
-//            
-//        } catch (Exception ex) {
-//            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            System.out.println("catch "+ex.getMessage());
-//        }
-//
-//    }
-//    
-//    
-    
-    
+       
     @RequestMapping(value = "/InvestigacionSedeInsert", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insertInvestigacionSede(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         
@@ -166,16 +97,10 @@ public class InvestigacionSedeController {
     public void deleteInvestigacionSede(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
             investigacionSedeService.beginTransaction();
-            System.out.println("nvestigacionSedeService.beginTransaction();"+jsonEntrada);
             InvestigacionSede investigacionSede = (InvestigacionSede) jsonTransformer.fromJson(jsonEntrada, InvestigacionSede.class);
-            System.out.println("InvestigacionSede investigacionSede =");
             investigacionSedeService.delete(investigacionSede);
-            System.out.println("investigacionSedeService.delete(investigacionSede);");
             investigacionSedeService.commit();
-            System.out.println("investigacionSedeService.commit();");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-            //httpServletResponse.setContentType("application/json; charset=UTF-8");
-            //httpServletResponse.getWriter().println(jsonSalida);
             
         } catch (BussinessException ex) {
             List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
@@ -219,29 +144,9 @@ public class InvestigacionSedeController {
     public void readInvestigacionSede(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@RequestBody String jsonEntrada) {
         //Product prod=new Product();
         try {
-            
-            /* esto sí funcionó
-            System.out.println("antes de listar");
-            List<Producto> productos = prod.getProductos();
-            System.out.println("terminó");
-            */ 
-            System.out.println("jsonEntrada "+jsonEntrada);
             InvestigacionSedeId investigacionSedeId = (InvestigacionSedeId)jsonTransformer.fromJson(jsonEntrada, InvestigacionSedeId.class);
-//            Object list = (Object)jsonTransformer.fromJson(jsonEntrada, Object.class);
-//            List<Object[]> list = (List<Object[]> )jsonTransformer.fromJson(jsonEntrada, Object[].class);
-            System.out.println("antes de listar getIdSede ::"+investigacionSedeId.getIdSede());
-            
-            System.out.println("antes de listar getIdInvestigacion ::"+investigacionSedeId.getIdInvestigacion());
-            //System.out.println("antes de listar fin ::"+list.get(1).toString());
-           
-           
             InvestigacionSede investigacionSede = investigacionSedeService.read(investigacionSedeId);
-            //System.out.println("terminó "+productos.size());
-            //System.out.println("Listó"+productos.get(0).getMarca().getDescripcion());
-
             String jsonSalida = jsonTransformer.toJson(investigacionSede);
-            System.out.println("transformó lista completa: "+jsonSalida);
-            //httpServletRequest.
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");

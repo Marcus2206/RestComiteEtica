@@ -232,25 +232,9 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
     @Override
     public void updateSql(int idUsuario, String password, String usuarioModifica, Date fechaModificacion) {
-//        String sqlQuery = "update Usuario set [Password]=PWDENCRYPT(:password), usuarioModifica=:usuarioModifica, "
-//                + "fechaModificacion=:fechaModificacion   where idUsuario=:idUsuario";
-//        sessionFactory.getCurrentSession()
-//                .createSQLQuery(sqlQuery)
-//                .setInteger("idUsuario", idUsuario)
-//                .setString("password", password)
-//                .setString("usuarioModifica", usuarioModifica)
-//                .setDate("fechaModificacion", fechaModificacion)
-//                .executeUpdate();
-
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
             public List<Object> execute(Connection connection) throws SQLException {
-//                CallableStatement statement = null;
-//                List<Object> obj = new ArrayList<Object>();
-//                String sqlString = "{call uspSelectUsuario(?,?) }";
-//                statement = connection.prepareCall(sqlString);
-//                statement.setString(1, usuario);
-//                statement.setString(2, password);
                 PreparedStatement statement = null;
                 List<Object> obj = new ArrayList<Object>();
                 Properties connectionProps = ((SessionFactoryImpl) sessionFactory).getProperties();
@@ -275,59 +259,13 @@ public class UsuarioDaoImpl implements UsuarioDao {
                 return obj;
             }
         });
-
-//        return list;
     }
 
     @Override
     public List<Object> readSql(String usuario, String password) {
-
-//        String sqlQuery = "select	idUsuario,\n"
-//                + "		usuario,\n"
-//                + "		(select Descripcion from ParametroDetalle where IdParametro='P010' and IdParametroDetalle=Perfil) nperfil,\n"
-//                + "                       perfil\n"
-//                + "from	usuario\n"
-//                + "where Usuario ='" + usuario + "' and PWDCOMPARE('" + password + "', [Password])= 1";
-//
-//        List<Object> list = sessionFactory.openSession()
-//                .doReturningWork(new ReturningWork<List<Object>>() {
-//                    @Override
-//                    public List<Object> execute(Connection connection) throws SQLException {
-//                        CallableStatement statement = null;
-//                        List<Object> obj = new ArrayList<Object>();
-//                        String sqlString = "{call uspGetJsonFromQuery(?)}";
-//                        statement = connection.prepareCall(sqlString);
-//                        statement.setString(1, sqlQuery);
-//                        ResultSet resultSet = statement.executeQuery();
-//                        while (resultSet.next()) {
-//                            obj.add(resultSet.getString(1));
-//                        }
-//                        return obj;
-//                    }
-//                });
-//
-//        if (list != null) {
-//            if (list.size() > 0) {
-//                return list;
-//            } else {
-//                return null;
-//            }
-//        } else {
-//            return null;
-//        }
-//
-//    }
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
-            public List<Object> execute(Connection connection) throws SQLException {
-//                CallableStatement statement = null;
-//                List<Object> obj = new ArrayList<Object>();
-//                String sqlString = "{call uspSelectUsuario(?,?) }";
-//                statement = connection.prepareCall(sqlString);
-//                statement.setString(1, usuario);
-//                statement.setString(2, password);
-//                System.out.println("readSql");
-                
+            public List<Object> execute(Connection connection) throws SQLException {                
                 PreparedStatement statement = null;
                 List<Object> obj = new ArrayList<Object>();
                 Properties connectionProps = ((SessionFactoryImpl) sessionFactory).getProperties();
@@ -347,9 +285,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    System.out.println("resultSet.next()");
                     obj.add(resultSet.getString(1));
-                    System.out.println(resultSet.getString(1));
                 }
                 return obj;
             }

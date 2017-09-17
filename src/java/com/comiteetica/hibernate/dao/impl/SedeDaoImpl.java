@@ -73,20 +73,11 @@ public class SedeDaoImpl implements SedeDao{
         /*Fabrica Query*/
         Query query=sessionFactory.getCurrentSession()
                                 .createQuery("select s from Sede s" );
-        //query.setFirstResult(ini);
-        //query.setMaxResults(fin);
-        /*Crea Objeto contenedor*/
-//        List<Sede> sedes=new ArrayList<>();
-        /*Realiza consulta y devuelve Object[]*/
+
         List<Sede> sedes=query.list();
-        /*Itera en cada fila*/
         sedes.stream().forEach((sede)->{
-//            Hibernate.initialize(sede.getDepartamento());
-//            Hibernate.initialize(sede.getProvincia());
-//            Hibernate.initialize(sede.getDistrito());
         });
         
-        //System.out.println("terminó del createQuery"+productos.get(0).getDescripcion());        
         return sedes;
     }
     

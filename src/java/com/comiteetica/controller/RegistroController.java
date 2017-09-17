@@ -205,7 +205,7 @@ public class RegistroController {
                 }
             }
             registroService.commit();
-            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+//            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);

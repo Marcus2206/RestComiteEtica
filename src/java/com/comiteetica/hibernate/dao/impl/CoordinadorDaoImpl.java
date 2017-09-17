@@ -46,43 +46,14 @@ public class CoordinadorDaoImpl implements CoordinadorDao{
     
     @Override
     public void create(Coordinador coordinador) {
-//        try{
-//        sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(coordinador);
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        }catch(Exception e){
-//            sessionFactory.getCurrentSession().getTransaction().rollback();
-//            System.out.println("Error en: CoordinadorDaoImpl - create. "+e.getMessage());
-//        }
-//        finally{
-//            try{
-//                sessionFactory.getCurrentSession().close(); 
-//            }catch(Exception e1){
-//                System.out.println("Error en: CoordinadorDaoImpl - create - finally. "+e1.getMessage());
-//            }
-//        }
     }
 
     @Override
     public Coordinador read(String idCoordinador) {
-//        SessionFactory sessionFactory=HibernateUtil.getSessionFactory();
         Coordinador investigador;
-//        try{
-//        sessionFactory.getCurrentSession().beginTransaction();
         investigador=(Coordinador)sessionFactory.getCurrentSession().get(Coordinador.class,idCoordinador);
         Hibernate.initialize(investigador.getInvestigacionCoordinadors());
-//        sessionFactory.getCurrentSession().getTransaction().commit();
-//        }catch(Exception e){
-//            sessionFactory.getCurrentSession().getTransaction().rollback();
-//            System.out.println("Error en: CoordinadorDaoImpl - read. "+e.getMessage());
-//        }finally{
-//            try{
-//                sessionFactory.getCurrentSession().close();
-//            }catch(Exception e1){
-//                System.out.println("Error en: CoordinadorDaoImpl - read - finally. "+e1.getMessage());
-//            }
-//        }
-        
         return investigador;
     }
 

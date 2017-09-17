@@ -87,7 +87,6 @@ public class CorrespondenciaFileDaoImpl implements CorrespondenciaFileDao {
         int nextFileDetalle = 0;
 
         if (nextFileDetalleQuery.size() > 0) {
-//            System.out.println(nextFileDetalleQuery.get(0));
             if (nextFileDetalleQuery.get(0) != null) {
                 nextFileDetalle = (int) nextFileDetalleQuery.get(0) + 1;
             } else {
