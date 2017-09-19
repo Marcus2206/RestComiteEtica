@@ -16,7 +16,7 @@ public interface FechaSesionDao {
 
     public void create(FechaSesion fechaSesion);
 
-    public FechaSesion read(String idFechaSesion);
+    public FechaSesion read(int idFechaSesion);
 
     public void update(FechaSesion fechaSesion);
 

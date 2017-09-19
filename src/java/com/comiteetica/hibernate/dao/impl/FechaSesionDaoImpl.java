@@ -53,7 +53,7 @@ public class FechaSesionDaoImpl implements FechaSesionDao {
     }
 
     @Override
-    public FechaSesion read(String idFechaSesion) {
+    public FechaSesion read(int idFechaSesion) {
         FechaSesion fechaSesion = (FechaSesion) sessionFactory.getCurrentSession().get(FechaSesion.class, idFechaSesion);
         return fechaSesion;
     }
@@ -72,39 +72,21 @@ public class FechaSesionDaoImpl implements FechaSesionDao {
     public List<FechaSesion> getAllFechaSesion() {
         /*Fabrica Query*/
         Query query = sessionFactory.getCurrentSession()
-                .createSQLQuery("select	c.idCorrespondencia,\n"
-                        + "		c.fechaCorrespondencia,\n"
-                        + "		c.fechaCarta,\n"
-                        + "		c.idRegistro,\n"
-                        + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=c.ParamTipoServicio)ParamTipoServicio,\n"
-                        + "		c.otro,\n"
-                        + "		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion)paramDistribucion,\n"
-                        + "		c.fechaSesion,\n"
-                        + "		c.enviarCorreo,\n"
-                        + "		c.enviado\n"
-                        + "from	Correspondencia c\n"
-                        + "order by idCorrespondencia");
+                .createQuery("select fs from FechaSesion fs order by fs.fechaSesion asc");
 
-        List<FechaSesion> fechaSesions = new ArrayList<>();
-        List<Object[]> list = query.list();
+        List<FechaSesion> fechaSesions = query.list();
         return fechaSesions;
     }
 
     @Override
     public List<Object> getAllFechaSesionList() {
 
-        String sqlQuery = "select	c.idCorrespondencia,\n"
-                + "		c.fechaCorrespondencia,\n"
-                + "		c.fechaCarta,\n"
-                + "		c.idRegistro idRegistro,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=c.ParamTipoServicio)paramTipoServicio,\n"
-                + "		c.otro,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion)paramDistribucion,\n"
-                + "		c.fechaSesion,\n"
-                + "		cast(c.enviarCorreo as int)enviarCorreo,\n"
-                + "		cast(c.enviado as int )enviado\n"
-                + "from	Correspondencia c\n"
-                + "order by idCorrespondencia";
+        String sqlQuery = "select	\n"
+                + "		idFechaSesion,\n"
+                + "		convert(varchar(10),fechaSesion,103)fechaSesion,\n"
+                + "		observacion\n"
+                + "from	FechaSesion\n"
+                + "order by fechaSesion desc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override

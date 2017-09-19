@@ -17,7 +17,7 @@ public interface FechaSesionService {
 
     public void create(FechaSesion fechaSesion) throws BussinessException;
 
-    public FechaSesion read(String idFechaSesion) throws BussinessException;
+    public FechaSesion read(int idFechaSesion) throws BussinessException;
 
     public void update(FechaSesion fechaSesion) throws BussinessException;
 
