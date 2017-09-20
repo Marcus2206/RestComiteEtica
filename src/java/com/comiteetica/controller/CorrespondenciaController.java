@@ -202,6 +202,7 @@ public class CorrespondenciaController {
                     }
                 }
             }
+//            System.out.println(jsonSalida);
             correspondeciaService.commit();
             httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);

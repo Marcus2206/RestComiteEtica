@@ -122,7 +122,7 @@ public class FechaSesionDaoImpl implements FechaSesionDao {
                 + "		fechaSesion\n"
                 + "from	FechaSesion\n"
                 + "where FechaSesion>=(\n"
-                + "select cast(cast(FechaSesion as date) as datetime) from FechaSesion \n"
+                + "select cast(cast(max(FechaSesion) as date) as datetime) from FechaSesion \n"
                 + "where MONTH(getdate())=month(FechaSesion) and YEAR(getdate())=year(FechaSesion))\n"
                 + "order by fechaSesion asc";
 
