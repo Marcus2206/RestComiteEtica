@@ -126,17 +126,17 @@ where IdCorrespondencia='CRP1707098'
 
         List<Correspondencia> correspondencias = new ArrayList<>();
         List<Object[]> list = query.list();
-        List<Object> l=new ArrayList();
+        List<Object> l = new ArrayList();
         list.stream().forEach((lista) -> {
-            List<Object> obj=new ArrayList();
-                obj.add((String)lista[0]);
-                obj.add((String)lista[1]);
-                obj.add((String)lista[2]);
-                obj.add((String)lista[3]);
-                obj.add((String)lista[4]);
-                obj.add((String)lista[5]);
-                obj.add((String)lista[6]);
-                l.add(obj);
+            List<Object> obj = new ArrayList();
+            obj.add((String) lista[0]);
+            obj.add((String) lista[1]);
+            obj.add((String) lista[2]);
+            obj.add((String) lista[3]);
+            obj.add((String) lista[4]);
+            obj.add((String) lista[5]);
+            obj.add((String) lista[6]);
+            l.add(obj);
         });
         return l;
     }
@@ -184,5 +184,19 @@ where IdCorrespondencia='CRP1707098'
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<Correspondencia> readByFechaSesion(Date fechaSesion) {
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select c from Correspondencia c\n"
+                        + "where c.fechaSesion=:fechaSesion")
+                .setDate("fechaSesion", fechaSesion);
+        List<Correspondencia> correspondencias = query.list();
+        return correspondencias;
+
+//        Correspondencia correspondencia = (Correspondencia) sessionFactory.getCurrentSession().get(Correspondencia.class, idCorrespondencia);
+//        Hibernate.initialize(correspondencia.getRegistro());
+//        return correspondencia;
     }
 }

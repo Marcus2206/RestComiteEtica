@@ -6,6 +6,7 @@
 package com.comiteetica.hibernate.dao;
 
 import com.comiteetica.hibernate.model.Correspondencia;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,4 +36,6 @@ public interface CorrespondenciaDao {
     List<Object> getAllCorrespondenciaList();
 
     public List<Object> getDatosHojaRuta(String idCorrespondencia);
+
+    public List<Correspondencia> readByFechaSesion(Date fechaSesion);
 }

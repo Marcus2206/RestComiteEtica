@@ -6,8 +6,14 @@
 package com.comiteetica.controller;
 
 import com.comiteetica.hibernate.model.Correspondencia;
+import com.comiteetica.hibernate.model.CorrespondenciaServicio;
+import com.comiteetica.hibernate.model.ParametroDetalle;
+import com.comiteetica.hibernate.model.ParametroDetalleId;
 import com.comiteetica.hibernate.model.SerieCorrelativo;
+import com.comiteetica.hibernate.service.CorrespondenciaFileService;
 import com.comiteetica.hibernate.service.CorrespondenciaService;
+import com.comiteetica.hibernate.service.CorrespondenciaServicioService;
+import com.comiteetica.hibernate.service.ParametroDetalleService;
 import com.comiteetica.hibernate.service.SerieCorrelativoService;
 import com.comiteetica.json.JsonTransformer;
 import com.comiteetica.persistencia.BussinessException;
@@ -20,12 +26,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -40,6 +48,12 @@ public class CorrespondenciaController {
 
     @Autowired
     private CorrespondenciaService correspondeciaService;
+
+    @Autowired
+    private CorrespondenciaServicioService correspondeciaServicioService;
+
+    @Autowired
+    private ParametroDetalleService parametroDetalleService;
 
     @Autowired
     private SerieCorrelativoService serieCorrelativoService;
@@ -152,11 +166,11 @@ public class CorrespondenciaController {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -164,8 +178,8 @@ public class CorrespondenciaController {
                 correspondeciaService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (Exception ee){
-                
+            } catch (Exception ee) {
+
             }
 
         } catch (IOException ex) {
@@ -176,18 +190,18 @@ public class CorrespondenciaController {
                 correspondeciaService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (Exception ee){
-                
+            } catch (Exception ee) {
+
             }
-        }finally{
-            try{
+        } finally {
+            try {
                 correspondeciaService.close();
-            }catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
         }
     }
-    
+
     @RequestMapping(value = "/CorrespondenciaListFindAll", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
     public void listFindAllCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
@@ -246,7 +260,7 @@ public class CorrespondenciaController {
     @RequestMapping(value = "/CorrespondenciaDelete", method = RequestMethod.PUT, consumes = "application/json")
     public void deleteCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
-            
+
             correspondeciaService.beginTransaction();
             Correspondencia correspondencia = (Correspondencia) jsonTransformer.fromJson(jsonEntrada, Correspondencia.class);
             correspondeciaService.delete(correspondencia);
@@ -254,11 +268,11 @@ public class CorrespondenciaController {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             //httpServletResponse.setContentType("application/json; charset=UTF-8");
             //httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage=ex.getBussinessMessages();
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             try {
@@ -266,8 +280,8 @@ public class CorrespondenciaController {
                 correspondeciaService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
             System.out.println("1er catch " + ex.getMessage());
         } catch (Exception ex) {
@@ -278,19 +292,19 @@ public class CorrespondenciaController {
                 correspondeciaService.rollback();
             } catch (IOException ex1) {
                 Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch(Exception eee){
-                
+            } catch (Exception eee) {
+
             }
             System.out.println("1er catch " + ex.getMessage());
-        }finally{
-            try{
+        } finally {
+            try {
                 correspondeciaService.close();
-            }catch(Exception ee){
-                
+            } catch (Exception ee) {
+
             }
         }
     }
-    
+
     @RequestMapping(value = "/CorrespondenciaFindAll", method = RequestMethod.GET, produces = "application/json")
     public void findAllCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String jsonEntrada) {
         try {
@@ -330,6 +344,75 @@ public class CorrespondenciaController {
             }
 
             System.out.println("3er catch " + ex.getMessage());
+        } finally {
+            try {
+                correspondeciaService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+
+    }
+
+    @RequestMapping(value = "/CorrespondenciaEnSesion", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    public void enSesionCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("fechaSesion") String fechaSesion) {
+        try {
+            correspondeciaService.beginTransaction();
+            java.util.Date fecha = Date.from(Instant.ofEpochMilli(Long.parseLong(fechaSesion)));
+            /*Lista de Correspondencias*/
+            List<Correspondencia> correspondencias = correspondeciaService.readByFechaSesion(fecha);
+            correspondencias.stream().forEach((c) -> {
+                Hibernate.initialize(c.getRegistro());
+                System.out.println("Protocolo: " + c.getRegistro().getInvestigacion().getProtocolo());
+                System.out.println("Titulo: " + c.getRegistro().getInvestigacion().getTitulo());
+                System.out.println("Correspondencia: " + c.getIdCorrespondencia());
+                System.out.println("Fecha Carta Correspondencia: " + c.getFechaCarta());
+                try {
+                    List<CorrespondenciaServicio> correspondenciaServicio = correspondeciaServicioService.readByIdCorrespondencia(c.getIdCorrespondencia());
+                    correspondenciaServicio.stream().forEach((cs) -> {
+                        try {
+                            /*Servicios son IdParametro: P001, se efectúa la lectura con ese IdParametro*/
+                            ParametroDetalleId id = new ParametroDetalleId("P001", cs.getParamTipoServicio());
+                            ParametroDetalle parametroDetalle = parametroDetalleService.read(id);
+                            System.out.println("Tipo de Servicio:" + parametroDetalle.getDescripcion());
+                        } catch (BussinessException ex) {
+                            Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+                } catch (BussinessException ex) {
+                    System.out.println("error: " + ex.getMessage());
+                    Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            });
+
+            correspondeciaService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println("[]");
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                correspondeciaService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+
+        } catch (Exception ex) {
+            try {
+                correspondeciaService.rollback();
+            } catch (Exception ee) {
+
+            }
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            System.out.println("catch " + ex.getMessage());
         } finally {
             try {
                 correspondeciaService.close();
