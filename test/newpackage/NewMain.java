@@ -9,6 +9,9 @@ import com.comiteetica.controller.FormatosController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import word.api.interfaces.IDocument;
 import word.utils.TestUtils;
 import word.utils.Utils;
@@ -42,65 +45,98 @@ public class NewMain {
         FormatosController controller = new FormatosController();
         String[][] detalleFormato = new String[100][4];
 
-        detalleFormato[0][0] = "Lima,  22 de junio de 2017";
-        detalleFormato[0][1] = "";
-        detalleFormato[0][2] = "der";
-        detalleFormato[0][3] = "";
-        detalleFormato[1][0] = "CE1727.17";
-        detalleFormato[1][1] = "";
-        detalleFormato[1][2] = "der";
-        detalleFormato[1][3] = "";
-        detalleFormato[2][3] = "BreakLine";
-        detalleFormato[3][3] = "BreakLine";
-        detalleFormato[4][3] = "BreakLine";
-        detalleFormato[5][3] = "BreakLine";
-        detalleFormato[6][0] = "Doctor";
-        detalleFormato[6][1] = "";
-        detalleFormato[6][2] = "izq";
-        detalleFormato[6][3] = "";
-        detalleFormato[7][0] = "Wilson Rafael Gallardo Rojas";
-        detalleFormato[7][1] = "n";
-        detalleFormato[7][2] = "izq";
-        detalleFormato[7][3] = "";
-        detalleFormato[8][0] = "Investigador Principal";
-        detalleFormato[8][1] = "";
-        detalleFormato[8][2] = "izq";
-        detalleFormato[8][3] = "";
-        detalleFormato[9][0] = "Centro de Investigación Instituto Cardiovascular Javier Prado";
-        detalleFormato[9][1] = "";
-        detalleFormato[9][2] = "izq";
-        detalleFormato[9][3] = "";
-        detalleFormato[10][0] = "Clínica Javier Prado";
-        detalleFormato[10][1] = "";
-        detalleFormato[10][2] = "izq";
-        detalleFormato[10][3] = "";
-        detalleFormato[11][0] = "Presente.-";
-        detalleFormato[11][1] = "s";
-        detalleFormato[11][2] = "izq";
-        detalleFormato[11][3] = "";
-        detalleFormato[12][3] = "BreakLine";
-        detalleFormato[13][0] = "Ref: Protocolo CSOM230B2219  “Estudio de fase IV, abierto, aleatorizado y multicéntrico para investigar el manejo de la hiperglucemia inducida por la pasireotida con terapia con incretinas o insulina en pacientes adultos con enfermedad de Cushing o acromegalia”";
-        detalleFormato[13][1] = "n";
-        detalleFormato[13][2] = "izq";
-        detalleFormato[13][3] = "";
-        detalleFormato[14][3] = "BreakLine";
-        detalleFormato[15][0] = "De nuestra consideración:";
-        detalleFormato[15][1] = "";
-        detalleFormato[15][2] = "izq";
-        detalleFormato[15][3] = "";
-        detalleFormato[16][3] = "BreakLine";
-        detalleFormato[17][0] = "Es grato dirigirnos a usted a fin de informarle que el Comité de Ética ha revisado y APROBADO  por unanimidad los siguientes documentos del estudio en mención::";
-        detalleFormato[17][1] = "";
-        detalleFormato[17][2] = "izq";
-        detalleFormato[17][3] = "";
-        detalleFormato[18][3] = "BreakLine";
-        detalleFormato[19][0] = "Protocolo enmienda 3 de fecha 17-mar-2017 (versión en español).";
-        detalleFormato[19][1] = "n";
-        detalleFormato[19][2] = "izq";
-        detalleFormato[19][3] = "List";
+        detalleFormato[0][0] = "Lima,  {Date}";
+            detalleFormato[0][1] = "";
+            detalleFormato[0][2] = "der";
+            detalleFormato[0][3] = "";
+            detalleFormato[1][0] = "CE{Correlativo}";
+            detalleFormato[1][1] = "";
+            detalleFormato[1][2] = "der";
+            detalleFormato[1][3] = "";
+            detalleFormato[2][3] = "BreakLine";
+            detalleFormato[3][3] = "BreakLine";
+            detalleFormato[4][3] = "BreakLine";
+            detalleFormato[5][3] = "BreakLine";
+            detalleFormato[6][0] = "Doctor";
+            detalleFormato[6][1] = "";
+            detalleFormato[6][2] = "izq";
+            detalleFormato[6][3] = "";
+            detalleFormato[7][0] = "{investigadorPrincipal}";
+            detalleFormato[7][1] = "n";
+            detalleFormato[7][2] = "izq";
+            detalleFormato[7][3] = "";
+            detalleFormato[8][0] = "Investigador Principal";
+            detalleFormato[8][1] = "";
+            detalleFormato[8][2] = "izq";
+            detalleFormato[8][3] = "";
+            detalleFormato[9][0] = "{CentroInvestigacion}";
+            detalleFormato[9][1] = "";
+            detalleFormato[9][2] = "izq";
+            detalleFormato[9][3] = "";
+            detalleFormato[10][0] = "Clínica Javier Prado";
+            detalleFormato[10][1] = "";
+            detalleFormato[10][2] = "izq";
+            detalleFormato[10][3] = "BreakLine";
+            detalleFormato[11][0] = "Presente.-";
+            detalleFormato[11][1] = "s";
+            detalleFormato[11][2] = "izq";
+            detalleFormato[11][3] = "";
+            detalleFormato[12][3] = "BreakLine";
+            detalleFormato[13][0] = "Ref: {idProtocolo}  \"{tituloProtocolo}\"";
+            detalleFormato[13][1] = "n";
+            detalleFormato[13][2] = "izq";
+            detalleFormato[13][3] = "";
+            detalleFormato[14][3] = "BreakLine";
+            detalleFormato[15][0] = "De nuestra consideración:";
+            detalleFormato[15][1] = "";
+            detalleFormato[15][2] = "izq";
+            detalleFormato[15][3] = "";
+            detalleFormato[16][3] = "BreakLine";
+            detalleFormato[17][0] = "Es grato dirigirnos a usted a fin de hacer de su conocimiento que el Comité de Ética ha revisado y evaluado el consentimiento informado, en el cual se han encontrado las siguientes observaciones que deberán ser subsanadas para su posterior aprobación:";
+            detalleFormato[17][1] = "";
+            detalleFormato[17][2] = "izq";
+            detalleFormato[17][3] = "";
+            detalleFormato[18][0] = "Se hace las siguientes observaciones a los FCI ";
+            detalleFormato[18][1] = "n-s";
+            detalleFormato[18][2] = "izq";
+            detalleFormato[18][3] = "";
+            detalleFormato[19][0] = "- ";
+            detalleFormato[19][1] = "n";
+            detalleFormato[19][2] = "izq";
+            detalleFormato[19][3] = "";
+            detalleFormato[20][0] = "- ";
+            detalleFormato[20][1] = "n";
+            detalleFormato[20][2] = "izq";
+            detalleFormato[20][3] = "";
+            detalleFormato[21][3] = "BreakLine";
+            detalleFormato[22][0] = "Sin otro particulpar, nos despedimos de usted. ";
+            detalleFormato[22][1] = "";
+            detalleFormato[22][2] = "izq";
+            detalleFormato[22][3] = "";
+            detalleFormato[23][3] = "BreakLine";
+            detalleFormato[24][0] = "Atentamente,";
+            detalleFormato[24][1] = "";
+            detalleFormato[24][2] = "der";
+            detalleFormato[24][3] = "";
+            detalleFormato[25][3] = "BreakLine";
+            detalleFormato[26][3] = "BreakLine";
+            detalleFormato[27][3] = "BreakLine";
+            detalleFormato[28][3] = "BreakLine";
+            detalleFormato[29][0] = "Salomón Zavala Sarrio";
+            detalleFormato[29][1] = "";
+            detalleFormato[29][2] = "der";
+            detalleFormato[29][3] = "";
+            detalleFormato[30][0] = "Presidente";
+            detalleFormato[30][1] = "";
+            detalleFormato[30][2] = "der";
+            detalleFormato[30][3] = "";
+            detalleFormato[31][0] = "Comité de Ética";
+            detalleFormato[31][1] = "";
+            detalleFormato[31][2] = "der";
+            detalleFormato[31][3] = "";
         
-        controller.GenerarAprobacion(detalleFormato);
-        
+//            controller.GenerarAprobacion(detalleFormato,"d:/Repositorio/prueba.doc");
+            
 //
 //        IDocument myDoc = new Document2004();
 //        // myDoc.setPageOrientationLandscape();
@@ -192,7 +228,7 @@ public class NewMain {
 //        myDoc.addEle(BreakLine.times(2).create());
 //
 //        myDoc.addEle(Paragraph.with("Remember to scape special characters like empsersand").create());
-//        
+//
 //
 //        // Document Header and Footer
 //        myDoc.addEle(BreakLine.times(2).create());
@@ -212,7 +248,7 @@ public class NewMain {
 //        myDoc.addEle(Paragraph
 //                .with("you can also hide Header and Footer in the first Page. This is useful for when you have a cover page.: 'myDoc.getHeader().setHideHeaderAndFooterFirstPage(true)' ")
 //                .create());
-//        
+//
 //
 //        myDoc.getHeader().addEle(
 //                Paragraph.withPieces(
@@ -230,7 +266,7 @@ public class NewMain {
 //        myDoc.addEle(Paragraph
 //                .with("Images can be created from diferent locations. It can be from your local machine, from web URL or classpath.")
 //                .create());
-//        
+//
 //
 //        myDoc.addEle(Paragraph.with(
 //                "This one is coming from WEB, google web site: ").create());
@@ -246,7 +282,7 @@ public class NewMain {
 //        myDoc.addEle(Paragraph
 //                .with("You can always be creative and mix up images inside other IElements. Eg.: Paragraphs, Tables, etc.")
 //                .create());
-//        
+//
 //
 //        myDoc.addEle(Paragraph
 //                .with("This document inside the paragraph, coming from '/src/test/resources/dtpick.gif': "
@@ -264,7 +300,7 @@ public class NewMain {
 //                .with("Table of The Best Soccer Players Ever and Their Number of Gols:")
 //                .create());
 //        myDoc.addEle(BreakLine.times(1).create());
-//        
+//
 //        
 //        Table tbl = new Table() {
 //        };

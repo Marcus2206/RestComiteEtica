@@ -35,4 +35,6 @@ public interface FormatoLineaDao {
     public void rollback();
 
     public List<Object> getAllFormatoLineaList();
+    
+    public List<Object> getFormatoLineaByidFormato(String idFormato);
 }

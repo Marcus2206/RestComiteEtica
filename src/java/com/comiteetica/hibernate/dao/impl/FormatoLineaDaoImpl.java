@@ -24,8 +24,8 @@ import org.hibernate.jdbc.ReturningWork;
  *
  * @author rasec
  */
-public class FormatoLineaDaoImpl implements FormatoLineaDao{
-        
+public class FormatoLineaDaoImpl implements FormatoLineaDao {
+
     SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     @Override
@@ -119,4 +119,29 @@ public class FormatoLineaDaoImpl implements FormatoLineaDao{
             return null;
         }
     }
+
+    public List<Object> getFormatoLineaByidFormato(String idFormato) {
+        Query query = sessionFactory.getCurrentSession()
+                .createSQLQuery("select a.contenido,\n"
+                        + "		a.estilo,\n"
+                        + "		a.alineacion,\n"
+                        + "		a.color \n"
+                        + "		from FormatoLinea a\n"
+                        + "		left join Formato b on a.IdFormato=b.IdFormato\n"
+                        + "		where b.IdFormato = :idFormato")
+                .setString("idFormato", idFormato);
+
+        List<Object[]> list = query.list();
+        List<Object> l = new ArrayList();
+        list.stream().forEach((lista) -> {
+            List<Object> obj = new ArrayList();
+            obj.add((String) lista[0]);
+            obj.add((String) lista[1]);
+            obj.add((String) lista[2]);
+            obj.add((String) lista[3]);
+            l.add(obj);
+        });
+        return l;
+    }
+
 }

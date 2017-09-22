@@ -35,4 +35,5 @@ public interface CorrespondenciaDao {
     List<Object> getAllCorrespondenciaList();
 
     public List<Object> getDatosHojaRuta(String idCorrespondencia);
+    public List<Object> getDatosCarta(String idCorrespondencia);
 }
