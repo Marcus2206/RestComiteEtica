@@ -24,34 +24,34 @@ import org.hibernate.jdbc.ReturningWork;
  * @author rasec
  */
 public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDao {
-
+    
     SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
+    
     @Override
     public void beginTransaction() {
         sessionFactory.getCurrentSession().beginTransaction();
     }
-
+    
     @Override
     public void commit() {
         sessionFactory.getCurrentSession().getTransaction().commit();
     }
-
+    
     @Override
     public void close() {
         sessionFactory.getCurrentSession().close();
     }
-
+    
     @Override
     public void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
-
+    
     @Override
     public void create(CorrespondenciaServicio correspondenciaServicio) {
         sessionFactory.getCurrentSession().save(correspondenciaServicio);
     }
-
+    
     @Override
     public int getNextServicioDetalleByIdCorrespondencia(String idCorrespondencia) {
         /*Fabrica Query*/
@@ -62,7 +62,7 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
                 .setString("idCorrespondencia", idCorrespondencia);
         List<Object> nextFileDetalleQuery = query.list();
         int nextFileDetalle = 0;
-
+        
         if (nextFileDetalleQuery.size() > 0) {
             if (nextFileDetalleQuery.get(0) != null) {
                 nextFileDetalle = (int) nextFileDetalleQuery.get(0) + 1;
@@ -70,40 +70,51 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
                 nextFileDetalle = 1;
             }
         }
-
+        
         return nextFileDetalle;
     }
-
+    
     @Override
     public CorrespondenciaServicio read(CorrespondenciaServicioId id) {
         CorrespondenciaServicio correspondencia = (CorrespondenciaServicio) sessionFactory.getCurrentSession().get(CorrespondenciaServicio.class, id);
         return correspondencia;
     }
-
+    
+    @Override
+    public List<CorrespondenciaServicio> readByIdCorrespondencia(String idCorrespondencia) {
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select cs from CorrespondenciaServicio cs\n"
+                        + "where cs.id.idCorrespondencia=:idCorrespondencia")
+                .setString("idCorrespondencia", idCorrespondencia);
+        
+        List<CorrespondenciaServicio> correspondenciaServicios = query.list();
+        return correspondenciaServicios;
+    }
+    
     @Override
     public void update(CorrespondenciaServicio correspondenciaServicio) {
         sessionFactory.getCurrentSession().update(correspondenciaServicio);
     }
-
+    
     @Override
     public void delete(CorrespondenciaServicio correspondenciaServicio) {
         sessionFactory.getCurrentSession().delete(correspondenciaServicio);
     }
-
+    
     @Override
     public List<CorrespondenciaServicio> getAllCorrespondenciaServicio() {
         /*Fabrica Query*/
         Query query = sessionFactory.getCurrentSession()
                 .createSQLQuery("");
-
+        
         List<CorrespondenciaServicio> correspondenciaServicios = new ArrayList<>();
         List<Object[]> list = query.list();
         return correspondenciaServicios;
     }
-
+    
     @Override
     public List<Object> getAllCorrespondenciaServicioSinPagoList() {
-
+        
         String sqlQuery = "select	a.idCorrespondencia,\n"
                 + "		a.idCorrespondenciaServicio,\n"
                 + "		d.idInvestigacion,\n"
@@ -119,7 +130,7 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
                 + "inner join Investigacion d on c.IdInvestigacion=d.IdInvestigacion\n"
                 + "where a.Transferido=0\n"
                 + "order by a.idCorrespondencia, a.IdCorrespondenciaServicio desc";
-
+        
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
             public List<Object> execute(Connection connection) throws SQLException {
@@ -135,7 +146,7 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
                 return obj;
             }
         });
-
+        
         if (list != null) {
             if (list.size() > 0) {
                 return list;
@@ -146,10 +157,10 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
             return null;
         }
     }
-
+    
     @Override
     public List<Object> getAllCorrespondenciaServicioByCorrespondencia(String idCorrespondencia) {
-
+        
         String sqlQuery = "select	idCorrespondencia,\n"
                 + "		idCorrespondenciaServicio,\n"
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=paramTipoServicio)paramTipoServicio,\n"
@@ -158,7 +169,7 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
                 + "from	correspondenciaServicio\n"
                 + "where	idCorrespondencia='" + idCorrespondencia + "'\n"
                 + "order by idCorrespondenciaServicio asc";
-
+        
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
             public List<Object> execute(Connection connection) throws SQLException {
@@ -174,7 +185,7 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
                 return obj;
             }
         });
-
+        
         if (list != null) {
             if (list.size() > 0) {
                 return list;

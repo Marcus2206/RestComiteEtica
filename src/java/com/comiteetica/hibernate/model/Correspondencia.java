@@ -142,7 +142,7 @@ public class Correspondencia implements java.io.Serializable {
         this.protocolo = protocolo;
     }
 
-    @Column(name = "Otro", length = 250)
+    @Column(name = "Otro", length = 500)
     public String getOtro() {
         return this.otro;
     }

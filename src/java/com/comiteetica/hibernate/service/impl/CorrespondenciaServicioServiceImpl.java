@@ -61,6 +61,12 @@ public class CorrespondenciaServicioServiceImpl implements CorrespondenciaServic
 
     @Transactional
     @Override
+    public List<CorrespondenciaServicio> readByIdCorrespondencia(String idCorrespondencia) throws BussinessException {
+        return correspondenciaServicioDao.readByIdCorrespondencia(idCorrespondencia);
+    }
+
+    @Transactional
+    @Override
     public void update(CorrespondenciaServicio correspondenciaServicio) throws BussinessException {
         correspondenciaServicioDao.update(correspondenciaServicio);
     }

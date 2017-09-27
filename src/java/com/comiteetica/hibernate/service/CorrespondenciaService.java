@@ -7,6 +7,7 @@ package com.comiteetica.hibernate.service;
 
 import com.comiteetica.hibernate.model.Correspondencia;
 import com.comiteetica.persistencia.BussinessException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,4 +39,6 @@ public interface CorrespondenciaService {
     public List<Object> getDatosHojaRuta(String idCorrespondencia) throws BussinessException;
     
     public List<Object> getDatosCarta(String idCorrespondencia) throws BussinessException;
+
+    public List<Correspondencia> readByFechaSesion(Date fechaSesion) throws BussinessException;
 }

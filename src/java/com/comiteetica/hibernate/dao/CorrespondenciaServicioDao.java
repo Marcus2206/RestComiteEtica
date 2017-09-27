@@ -18,6 +18,8 @@ public interface CorrespondenciaServicioDao {
     public void create(CorrespondenciaServicio correspondenciaServicio);
 
     public CorrespondenciaServicio read(CorrespondenciaServicioId id);
+    
+    public List<CorrespondenciaServicio> readByIdCorrespondencia(String idCorrespondencia);
 
     public void update(CorrespondenciaServicio correspondenciaServicio);
 

@@ -126,17 +126,17 @@ where IdCorrespondencia='CRP1707098'
 
         List<Correspondencia> correspondencias = new ArrayList<>();
         List<Object[]> list = query.list();
-        List<Object> l=new ArrayList();
+        List<Object> l = new ArrayList();
         list.stream().forEach((lista) -> {
-            List<Object> obj=new ArrayList();
-                obj.add((String)lista[0]);
-                obj.add((String)lista[1]);
-                obj.add((String)lista[2]);
-                obj.add((String)lista[3]);
-                obj.add((String)lista[4]);
-                obj.add((String)lista[5]);
-                obj.add((String)lista[6]);
-                l.add(obj);
+            List<Object> obj = new ArrayList();
+            obj.add((String) lista[0]);
+            obj.add((String) lista[1]);
+            obj.add((String) lista[2]);
+            obj.add((String) lista[3]);
+            obj.add((String) lista[4]);
+            obj.add((String) lista[5]);
+            obj.add((String) lista[6]);
+            l.add(obj);
         });
         return l;
     }
@@ -184,18 +184,18 @@ where IdCorrespondencia='CRP1707098'
     @Override
     public List<Object> getAllCorrespondenciaList() {
 
-        String sqlQuery = "select	c.idCorrespondencia,\n"
-                + "		c.correlativoInterno,\n"
-                + "		c.fechaCorrespondencia,\n"
-                + "		c.fechaCarta,\n"
-                + "		c.idRegistro idRegistro,\n"
-                + "		c.equivalenciaCorrelativo,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=c.ParamTipoServicio)paramTipoServicio,\n"
-                + "		c.otro,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion)paramDistribucion,\n"
-                + "		c.fechaSesion,\n"
-                + "		cast(c.enviarCorreo as int)enviarCorreo,\n"
-                + "		cast(c.enviado as int )enviado\n"
+        String sqlQuery = "select 	c.idCorrespondencia,\n"
+                + "		coalesce(c.correlativoInterno,'') correlativoInterno,\n"
+                + "		coalesce(c.fechaCorrespondencia,'') fechaCorrespondencia,\n"
+                + "		coalesce(c.fechaCarta,'') fechaCarta,\n"
+                + "		coalesce(c.idRegistro,'') idRegistro,\n"
+                + "		coalesce(c.equivalenciaCorrelativo,'') equivalenciaCorrelativo,\n"
+                + "		coalesce((select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=c.ParamTipoServicio),'') paramTipoServicio,\n"
+                + "		coalesce(c.otro,'') otro,\n"
+                + "		coalesce((select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion),'') paramDistribucion,\n"
+                + "		coalesce(convert(varchar(10),c.fechaSesion,103),''),\n"
+                + "		cast(coalesce(c.enviarCorreo,0) as int)enviarCorreo,\n"
+                + "		cast(coalesce(c.enviado,0) as int )enviado\n"
                 + "from	Correspondencia c\n"
                 + "order by idCorrespondencia";
 
@@ -224,5 +224,19 @@ where IdCorrespondencia='CRP1707098'
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<Correspondencia> readByFechaSesion(Date fechaSesion) {
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select c from Correspondencia c\n"
+                        + "where c.fechaSesion=:fechaSesion")
+                .setDate("fechaSesion", fechaSesion);
+        List<Correspondencia> correspondencias = query.list();
+        return correspondencias;
+
+//        Correspondencia correspondencia = (Correspondencia) sessionFactory.getCurrentSession().get(Correspondencia.class, idCorrespondencia);
+//        Hibernate.initialize(correspondencia.getRegistro());
+//        return correspondencia;
     }
 }

@@ -6,8 +6,12 @@
         <group name="Comite de Etica">
             <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/controller/CorrespondenciaController.java</file>
             <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/controller/FileResourceController.java</file>
+            <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/service/CorrespondenciaService.java</file>
+            <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/service/impl/CorrespondenciaServiceImpl.java</file>
             <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/test/newpackage/NewMain.java</file>
+            <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/controller/FormatosController.java</file>
             <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/impl/FormatoLineaDaoImpl.java</file>
+            <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/impl/CorrespondenciaDaoImpl.java</file>
         </group>
     </open-files>
 </project-private>

@@ -32,7 +32,7 @@ public class FechaSesionServiceImpl implements FechaSesionService {
 
     @Transactional
     @Override
-    public FechaSesion read(String idFechaSesion) throws BussinessException {
+    public FechaSesion read(int idFechaSesion) throws BussinessException {
         return fechaSesionDao.read(idFechaSesion);
     }
 

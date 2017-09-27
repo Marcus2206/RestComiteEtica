@@ -20,6 +20,8 @@ public interface CorrespondenciaServicioService {
 
     public CorrespondenciaServicio read(CorrespondenciaServicioId id) throws BussinessException;
 
+    public List<CorrespondenciaServicio> readByIdCorrespondencia(String idCorrespondencia) throws BussinessException;
+
     public void update(CorrespondenciaServicio correspondenciaServicio) throws BussinessException;
 
     public void delete(CorrespondenciaServicio correspondenciaServicio) throws BussinessException;

@@ -6,7 +6,8 @@
     <class name="com.comiteetica.hibernate.model.FechaSesion" table="FechaSesion" schema="dbo" catalog="ComiteEtica">
         <id name="idFechaSesion" type="int">
             <column name="IdFechaSesion" />
-            <generator class="assigned"></generator>
+            <!--<generator class="assigned"></generator>-->
+            <generator class="identity" />
         </id>
         <property name="fechaSesion" type="timestamp">
             <column name="FechaSesion" length="23" />

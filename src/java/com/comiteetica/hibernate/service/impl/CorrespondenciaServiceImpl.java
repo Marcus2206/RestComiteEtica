@@ -9,6 +9,7 @@ import com.comiteetica.hibernate.dao.CorrespondenciaDao;
 import com.comiteetica.hibernate.model.Correspondencia;
 import com.comiteetica.hibernate.service.CorrespondenciaService;
 import com.comiteetica.persistencia.BussinessException;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,7 +84,8 @@ public class CorrespondenciaServiceImpl implements CorrespondenciaService {
     public List<Object> getAllCorrespondenciaList() throws BussinessException {
         return correspondenciaDao.getAllCorrespondenciaList();
     }
-        @Transactional
+
+    @Transactional
     @Override
     public List<Object> getDatosHojaRuta(String idCorrespondencia) throws BussinessException {
         return correspondenciaDao.getDatosHojaRuta(idCorrespondencia);
@@ -92,5 +94,11 @@ public class CorrespondenciaServiceImpl implements CorrespondenciaService {
     @Override
     public List<Object> getDatosCarta(String idCorrespondencia) throws BussinessException {
         return correspondenciaDao.getDatosCarta(idCorrespondencia);
+        
+    }
+    @Transactional
+    @Override
+    public List<Correspondencia> readByFechaSesion(Date fechaSesion) throws BussinessException {
+        return correspondenciaDao.readByFechaSesion(fechaSesion);
     }
 }
