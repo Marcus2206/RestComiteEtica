@@ -36,4 +36,6 @@ public interface FormatoLineaService {
     public void rollback() throws BussinessException;
 
     public List<Object> getAllFormatoLineaList() throws BussinessException;
+    
+    public List<Object> getLineaFormatoByIdFormato(String idFormato) throws BussinessException;
 }

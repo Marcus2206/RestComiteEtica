@@ -72,5 +72,11 @@ public class FormatoLineaServiceImpl implements FormatoLineaService {
     public List<Object> getAllFormatoLineaList() throws BussinessException {
         return formatoLineaDao.getAllFormatoLineaList();
     }
-
+    
+    
+    @Override
+    public List<Object> getLineaFormatoByIdFormato(String idFormato) throws BussinessException{
+        return formatoLineaDao.getFormatoLineaByidFormato(idFormato);
+    }
+    
 }
