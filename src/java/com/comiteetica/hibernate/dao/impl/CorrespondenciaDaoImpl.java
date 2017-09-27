@@ -145,18 +145,20 @@ where IdCorrespondencia='CRP1707098'
     public List<Object> getAllCorrespondenciaList() {
 
         String sqlQuery = "select 	c.idCorrespondencia,\n"
-                + "		coalesce(c.correlativoInterno,'') correlativoInterno,\n"
-                + "		coalesce(c.fechaCorrespondencia,'') fechaCorrespondencia,\n"
-                + "		coalesce(c.fechaCarta,'') fechaCarta,\n"
-                + "		coalesce(c.idRegistro,'') idRegistro,\n"
-                + "		coalesce(c.equivalenciaCorrelativo,'') equivalenciaCorrelativo,\n"
-                + "		coalesce((select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=c.ParamTipoServicio),'') paramTipoServicio,\n"
-                + "		coalesce(c.otro,'') otro,\n"
-                + "		coalesce((select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=c.paramDistribucion),'') paramDistribucion,\n"
-                + "		coalesce(convert(varchar(10),c.fechaSesion,103),''),\n"
-                + "		cast(coalesce(c.enviarCorreo,0) as int)enviarCorreo,\n"
-                + "		cast(coalesce(c.enviado,0) as int )enviado\n"
+                + "                 		coalesce(c.correlativoInterno,'') correlativoInterno,\n"
+                + "                 		coalesce(c.fechaCorrespondencia,'') fechaCorrespondencia,\n"
+                + "                 		coalesce(c.fechaCarta,'') fechaCarta,\n"
+                + "                 		coalesce(c.idRegistro,'') idRegistro,\n"
+                + "                 		coalesce(c.equivalenciaCorrelativo,'') equivalenciaCorrelativo,\n"
+                + "                 		coalesce(b.Descripcion,'') paramTipoServicio,\n"
+                + "                 		coalesce(c.otro,'') otro,\n"
+                + "                 		coalesce(a.Descripcion,'') paramDistribucion,\n"
+                + "                 		coalesce(convert(varchar(10),c.fechaSesion,103),'') fechaSesion,\n"
+                + "                 		cast(coalesce(c.enviarCorreo,0) as int)enviarCorreo,\n"
+                + "                 		cast(coalesce(c.enviado,0) as int )enviado\n"
                 + "from	Correspondencia c\n"
+                + "left join ParametroDetalle a on a.IdParametro='P002' and a.IdParametroDetalle=paramDistribucion \n"
+                + "left join ParametroDetalle b on a.IdParametro='P001' and a.IdParametroDetalle=paramTipoServicio \n"
                 + "order by idCorrespondencia";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
