@@ -5,6 +5,7 @@
  */
 package com.comiteetica.controller;
 
+import com.comiteetica.hibernate.model.Correspondencia;
 import com.comiteetica.hibernate.model.RegistroBitacora;
 import com.comiteetica.hibernate.model.RegistroBitacoraId;
 import com.comiteetica.hibernate.service.RegistroBitacoraService;

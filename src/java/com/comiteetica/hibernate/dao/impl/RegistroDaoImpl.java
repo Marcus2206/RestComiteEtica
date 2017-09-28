@@ -6,6 +6,7 @@
 package com.comiteetica.hibernate.dao.impl;
 
 import com.comiteetica.hibernate.dao.RegistroDao;
+import com.comiteetica.hibernate.model.Correspondencia;
 import com.comiteetica.hibernate.model.Registro;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -185,6 +186,18 @@ public class RegistroDaoImpl implements RegistroDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<Correspondencia> validateRegistroEnCorrespondencia(String idRegistro) {
+        /*Fabrica Query*/
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select c from Correspondencia c\n"
+                        + "where c.registro.idRegistro=:idRegistro")
+                .setString("idRegistro", idRegistro);
+        List<Correspondencia> correspondencias = query.list();
+
+        return correspondencias;
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package com.comiteetica.hibernate.service;
 
+import com.comiteetica.hibernate.model.Correspondencia;
 import com.comiteetica.hibernate.model.Registro;
 import com.comiteetica.persistencia.BussinessException;
 import java.util.List;
@@ -35,5 +36,7 @@ public interface RegistroService {
 
     public List<Object> getAllRegistroList() throws BussinessException;
 
-    public List<Object>  validateRegistro(String idInvestigacion, String idInvestigador, String idSede) throws BussinessException;
+    public List<Object> validateRegistro(String idInvestigacion, String idInvestigador, String idSede) throws BussinessException;
+
+    public List<Correspondencia> validateRegistroEnCorrespondencia(String idRegistro) throws BussinessException;
 }
