@@ -36,13 +36,11 @@ import java.io.OutputStream;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -52,17 +50,11 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import word.api.interfaces.IDocument;
-import word.w2004.Document2004;
-import word.w2004.elements.BreakLine;
-import word.w2004.elements.ParagraphPiece;
-import word.w2004.style.ParagraphStyle;
 
 //@Controller
 @Controller
@@ -239,6 +231,7 @@ public class FileResourceController {
     }
 
     String ruta = "C:/Repositorio/Correspondencia/";
+    String rutaActa = "C:/Repositorio/Actas/";
     @Autowired
     CorrespondenciaFileService correspondenciaFileService;
 
@@ -910,5 +903,182 @@ public class FileResourceController {
             }
         }
     }
+    
+    @RequestMapping(value = "/ActaSesion", method = RequestMethod.POST)
+    public void createActaSesion(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse, @RequestParam("idSesion") String idSesion) throws DocumentException, IOException {
+        try {
 
+            String dirHojaRuta;
+            dirHojaRuta = rutaActa + idSesion;
+            File directorio = new File(dirHojaRuta);
+            ServletContext context = httpServletRequest.getServletContext();
+            String appPath = context.getRealPath("");
+            /*Se valida si existe, si no existe, se crea.*/
+            if (!directorio.exists()) {
+                try {
+                    directorio.mkdir();
+                } catch (SecurityException se) {
+                }
+            }
+
+            java.util.Date date = Date.from(Instant.now());
+            SerieCorrelativo serieCorrelativo = serieCorrelativoService.readNextSerieCorrelativo("ACT", date);
+
+            String nombreArchivo = serieCorrelativo.getId().getIdSerie() + serieCorrelativo.getUltimoUsado() + "(Borrador).doc";
+            dirHojaRuta = dirHojaRuta + "/" + nombreArchivo;
+
+//            List<Object> list = correspondenciaService.getDatosCarta(idSesion);
+
+//            ArrayList item = (ArrayList) list.get(0);
+//            String investigador = item.get(1) != null ? item.get(1).toString() : "";
+//            String protocolo = item.get(2) != null ? item.get(2).toString() : "";
+//            String titulo = item.get(3) != null ? item.get(3).toString() : "";
+//            String sede = item.get(4) != null ? item.get(4).toString() : "";
+
+            FormatosController controller = new FormatosController();
+
+            Date date1 = new Date();
+
+            String dia = "" + date1.getDate();
+            String mes = "";
+
+            switch (date1.getMonth()) {
+                case 0:
+                    mes = "enero";
+                    break;
+                case 1:
+                    mes = "febrero";
+                    break;
+                case 2:
+                    mes = "marzo";
+                    break;
+                case 3:
+                    mes = "abril";
+                    break;
+                case 4:
+                    mes = "mayo";
+                    break;
+                case 5:
+                    mes = "junio";
+                    break;
+                case 6:
+                    mes = "julio";
+                    break;
+                case 7:
+                    mes = "agosto";
+                    break;
+                case 8:
+                    mes = "setiembre";
+                    break;
+                case 9:
+                    mes = "octubre";
+                    break;
+                case 10:
+                    mes = "noviembre";
+                    break;
+                case 11:
+                    mes = "diciembre";
+                    break;
+            }
+
+            String anio = "" + (date1.getYear() + 1900);
+
+            List<Object> formatoLinea = formatoLineaService.getLineaFormatoByIdFormato("3");
+
+            for (int x = 0; x < formatoLinea.size(); x++) {
+                ArrayList linea = (ArrayList) formatoLinea.get(x);
+                if (linea.get(0) != null) {
+                    String nuevalinea = linea.get(0).toString();
+                    if (nuevalinea.contains("{dia}")) {
+                        nuevalinea = nuevalinea.replace("{dia}", dia);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{mes}")) {
+                        nuevalinea = nuevalinea.replace("{mes}", mes);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{anio}")) {
+                        nuevalinea = nuevalinea.replace("{anio}", anio);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{Correlativo}")) {
+                        nuevalinea = nuevalinea.replace("{Correlativo}", serieCorrelativo.getUltimoUsado());
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+//                    if (nuevalinea.contains("{investigadorPrincipal}")) {
+//                        nuevalinea = nuevalinea.replace("{investigadorPrincipal}", investigador);
+//                        linea.remove(0);
+//                        linea.add(0, nuevalinea);
+//                    }
+//                    if (nuevalinea.contains("{CentroInvestigacion}")) {
+//                        nuevalinea = nuevalinea.replace("{CentroInvestigacion}", sede);
+//                        linea.remove(0);
+//                        linea.add(0, nuevalinea);
+//                    }
+//                    if (nuevalinea.contains("{Protocolo}")) {
+//                        nuevalinea = linea.get(0).toString().replace("{Protocolo}", protocolo);
+//                        linea.remove(0);
+//                        linea.add(0, nuevalinea);
+//                    }
+//                    if (nuevalinea.contains("{tituloProtocolo}")) {
+//                        nuevalinea = nuevalinea.replace("{tituloProtocolo}", titulo);
+//                        linea.remove(0);
+//                        linea.add(0, nuevalinea);
+//                    }
+                    formatoLinea.remove(x);
+                    formatoLinea.add(x, linea);
+                }
+            }
+
+            controller.GenerarAprobacion(formatoLinea, dirHojaRuta);
+
+
+            String jsonSalida = jsonTransformer.toJson(serieCorrelativo);
+            serieCorrelativo.setFechaModificacion(date);
+            serieCorrelativoService.update(serieCorrelativo);
+            correspondenciaFileService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                correspondenciaFileService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(FileResourceController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+            }
+            System.out.println("catch 1" + ex.getMessage());
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                correspondenciaFileService.rollback();
+                System.out.println("try 3" + ex.getMessage());
+            } catch (IOException ex1) {
+                Logger.getLogger(FileResourceController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("catch 4" + ex1.getMessage());
+            } catch (Exception ee) {
+
+            }
+            System.out.println("catch 3" + ex.getMessage());
+        } finally {
+            try {
+                correspondenciaFileService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+    }
+    
 }
