@@ -6,6 +6,7 @@
 package com.comiteetica.hibernate.service.impl;
 
 import com.comiteetica.hibernate.dao.RegistroDao;
+import com.comiteetica.hibernate.model.Correspondencia;
 import com.comiteetica.hibernate.model.Registro;
 import com.comiteetica.hibernate.service.RegistroService;
 import com.comiteetica.persistencia.BussinessException;
@@ -86,7 +87,13 @@ public class RegistroServiceImpl implements RegistroService {
 
     @Transactional
     @Override
-    public List<Object>  validateRegistro(String idInvestigacion, String idInvestigador, String idSede) throws BussinessException {
+    public List<Object> validateRegistro(String idInvestigacion, String idInvestigador, String idSede) throws BussinessException {
         return registroDao.validateRegistro(idInvestigacion, idInvestigador, idSede);
+    }
+
+    @Transactional
+    @Override
+    public List<Correspondencia> validateRegistroEnCorrespondencia(String idRegistro) throws BussinessException {
+        return registroDao.validateRegistroEnCorrespondencia(idRegistro);
     }
 }

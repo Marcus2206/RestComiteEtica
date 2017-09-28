@@ -5,6 +5,7 @@
  */
 package com.comiteetica.hibernate.dao;
 
+import com.comiteetica.hibernate.model.Correspondencia;
 import com.comiteetica.hibernate.model.Registro;
 import java.util.List;
 
@@ -34,5 +35,7 @@ public interface RegistroDao {
 
     List<Object> getAllRegistroList();
 
-    public List<Object>  validateRegistro(String idInvestigacion, String idInvestigador, String idSede);
+    public List<Object> validateRegistro(String idInvestigacion, String idInvestigador, String idSede);
+
+    public List<Correspondencia> validateRegistroEnCorrespondencia(String idRegistro);
 }
