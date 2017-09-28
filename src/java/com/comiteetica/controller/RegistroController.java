@@ -347,7 +347,7 @@ public class RegistroController {
     }
     
     
-    @RequestMapping(value = "/RegistroEnCorrespondenciaValidate", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value = "/RegistroEnCorrespondenciaValidate", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
     public void validateRegistroEnCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
             @RequestParam("idRegistro") String idRegistro) {
         try {
