@@ -97,7 +97,9 @@ public class CroDaoImpl implements CroDao {
 
         String sqlQuery = "select	idCro,\n"
                 + "		nombre, \n"
-                + "		ruc \n"
+                + "		ruc,\n"
+                + "		razonSocial,\n"
+                + "		direccion\n"
                 + "from	cro\n"
                 + "order by Nombre";
 
@@ -138,7 +140,7 @@ public class CroDaoImpl implements CroDao {
                         + "from Cro p\n"
                         + "where p.idCro not in(select distinct pc.id.idCro \n"
                         + "from PatrocinadorCro pc\n"
-                        + "where pc.id.idPatrocinador='"+idPatrocinador+"')\n"
+                        + "where pc.id.idPatrocinador='" + idPatrocinador + "')\n"
                         + "");
 
         List<Object[]> list = query.list();

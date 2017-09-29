@@ -258,11 +258,11 @@ public class CorrespondenciaController {
     }
 
     @RequestMapping(value = "/CorrespondenciaDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deleteCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idCorrespondencia") String idCorrespondencia) {
         try {
 
             correspondeciaService.beginTransaction();
-            Correspondencia correspondencia = (Correspondencia) jsonTransformer.fromJson(jsonEntrada, Correspondencia.class);
+            Correspondencia correspondencia =correspondeciaService.read(idCorrespondencia);
             correspondeciaService.delete(correspondencia);
             correspondeciaService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);

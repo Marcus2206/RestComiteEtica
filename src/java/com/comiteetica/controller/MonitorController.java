@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -241,10 +242,10 @@ public class MonitorController {
     }
     
     @RequestMapping(value = "/MonitorDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteMonitor(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deleteMonitor(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idMonitor") String idMonitor) {
         try {
             monitorService.beginTransaction();
-            Monitor monitor = (Monitor) jsonTransformer.fromJson(jsonEntrada, Monitor.class);
+            Monitor monitor = monitorService.read(idMonitor);
             monitorService.delete(monitor);
             monitorService.commit();
             

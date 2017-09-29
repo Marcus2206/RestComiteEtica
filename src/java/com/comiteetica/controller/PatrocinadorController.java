@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -137,10 +138,10 @@ public class PatrocinadorController {
     }
 
     @RequestMapping(value = "/PatrocinadorDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deletePatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deletePatrocinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idPatrocinador") String idPatrocinador) {
         try {
             patrocinadorService.beginTransaction();
-            Patrocinador patrocinador = (Patrocinador) jsonTransformer.fromJson(jsonEntrada, Patrocinador.class);
+            Patrocinador patrocinador =patrocinadorService.read(idPatrocinador);
             patrocinadorService.delete(patrocinador);
             patrocinadorService.commit();
 

@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -241,10 +242,10 @@ public class CoordinadorController {
     }
     
     @RequestMapping(value = "/CoordinadorDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deleteCoordinador(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idCoordinador") String idCoordinador) {
         try {
             coordinadorService.beginTransaction();
-            Coordinador coordinador = (Coordinador) jsonTransformer.fromJson(jsonEntrada, Coordinador.class);
+            Coordinador coordinador =coordinadorService.read(idCoordinador);
             coordinadorService.delete(coordinador);
             coordinadorService.commit();
             

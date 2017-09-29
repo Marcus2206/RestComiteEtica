@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -247,10 +248,10 @@ public class CroController {
     }
 
     @RequestMapping(value = "/CroDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteCro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deleteCro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idCro") String idCro) {
         try {
             croService.beginTransaction();
-            Cro cro = (Cro) jsonTransformer.fromJson(jsonEntrada, Cro.class);
+            Cro cro =croService.read(idCro);
             croService.delete(cro);
             croService.commit();
 

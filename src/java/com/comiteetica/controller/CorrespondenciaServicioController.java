@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -143,19 +144,18 @@ public class CorrespondenciaServicioController {
         }
     }
 
-    @RequestMapping(value = "/CorrespondenciaServicioDelete/{idCorrespondencia}/{idCorrespondenciaServicio}", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteCorrespondenciaFile(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable String idCorrespondencia, @PathVariable int idCorrespondenciaServicio) {
+    @RequestMapping(value = "/CorrespondenciaServicioDelete", method = RequestMethod.PUT, consumes = "application/json")
+    public void deleteCorrespondenciaFile(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idCorrespondencia") String idCorrespondencia, @RequestParam("idCorrespondenciaServicio") int idCorrespondenciaServicio) {
         try {
-
             correspondenciaServicioService.beginTransaction();
             CorrespondenciaServicioId id = new CorrespondenciaServicioId(idCorrespondencia, idCorrespondenciaServicio);
             CorrespondenciaServicio correspondencia = correspondenciaServicioService.read(id);
-            String jsonSalida="1";
+            String jsonSalida = "1";
             if (correspondencia.getTransferido() == 0) {
                 correspondenciaServicioService.delete(correspondencia);
-                jsonSalida="1";
-            }else{
-                jsonSalida="0";
+                jsonSalida = "1";
+            } else {
+                jsonSalida = "0";
             }
 
             correspondenciaServicioService.commit();

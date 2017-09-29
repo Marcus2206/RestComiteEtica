@@ -345,7 +345,7 @@ public class UsuarioController {
     }
 
     @RequestMapping(value = "/UsuarioDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteUsuario(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam int idUsuario) {
+    public void deleteUsuario(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idUsuario") int idUsuario) {
         try {
 
             usuarioService.beginTransaction();

@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -249,10 +250,10 @@ public class InvestigacionController {
     }
     
     @RequestMapping(value = "/InvestigacionDelete", method = RequestMethod.PUT, consumes = "application/json")
-    public void deleteInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+    public void deleteInvestigacion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idInvestigacion") String idInvestigacion) {
         try {
             investigacionService.beginTransaction();
-            Investigacion investigacion = (Investigacion) jsonTransformer.fromJson(jsonEntrada, Investigacion.class);
+            Investigacion investigacion = investigacionService.read(idInvestigacion);
             investigacionService.delete(investigacion);
             String jsonSalida = jsonTransformer.toJson(investigacion); 
             investigacionService.commit();

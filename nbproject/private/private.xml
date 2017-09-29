@@ -13,9 +13,6 @@
             <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/impl/FormatoLineaDaoImpl.java</file>
             <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/impl/CorrespondenciaDaoImpl.java</file>
         </group>
-        <group name="ComiteGit">
-            <file>file:/C:/Users/rasec/Documents/NetBeansProjects/ComiteGit/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/impl/RegistroDaoImpl.java</file>
-            <file>file:/C:/Users/rasec/Documents/NetBeansProjects/ComiteGit/RestComiteEtica/src/java/com/comiteetica/controller/RegistroController.java</file>
-        </group>
+        <group name="ComiteGit"/>
     </open-files>
 </project-private>
