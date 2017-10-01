@@ -16,7 +16,7 @@
             <column name="IdRegistro" length="10" not-null="true" />
         </many-to-one>
         <property name="detalle" type="string">
-            <column name="Detalle" length="500" />
+            <column name="Detalle" length="2500" />
         </property>
         <property name="paramTipoBitacora" type="string">
             <column name="ParamTipoBitacora" length="4" />

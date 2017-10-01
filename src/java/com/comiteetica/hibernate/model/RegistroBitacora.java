@@ -82,7 +82,7 @@ public class RegistroBitacora implements java.io.Serializable {
         this.registro = registro;
     }
 
-    @Column(name = "Detalle", length = 500)
+    @Column(name = "Detalle", length = 2500)
     public String getDetalle() {
         return this.detalle;
     }

@@ -28,6 +28,7 @@ public class Pago implements java.io.Serializable {
     private String idPago;
     private BigDecimal costo;
     private String nroFactura;
+    private Date fechaControl;
     private String observacion;
     private String opcionFacturacion;
     private String idProveedor;
@@ -94,6 +95,16 @@ public class Pago implements java.io.Serializable {
         this.nroFactura = nroFactura;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "FechaControl", length = 23)
+    public Date getFechaControl() {
+        return this.fechaControl;
+    }
+
+    public void setFechaControl(Date fechaControl) {
+        this.fechaControl = fechaControl;
+    }
+
     @Column(name = "NroFactura", length = 5000)
     public String getCopiaCorreo() {
         return this.copiaCorreo;
@@ -112,7 +123,6 @@ public class Pago implements java.io.Serializable {
         this.observacion = observacion;
     }
 
-    
     @Column(name = "OpcionFacturacion", length = 2)
     public String getOpcionFacturacion() {
         return this.opcionFacturacion;
@@ -122,7 +132,7 @@ public class Pago implements java.io.Serializable {
         this.opcionFacturacion = opcionFacturacion;
     }
 
-     @Column(name = "IdProveedor", length = 10)
+    @Column(name = "IdProveedor", length = 10)
     public String getIdProveedor() {
         return this.idProveedor;
     }
@@ -130,7 +140,7 @@ public class Pago implements java.io.Serializable {
     public void setIdProveedor(String idProveedor) {
         this.idProveedor = idProveedor;
     }
-    
+
     @Column(name = "RazonSocial", length = 500)
     public String getRazonSocial() {
         return this.razonSocial;

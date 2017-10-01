@@ -120,7 +120,8 @@ public class RegistroBitacoraDaoImpl implements RegistroBitacoraDao {
         /*Fabrica Query*/
         String sqlQuery = "select	idRegistro,\n"
                 + "		idBitacora,\n"
-                + "		detalle,\n"
+               // + "		detalle,\n"
+                 + "	replace(replace(coalesce(detalle,''),CHAR(10),', '),CHAR(13),', ') detalle,\n"
                 + "		convert(varchar(10),fecha,103)fecha,\n"
                 + "		(select descripcion from parametrodetalle where idParametro='P013' and idParametroDetalle=paramTipoBitacora)paramTipoBitacora,\n"
                 + "		(case when paramTipoBitacora='PD04' then\n"

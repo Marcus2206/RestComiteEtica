@@ -101,6 +101,7 @@ public class PagoDaoImpl implements PagoDao {
         String sqlQuery = "select	idPago,\n"
                 + "		costo,\n"
                 + "		nroFactura,\n"
+                + "		convert(varchar(10),fechaControl,103)fechaControl,\n"
                 + "		observacion,\n"
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P009' and IdParametroDetalle=paramEstadoPago)paramEstadoPago\n"
                 + "from	pago \n"
