@@ -38,4 +38,6 @@ public interface RegistroDao {
     public List<Object> validateRegistro(String idInvestigacion, String idInvestigador, String idSede);
 
     public List<Correspondencia> validateRegistroEnCorrespondencia(String idRegistro);
+
+    public String getCorrespondenciasByRegistro(String idRegistro);
 }

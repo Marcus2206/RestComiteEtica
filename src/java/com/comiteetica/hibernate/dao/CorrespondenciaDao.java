@@ -36,7 +36,10 @@ public interface CorrespondenciaDao {
     List<Object> getAllCorrespondenciaList();
 
     public List<Object> getDatosHojaRuta(String idCorrespondencia);
+
     public List<Object> getDatosCarta(String idCorrespondencia);
 
     public List<Correspondencia> readByFechaSesion(Date fechaSesion);
+
+    public List<Object> readCorrespondenciasValidas(String idRegistro);
 }

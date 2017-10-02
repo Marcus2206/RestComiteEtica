@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -345,8 +346,7 @@ public class RegistroController {
         }
 
     }
-    
-    
+
     @RequestMapping(value = "/RegistroEnCorrespondenciaValidate", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
     public void validateRegistroEnCorrespondencia(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
             @RequestParam("idRegistro") String idRegistro) {
@@ -385,6 +385,61 @@ public class RegistroController {
             System.out.println("1er catch " + ex.getMessage());
 
         } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            try {
+                registroService.rollback();
+            } catch (Exception e) {
+            }
+            System.out.println("3er catch " + ex.getMessage());
+        } finally {
+            try {
+                registroService.close();
+            } catch (Exception e) {
+
+            }
+        }
+    }
+    
+    @RequestMapping(value = "/CorrespondenciasByRegistroGet", method = RequestMethod.GET)
+    @ResponseBody
+    public void getCorrespondenciasByRegistro(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+            @RequestParam("idRegistro") String idRegistro) {
+        try {
+            registroService.beginTransaction();//getCorrespondenciasByRegistro
+            String jsonSalida = "";
+            String correspondencias = registroService.getCorrespondenciasByRegistro(idRegistro);
+            
+            if (correspondencias != null) {
+                if (correspondencias.length() > 0) {
+                        jsonSalida = correspondencias;
+                }
+            }
+            registroService.commit();
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+//            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                registroService.rollback();
+                System.out.println("2do try ");
+            } catch (IOException ex1) {
+                Logger.getLogger(RegistroController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("2do catch " + ex1.getMessage());
+            } catch (Exception e) {
+
+            }
+            System.out.println("1er catch " + ex.getMessage());
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             try {
                 registroService.rollback();

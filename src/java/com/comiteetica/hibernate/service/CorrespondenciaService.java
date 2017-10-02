@@ -37,8 +37,10 @@ public interface CorrespondenciaService {
     public List<Object> getAllCorrespondenciaList() throws BussinessException;
 
     public List<Object> getDatosHojaRuta(String idCorrespondencia) throws BussinessException;
-    
+
     public List<Object> getDatosCarta(String idCorrespondencia) throws BussinessException;
 
     public List<Correspondencia> readByFechaSesion(Date fechaSesion) throws BussinessException;
+
+    public List<Object> readCorrespondenciasValidas(String idRegistro) throws BussinessException;
 }

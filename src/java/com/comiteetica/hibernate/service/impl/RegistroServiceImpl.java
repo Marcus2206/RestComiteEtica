@@ -96,4 +96,11 @@ public class RegistroServiceImpl implements RegistroService {
     public List<Correspondencia> validateRegistroEnCorrespondencia(String idRegistro) throws BussinessException {
         return registroDao.validateRegistroEnCorrespondencia(idRegistro);
     }
+
+    @Transactional
+    @Override
+    public String getCorrespondenciasByRegistro(String idRegistro) throws BussinessException {
+        return registroDao.getCorrespondenciasByRegistro(idRegistro);
+    }
+
 }

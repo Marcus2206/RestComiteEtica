@@ -203,4 +203,125 @@ public class RegistroDaoImpl implements RegistroDao {
         return correspondencias;
     }
 
+    /*
+    
+
+    
+     */
+    
+        @Override
+    public String getCorrespondenciasByRegistro(String idRegistro){        
+        List<String> list =sessionFactory.openSession().doReturningWork(new ReturningWork<List<String>>(){
+                @Override
+                public List<String> execute(Connection connection)throws SQLException {
+                    CallableStatement statement =null;
+                    List<String> correspondenciasList =new ArrayList<String>();
+                    String sqlString ="{call uspGetCorrespondenciasByRegistroHtml(?)}";
+                    statement = connection.prepareCall(sqlString);
+                    statement.setString(1, idRegistro);
+                    ResultSet resultSet = statement.executeQuery();
+                    while(resultSet.next()){
+                        String correspondencia ="";
+                        correspondencia=(resultSet.getString(1));
+                        correspondenciasList.add(correspondencia);
+                    }
+                    return correspondenciasList;
+                }
+        });
+        if(list!=null)
+            return list.get(0);
+        else
+            return null;
+    }
+    
+    /*
+    @Override
+    public List<Object> getCorrespondenciasByRegistro(String idRegistro) {
+
+        String sqlQuery = "declare @idCorrespondencia varchar(10)\n"
+                + "declare @nombreArchivo varchar(1000), @direccion varchar(1000)\n"
+                + "declare @idRegistro varchar(10)\n"
+                + "\n"
+                + "set @idRegistro='"+idRegistro+"'\n"
+                + "\n"
+                + "declare @tabla varchar(max)\n"
+                + "declare @filas varchar(max)\n"
+                + "declare @fila varchar(max)\n"
+                + "\n"
+                + "set @tabla='<div id=\"no-more-tables\" style=\"width: 100%;\">\n"
+                + "                            <table class=\"table-bordered table-striped table-condensed cf\" style=\"width: 100%;\">\n"
+                + "                                <thead class=\"cf\"> \n"
+                + "                                    <tr>\n"
+                + "                                        <td class=\"col-sm-9\">Nombre de Archivo</td>\n"
+                + "                                        <td class=\"col-sm-3\"></td>\n"
+                + "                                    </tr>\n"
+                + "                                </thead>\n"
+                + "                                <tbody>'\n"
+                + "set @fila=''\n"
+                + "set @filas=''\n"
+                + "declare i cursor for\n"
+                + "					select		distinct c.IdCorrespondencia\n"
+                + "					from		Correspondencia c\n"
+                + "					left join	CorrespondenciaServicio cs on c.IdCorrespondencia=cs.IdCorrespondencia\n"
+                + "					where		c.IdRegistro=@idRegistro and cs.ParamTipoServicio in ('PD10','PD07','PD08','PD06')\n"
+                + "open i \n"
+                + "fetch next from i into @idCorrespondencia\n"
+                + "	while @@FETCH_STATUS=0\n"
+                + "	begin\n"
+                + "		\n"
+                + "		declare ii cursor for\n"
+                + "								select	NombreArchivo,\n"
+                + "										Direccion \n"
+                + "								from	Correspondenciafile\n"
+                + "								where	IdCorrespondencia=@idCorrespondencia\n"
+                + "		open ii \n"
+                + "		fetch next from ii into @nombreArchivo, @direccion\n"
+                + "			while @@FETCH_STATUS=0\n"
+                + "			begin\n"
+                + "				set @fila=	'<tr><td data-title=\"Nombre\"  style=\"white-space: nowrap;overflow: hidden;text-overflow: ellipsis;\">'+\n"
+                + "							@nombreArchivo+\n"
+                + "							'</td><td ><a class=\"btn btn-primary\" ng-click=\"downloadFile('''+@direccion+''')\">\n"
+                + "							<i class=\"fa fa-eye\" aria-hidden=\"true\"></i><span class=\"hidden-xs\"></span></a></td></tr>'\n"
+                + "				fetch next from ii into @nombreArchivo, @direccion\n"
+                + "			end\n"
+                + "		close ii\n"
+                + "		deallocate ii\n"
+                + "\n"
+                + "		set @filas=@filas+@fila\n"
+                + "		fetch next from i into @idCorrespondencia\n"
+                + "	end\n"
+                + "close i\n"
+                + "deallocate i\n"
+                + "set @tabla=@tabla+@filas\n"
+                + "set @tabla=@tabla+'</tbody></table></div>'\n"
+                + "\n"
+                + "select @tabla";
+
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+                CallableStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                String sqlString = "{call uspGetJsonFromQuery(?)}";
+                statement = connection.prepareCall(sqlString);
+                statement.setString(1, sqlQuery);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getString(1));
+                }
+                return obj;
+            }
+        });
+
+        if (list != null) {
+            if (list.size() > 0) {
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+*/
 }
