@@ -6,11 +6,14 @@
 package com.comiteetica.controller;
 
 import com.comiteetica.hibernate.dao.CorrespondenciaDao;
+import com.comiteetica.hibernate.model.Correspondencia;
 import com.comiteetica.hibernate.model.CorrespondenciaFile;
 import com.comiteetica.hibernate.model.CorrespondenciaFileId;
+import com.comiteetica.hibernate.model.FechaSesion;
 import com.comiteetica.hibernate.model.SerieCorrelativo;
 import com.comiteetica.hibernate.service.CorrespondenciaFileService;
 import com.comiteetica.hibernate.service.CorrespondenciaService;
+import com.comiteetica.hibernate.service.FechaSesionService;
 import com.comiteetica.hibernate.service.FormatoLineaService;
 import com.comiteetica.hibernate.service.SerieCorrelativoService;
 import com.comiteetica.json.JsonTransformer;
@@ -231,7 +234,7 @@ public class FileResourceController {
     }
 
     String ruta = "C:/Repositorio/Correspondencia/";
-    String rutaActa = "C:/Repositorio/Actas/";
+    String rutaActa = "C:/Repositorio/Actas";
     @Autowired
     CorrespondenciaFileService correspondenciaFileService;
 
@@ -246,6 +249,9 @@ public class FileResourceController {
 
     @Autowired
     private SerieCorrelativoService serieCorrelativoService;
+    
+    @Autowired
+    private FechaSesionService fechaSesionService;
 
     private Font BOLD_UNDERLINED = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD | Font.UNDERLINE);
 
@@ -906,11 +912,13 @@ public class FileResourceController {
     
     @RequestMapping(value = "/ActaSesion", method = RequestMethod.POST)
     public void createActaSesion(HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse, @RequestParam("idSesion") String idSesion) throws DocumentException, IOException {
+            HttpServletResponse httpServletResponse, @RequestParam("idSesion") int idSesion) throws DocumentException, IOException {
         try {
-
+            
+            serieCorrelativoService.beginTransaction();
+            
             String dirHojaRuta;
-            dirHojaRuta = rutaActa + idSesion;
+            dirHojaRuta = rutaActa;
             File directorio = new File(dirHojaRuta);
             ServletContext context = httpServletRequest.getServletContext();
             String appPath = context.getRealPath("");
@@ -921,13 +929,25 @@ public class FileResourceController {
                 } catch (SecurityException se) {
                 }
             }
+            
+            List<FechaSesion> fechaSesions =fechaSesionService.getAllFechaSesion();
+            Date ffss= new Date();
+            
+            for (FechaSesion fechaSesion : fechaSesions) {
+                if(fechaSesion.getIdFechaSesion() == idSesion){
+                 ffss = fechaSesion.getFechaSesion();
+                }
+            }
 
             java.util.Date date = Date.from(Instant.now());
             SerieCorrelativo serieCorrelativo = serieCorrelativoService.readNextSerieCorrelativo("ACT", date);
 
-            String nombreArchivo = serieCorrelativo.getId().getIdSerie() + serieCorrelativo.getUltimoUsado() + "(Borrador).doc";
+            String nombreArchivo = serieCorrelativo.getId().getIdSerie() + "(Borrador).doc";
             dirHojaRuta = dirHojaRuta + "/" + nombreArchivo;
 
+            
+              List<Correspondencia> list = correspondenciaService.readByFechaSesion(ffss);
+            
 //            List<Object> list = correspondenciaService.getDatosCarta(idSesion);
 
 //            ArrayList item = (ArrayList) list.get(0);
@@ -939,9 +959,22 @@ public class FileResourceController {
             FormatosController controller = new FormatosController();
 
             Date date1 = new Date();
+            
+            int diasemana = date1.getDay();
 
             String dia = "" + date1.getDate();
             String mes = "";
+            String nombredia = "";
+            
+            switch(diasemana){
+                case 0 : nombredia = "Domingo";break;
+                case 1 : nombredia = "Lunes";break;
+                case 2 : nombredia = "Martes";break;
+                case 3 : nombredia = "Miercoles";break;
+                case 4 : nombredia = "Jueves";break;
+                case 5 : nombredia = "Viernes";break;
+                case 6 : nombredia = "Sabado";break;
+            }
 
             switch (date1.getMonth()) {
                 case 0:
@@ -990,6 +1023,13 @@ public class FileResourceController {
                 ArrayList linea = (ArrayList) formatoLinea.get(x);
                 if (linea.get(0) != null) {
                     String nuevalinea = linea.get(0).toString();
+                    
+                    if (nuevalinea.contains("{nombredia}")) {
+                        nuevalinea = nuevalinea.replace("{nombredia}", nombredia);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    
                     if (nuevalinea.contains("{dia}")) {
                         nuevalinea = nuevalinea.replace("{dia}", dia);
                         linea.remove(0);
@@ -1035,10 +1075,10 @@ public class FileResourceController {
                 }
             }
 
-            controller.GenerarAprobacion(formatoLinea, dirHojaRuta);
+            controller.GenerarActa(formatoLinea, dirHojaRuta,list);
 
 
-            String jsonSalida = jsonTransformer.toJson(serieCorrelativo);
+            String jsonSalida = jsonTransformer.toJson(dirHojaRuta);
             serieCorrelativo.setFechaModificacion(date);
             serieCorrelativoService.update(serieCorrelativo);
             correspondenciaFileService.commit();
