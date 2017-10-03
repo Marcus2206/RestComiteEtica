@@ -26,6 +26,9 @@
         <property name="paramEstado" type="string">
             <column name="ParamEstado" length="4" />
         </property>
+        <property name="nombreSede" type="string">
+            <column name="NombreSede" length="500" />
+        </property>
         <property name="observacion" type="string">
             <column name="Observacion" length="250" />
         </property>

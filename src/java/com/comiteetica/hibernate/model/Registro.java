@@ -31,6 +31,7 @@ public class Registro implements java.io.Serializable {
     private Investigacion investigacion;
     private Date fechaAprobacion;
     private Sede sede;
+    private String nombreSede;
     private Investigador investigador;
     private String paramEstado;
     private String observacion;
@@ -151,6 +152,15 @@ public class Registro implements java.io.Serializable {
 
     public void setParamEstado(String paramEstado) {
         this.paramEstado = paramEstado;
+    }
+
+    @Column(name = "NombreSede", length = 500)
+    public String getNombreSede() {
+        return this.nombreSede;
+    }
+
+    public void setNombreSede(String nombreSede) {
+        this.nombreSede = nombreSede;
     }
 
     @Column(name = "Observacion", length = 250)
