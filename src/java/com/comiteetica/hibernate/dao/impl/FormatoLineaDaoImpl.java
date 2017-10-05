@@ -120,6 +120,7 @@ public class FormatoLineaDaoImpl implements FormatoLineaDao {
         }
     }
 
+    @Override
     public List<Object> getFormatoLineaByidFormato(String idFormato) {
         Query query = sessionFactory.getCurrentSession()
                 .createSQLQuery("select a.contenido,\n"

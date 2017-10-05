@@ -103,8 +103,11 @@ public class PagoDaoImpl implements PagoDao {
                 + "		nroFactura,\n"
                 + "		convert(varchar(10),fechaControl,103)fechaControl,\n"
                 + "		observacion,\n"
-                + "		(select Descripcion from ParametroDetalle where IdParametro='P009' and IdParametroDetalle=paramEstadoPago)paramEstadoPago\n"
+                + "		razonSocial,\n"
+                + "		ruc,\n"
+                + "		pd.Descripcion paramEstadoPago\n"
                 + "from	pago \n"
+                +"left join ParametroDetalle pd on IdParametro='P009' and IdParametroDetalle=paramEstadoPago \n"
                 + "order by IdPago";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {

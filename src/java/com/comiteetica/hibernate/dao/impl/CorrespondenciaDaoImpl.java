@@ -148,8 +148,8 @@ where IdCorrespondencia='CRP1707098'
                 .createSQLQuery("select	convert(varchar(10),FechaCorrespondencia,103) fechaCorrespondencia,\n"
                         + "                        		coalesce(d.ApePaterno,'')+' '+coalesce(d.ApeMaterno,'')+' '+coalesce(d.Nombres,'')investigador,\n"
                         + "                        		coalesce(c.protocolo,'') protocolo,\n"
-                        + "								coalesce(c.titulo,'') titulo,\n"
-                        + "								coalesce(e.nombre,'') nombre,\n"
+                        + "			coalesce(c.titulo,'') titulo,\n"
+                        + "			coalesce(b.nombreSede,'') nombreSede,\n"
                         + "                        		coalesce(b.EquivalenciaCorrelativo,'') correlativo,\n"
                         + "                        		(select Descripcion from ParametroDetalle where IdParametro='P002' and IdParametroDetalle=ParamDistribucion) distribucion,\n"
                         + "                        		coalesce(otro,'')otro,\n"
@@ -158,7 +158,7 @@ where IdCorrespondencia='CRP1707098'
                         + "                        left join Registro b on a.IdRegistro=b.IdRegistro\n"
                         + "                        left join Investigacion c on c.IdInvestigacion=b.IdInvestigacion\n"
                         + "                        left join Investigador d on d.IdInvestigador=b.IdInvestigador\n"
-                        + "						left join Sede e on e.IdSede = b.IdSede\n"
+                        + "                        left join Sede e on e.IdSede = b.IdSede\n"
                         + "                        where IdCorrespondencia=:idCorrespondencia")
                 .setString("idCorrespondencia", idCorrespondencia);
 
