@@ -170,20 +170,62 @@ public class FormatosController {
 
         for (int x = 0; x < list.size(); x++) {
             Correspondencia corre = list.get(x);
+             String mes = "";
              
+
+            switch (corre.getFechaCorrespondencia().getMonth()) {
+                case 0:
+                    mes = "enero";
+                    break;
+                case 1:
+                    mes = "febrero";
+                    break;
+                case 2:
+                    mes = "marzo";
+                    break;
+                case 3:
+                    mes = "abril";
+                    break;
+                case 4:
+                    mes = "mayo";
+                    break;
+                case 5:
+                    mes = "junio";
+                    break;
+                case 6:
+                    mes = "julio";
+                    break;
+                case 7:
+                    mes = "agosto";
+                    break;
+                case 8:
+                    mes = "setiembre";
+                    break;
+                case 9:
+                    mes = "octubre";
+                    break;
+                case 10:
+                    mes = "noviembre";
+                    break;
+                case 11:
+                    mes = "diciembre";
+                    break;
+            }
+
+             String cadFecha = corre.getFechaCorrespondencia().getDate() + " de "+mes;
             ParagraphPiece lineaParrafo = 
                     ParagraphPiece.with((x+1)+".- "
-                            +corre.getRegistro().getInvestigador().getNombres()+" "
-                            +corre.getRegistro().getInvestigador().getApePaterno()+" "
-                            +corre.getRegistro().getInvestigador().getApeMaterno()+" nos hace llegar "
-                            +corre.getProtocolo()+ " "
-                            +corre.getRegistro().getInvestigacion().getTitulo()+ " para su revisión."
+                            +corre.getRegistro().getInvestigador().getNombres()+", carta recibida el  "
+                            +cadFecha+", nos hace llegar el informe de "
+                            +corre.getOtro()+" "
+                            +corre.getProtocolo()+ "."
             );
+            
             lineaParrafo.withStyle().font(Font.CALIBRI);
             lineaParrafo.withStyle().fontSize("11");
             Paragraph parrafo = new Paragraph(lineaParrafo);
+            ParagraphPiece lineaParrafo2 = ParagraphPiece.with("   "+corre.getParamDistribucion());
             myDoc.addEle(parrafo.create());
-            myDoc.addEle(BreakLine.times(1).create());
             myDoc.addEle(BreakLine.times(1).create());
             
         }
