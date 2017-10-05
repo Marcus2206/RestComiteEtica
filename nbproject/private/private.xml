@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group/>
-        <group name="ComiteGit"/>
         <group name="Comite de Etica">
             <file>file:/C:/Users/Felix/Documents/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/json/impl/JsonTransformerImplJackson.java</file>
+        </group>
+        <group name="ComiteGit">
+            <file>file:/C:/Users/rasec/Documents/NetBeansProjects/ComiteGit/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/impl/PagoDetalleDaoImpl.java</file>
+            <file>file:/C:/Users/rasec/Documents/NetBeansProjects/ComiteGit/RestComiteEtica/src/java/com/comiteetica/controller/PagoDetalleController.java</file>
         </group>
     </open-files>
 </project-private>

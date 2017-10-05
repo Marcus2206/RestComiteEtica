@@ -156,11 +156,13 @@ public class PagoDetalleDaoImpl implements PagoDetalleDao {
                 + "		a.idCorrespondenciaServicio,\n"
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=a.paramTipoServicio)nparamTipoServicio,\n"
                 + "		d.protocolo,\n"
-                + "		d.titulo\n"
+                + "		a.costo,\n"
+                + "		coalesce(e.ApePaterno,'')+' '+coalesce(e.ApeMaterno,'')+', '+coalesce(e.Nombres,'') nombreInvestigador\n"
                 + "from	PagoDetalle a\n"
-                + "inner join Correspondencia b on a.IdCorrespondencia=b.IdCorrespondencia\n"
-                + "inner join registro c on c.IdRegistro=b.IdRegistro\n"
-                + "inner join Investigacion d on d.IdInvestigacion=c.IdInvestigacion\n"
+                + "left join Correspondencia b on a.IdCorrespondencia=b.IdCorrespondencia\n"
+                + "left join registro c on c.IdRegistro=b.IdRegistro\n"
+                + "left join Investigacion d on d.IdInvestigacion=c.IdInvestigacion\n"
+                + "left join Investigador e on e.IdInvestigador=c.IdInvestigador\n"
                 + "where a.idPago='" + idPago + "'";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
