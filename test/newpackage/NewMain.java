@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import word.api.interfaces.IDocument;
@@ -30,6 +32,7 @@ import word.w2004.elements.Table;
 import word.w2004.elements.tableElements.TableEle;
 import word.w2004.style.Font;
 import word.w2004.style.HeadingStyle.Align;
+import word.w2004.style.ParagraphStyle;
 
 /**
  *
@@ -135,7 +138,7 @@ public class NewMain {
             detalleFormato[31][2] = "der";
             detalleFormato[31][3] = "";
         
-//            controller.GenerarAprobacion(detalleFormato,"d:/Repositorio/prueba.doc");
+            crearAprobacion(detalleFormato,"C:\\Users\\Felix\\OneDrive\\Documents\\prueba.doc");
             
 //
 //        IDocument myDoc = new Document2004();
@@ -372,6 +375,82 @@ public class NewMain {
 //
 ////TestUtils.createLocalDoc(myWord);
 ////        TestUtils.createLocalDoc(+myDoc.getContent());
+    }
+    
+    public static void crearAprobacion(String[][] detalleFormato,String Nombre){
+        IDocument myDoc = new Document2004();
+        // myDoc.setPageOrientationLandscape();
+        // default is Portrait be can be changed.
+        myDoc.encoding(Document2004.Encoding.ISO8859_1); //or ISO8859-1. Default is UTF-8
+        for (String[] linea : detalleFormato) {
+            if (null != linea[3]) {
+                switch (linea[3]) {
+                    case "BreakLine": {
+                        myDoc.addEle(BreakLine.times(1).create());
+                    }
+                    break;
+                    case "List": {
+
+                    }
+                    break;
+                    case "linea": {
+                        ParagraphPiece lineaParrafo = ParagraphPiece.with(linea[0]);
+                        lineaParrafo.withStyle().font(Font.CALIBRI);
+                        lineaParrafo.withStyle().fontSize("11");
+                        if (null != linea[1]) {
+                            StringTokenizer stilo = new StringTokenizer(linea[1], "-");
+                            while (stilo.hasMoreElements()) {
+                                switch (stilo.nextToken()) {
+                                    case "n":
+                                        lineaParrafo.withStyle().bold();
+                                        break;
+                                    case "c":
+                                        lineaParrafo.withStyle().italic();
+                                        break;
+                                    case "s":
+                                        lineaParrafo.withStyle().underline();
+                                        break;
+                                }
+                            }
+                        }
+                        Paragraph parrafo = new Paragraph(lineaParrafo);
+                        if (null != linea[2]) {
+                            switch (linea[2]) {
+                                case "izq":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.LEFT);
+                                    break;
+                                case "cen":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.CENTER);
+                                    break;
+                                case "der":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.RIGHT);
+                                    break;
+                                case "jus":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.JUSTIFIED);
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        myDoc.addEle(parrafo.create());
+                    }
+                    break;
+                }
+            }
+        }
+        String myWord = myDoc.getContent();
+        File fileObj = new File(Nombre);
+
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(fileObj);
+        } catch (FileNotFoundException e) {
+        }
+
+        writer.println(myWord);
+        writer.close();
+
     }
 
 }
