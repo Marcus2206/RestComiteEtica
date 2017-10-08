@@ -58,7 +58,7 @@ public class InvestigacionDaoImpl implements InvestigacionDao {
         Investigacion investigacion = (Investigacion) sessionFactory.getCurrentSession().get(Investigacion.class, idInvestigacion);
         Hibernate.initialize(investigacion.getPatrocinador());
         Hibernate.initialize(investigacion.getCro());
-        
+
         return investigacion;
     }
 
@@ -142,14 +142,17 @@ public class InvestigacionDaoImpl implements InvestigacionDao {
     public List<Object> getAllInvestigacionList() {
         /*Fabrica Query*/
         String sqlQuery = "select	idInvestigacion,\n"
-                + "		protocolo,\n"
-                + "		titulo,\n"
-                + "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P003' and pd.IdParametroDetalle=i.ParamEspecialidad)paramEspecialidad,\n"
-                + "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P005' and pd.IdParametroDetalle=i.ParamFase)paramFase,\n"
-                + "		(select Descripcion from ParametroDetalle pd where pd.IdParametro='P004' and pd.IdParametroDetalle=i.ParamTipoInvestigacion)paramTipoInvestigacion\n"
+                + "                 		protocolo,\n"
+                + "                 		titulo,\n"
+                + "                 		coalesce(e.descripcion,'')paramEspecialidad,\n"
+                + "                 		coalesce(f.descripcion,'')paramFase,\n"
+                + "                 		coalesce(ti.descripcion,'')paramTipoInvestigacion\n"
                 + "from	Investigacion i\n"
+                + "left join ParametroDetalle e on e.IdParametro='P003' and e.IdParametroDetalle=i.paramEspecialidad\n"
+                + "left join ParametroDetalle f on f.IdParametro='P005' and f.IdParametroDetalle=i.paramFase\n"
+                + "left join ParametroDetalle ti on ti.IdParametro='P004' and ti.IdParametroDetalle=i.paramTipoInvestigacion\n"
                 + "order by IdInvestigacion";
-        
+
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
             public List<Object> execute(Connection connection) throws SQLException {
@@ -176,4 +179,39 @@ public class InvestigacionDaoImpl implements InvestigacionDao {
             return null;
         }
     }
+
+    @Override
+    public List<Object> getAllInvestigacionSimbolos() {
+        /*Fabrica Query*/
+        String sqlQuery = "select	idSimbolo,\n"
+                + "		rtrim(ltrim(descripcion))descripcion \n"
+                + "from	simbolo order by idsimbolo asc";
+
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+                CallableStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                String sqlString = "{call uspGetJsonFromQuery(?)}";
+                statement = connection.prepareCall(sqlString);
+                statement.setString(1, sqlQuery);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getString(1));
+                }
+                return obj;
+            }
+        });
+
+        if (list != null) {
+            if (list.size() > 0) {
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
 }

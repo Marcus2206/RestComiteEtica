@@ -35,4 +35,6 @@ public interface InvestigacionDao {
     public void rollback();
 
     public List<Object> getAllInvestigacionList();
+
+    public List<Object> getAllInvestigacionSimbolos();
 }

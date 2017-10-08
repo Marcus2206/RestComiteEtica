@@ -101,33 +101,37 @@ public class RegistroDaoImpl implements RegistroDao {
     @Override
     public List<Object> getAllRegistroList() {
 
-        String sqlQuery = "select	r.idRegistro,\n"
-                + "        coalesce(CONVERt(varchar(10),r.fechaAprobacion,103),'')fechaAprobacion,\n"
-                + "        coalesce(Protocolo,'')protocolo,\n"
-                + "        coalesce(Titulo,'') titulo,\n"
-                + "        coalesce(r.nombreSede,'')nombreSede,\n"
-                + "        rtrim(ltrim(coalesce(iv.ApePaterno,'')+' '+coalesce(iv.ApeMaterno,'')+', '+coalesce(iv.Nombres,''))) nombreInvestigador,\n"
-                + "		pe.Descripcion paramEstado,\n"
-                + "		per.Descripcion paramEstadoRegistro,\n"
-                + "        r.observacion,\n"
-                + "        r.farmacoExperimental,\n"
-                + "        (case when r.placebo=0 then 'NO' when r.placebo=0 then 'SI' end)placebo,\n"
-                + "        r.pacienteEas,\n"
-                + "        r.easLocal,\n"
-                + "		noti.Descripcion paramNotificacion,\n"
-                + "        CONVERt(varchar(10),r.fechaEas,103)fechaEas,\n"
-                + "        r.visitaInspeccion,\n"
-                + "        (case when r.estudioNinos=0 then 'NO' when r.estudioNinos=0 then 'SI' end)estudioNinos,\n"
-                + "        r.visitaInspeccionIns,\n"
-                + "        r.equivalenciaCorrelativo\n"
-                + "from	Registro r\n"
-                + "left join Investigacion i on r.IdInvestigacion=i.IdInvestigacion\n"
-                + "left join Sede s on s.IdSede=r.IdSede\n"
-                + "left join Investigador iv on iv.IdInvestigador=r.IdInvestigador\n"
-                + "left join ParametroDetalle pe on pe.IdParametro='P006' and pe.IdParametroDetalle=r.paramEstado\n"
-                + "left join ParametroDetalle per on per.IdParametro='P012' and per.IdParametroDetalle=r.paramEstadoRegistro\n"
-                + "left join ParametroDetalle noti on noti.IdParametro='P007' and noti.IdParametroDetalle=r.paramNotificacion\n"
-                + "order by idRegistro asc";
+        String sqlQuery = "select		r.idRegistro,\n"
+                + "            coalesce(CONVERt(varchar(10),r.fechaAprobacion,103),'')fechaAprobacion,\n"
+                + "            coalesce(Protocolo,'')protocolo,\n"
+                + "            coalesce(Titulo,'') titulo,\n"
+                + "            coalesce(r.nombreSede,'')nombreSede,\n"
+                + "            rtrim(ltrim(coalesce(iv.ApePaterno,'')+' '+coalesce(iv.ApeMaterno,'')+', '+coalesce(iv.Nombres,''))) nombreInvestigador,\n"
+                + "            pe.Descripcion paramEstado,\n"
+                + "            per.Descripcion paramEstadoRegistro,\n"
+                + "            r.observacion,\n"
+                + "            r.farmacoExperimental,\n"
+                + "            (case when r.placebo=0 then 'NO' when r.placebo=0 then 'SI' end)placebo,\n"
+                + "            r.pacienteEas,\n"
+                + "            r.easLocal,\n"
+                + "            noti.Descripcion paramNotificacion,\n"
+                + "            CONVERt(varchar(10),r.fechaEas,103)fechaEas,\n"
+                + "            r.visitaInspeccion,\n"
+                + "            (case when r.estudioNinos=0 then 'NO' when r.estudioNinos=0 then 'SI' end)estudioNinos,\n"
+                + "            r.visitaInspeccionIns,\n"
+                + "            r.equivalenciaCorrelativo,\n"
+                + "			coalesce(ti.Descripcion,'')paramTipoInvestigacion,\n"
+                + "			coalesce(e.Descripcion,'')paramEspecialidad\n"
+                + "from		Registro r\n"
+                + "left join	Investigacion i on r.IdInvestigacion=i.IdInvestigacion\n"
+                + "left join	Sede s on s.IdSede=r.IdSede\n"
+                + "left join	Investigador iv on iv.IdInvestigador=r.IdInvestigador\n"
+                + "left join	ParametroDetalle pe on pe.IdParametro='P006' and pe.IdParametroDetalle=r.paramEstado\n"
+                + "left join	ParametroDetalle per on per.IdParametro='P012' and per.IdParametroDetalle=r.paramEstadoRegistro\n"
+                + "left join	ParametroDetalle noti on noti.IdParametro='P007' and noti.IdParametroDetalle=r.paramNotificacion\n"
+                + "left join	ParametroDetalle ti on ti.IdParametro='P004' and ti.IdParametroDetalle=i.paramTipoInvestigacion\n"
+                + "left join	ParametroDetalle e on e.IdParametro='P003' and e.IdParametroDetalle=i.ParamEspecialidad\n"
+                + "order by	idRegistro asc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
@@ -208,32 +212,32 @@ public class RegistroDaoImpl implements RegistroDao {
 
     
      */
-    
-        @Override
-    public String getCorrespondenciasByRegistro(String idRegistro){        
-        List<String> list =sessionFactory.openSession().doReturningWork(new ReturningWork<List<String>>(){
-                @Override
-                public List<String> execute(Connection connection)throws SQLException {
-                    CallableStatement statement =null;
-                    List<String> correspondenciasList =new ArrayList<String>();
-                    String sqlString ="{call uspGetCorrespondenciasByRegistroHtml(?)}";
-                    statement = connection.prepareCall(sqlString);
-                    statement.setString(1, idRegistro);
-                    ResultSet resultSet = statement.executeQuery();
-                    while(resultSet.next()){
-                        String correspondencia ="";
-                        correspondencia=(resultSet.getString(1));
-                        correspondenciasList.add(correspondencia);
-                    }
-                    return correspondenciasList;
+    @Override
+    public String getCorrespondenciasByRegistro(String idRegistro) {
+        List<String> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<String>>() {
+            @Override
+            public List<String> execute(Connection connection) throws SQLException {
+                CallableStatement statement = null;
+                List<String> correspondenciasList = new ArrayList<String>();
+                String sqlString = "{call uspGetCorrespondenciasByRegistroHtml(?)}";
+                statement = connection.prepareCall(sqlString);
+                statement.setString(1, idRegistro);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    String correspondencia = "";
+                    correspondencia = (resultSet.getString(1));
+                    correspondenciasList.add(correspondencia);
                 }
+                return correspondenciasList;
+            }
         });
-        if(list!=null)
+        if (list != null) {
             return list.get(0);
-        else
+        } else {
             return null;
+        }
     }
-    
+
     /*
     @Override
     public List<Object> getCorrespondenciasByRegistro(String idRegistro) {
@@ -323,5 +327,5 @@ public class RegistroDaoImpl implements RegistroDao {
             return null;
         }
     }
-*/
+     */
 }

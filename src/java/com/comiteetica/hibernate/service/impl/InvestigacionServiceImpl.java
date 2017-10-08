@@ -19,35 +19,35 @@ import org.springframework.transaction.annotation.Transactional;
  * @author rasec
  */
 @Service
-public class InvestigacionServiceImpl implements InvestigacionService{
+public class InvestigacionServiceImpl implements InvestigacionService {
 
     @Autowired
     private InvestigacionDao investigacionDao;
-    
+
     @Transactional
     @Override
-    public void beginTransaction() throws BussinessException{
+    public void beginTransaction() throws BussinessException {
         investigacionDao.beginTransaction();
     }
-    
+
     @Transactional
     @Override
-    public void commit() throws BussinessException{
+    public void commit() throws BussinessException {
         investigacionDao.commit();
     }
-    
+
     @Transactional
     @Override
-    public void close() throws BussinessException{
+    public void close() throws BussinessException {
         investigacionDao.close();
     }
-    
+
     @Transactional
     @Override
-    public void rollback() throws BussinessException{
+    public void rollback() throws BussinessException {
         investigacionDao.rollback();
     }
-    
+
     @Transactional
     @Override
     public void create(Investigacion investigacion) throws BussinessException {
@@ -59,7 +59,7 @@ public class InvestigacionServiceImpl implements InvestigacionService{
     public Investigacion read(String idInvestigacion) throws BussinessException {
         return investigacionDao.read(idInvestigacion);
     }
-    
+
     @Transactional
     @Override
     public Investigacion readInvestigacion(String idInvestigacion) throws BussinessException {
@@ -83,11 +83,17 @@ public class InvestigacionServiceImpl implements InvestigacionService{
     public List<Investigacion> getAllInvestigacion() throws BussinessException {
         return investigacionDao.getAllInvestigacion();
     }
-    
+
     @Transactional
     @Override
     public List<Object> getAllInvestigacionList() throws BussinessException {
         return investigacionDao.getAllInvestigacionList();
     }
-    
+
+    @Transactional
+    @Override
+    public List<Object> getAllInvestigacionSimbolos() throws BussinessException {
+        return investigacionDao.getAllInvestigacionSimbolos();
+    }
+
 }
