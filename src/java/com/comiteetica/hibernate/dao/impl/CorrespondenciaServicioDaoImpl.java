@@ -123,11 +123,13 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=a.paramTipoServicio)nparamTipoServicio,\n"
                 + "		a.paramTipoServicio,\n"
                 + "		a.costo,\n"
-                + "		a.observacion\n"
+                + "		a.observacion,\n"
+                +"                       coalesce(e.ApePaterno,'')+' '+coalesce(e.ApeMaterno,'')+' '+coalesce(e.Nombres,'') investigador \n"
                 + "from	correspondenciaServicio a\n"
                 + "inner join Correspondencia b on a.IdCorrespondencia=b.IdCorrespondencia\n"
                 + "inner join Registro c on b.IdRegistro=c.IdRegistro\n"
                 + "inner join Investigacion d on c.IdInvestigacion=d.IdInvestigacion\n"
+                + "inner join Investigador e on e.IdInvestigador=c.IdInvestigador\n"
                 + "where a.Transferido=0\n"
                 + "order by a.idCorrespondencia, a.IdCorrespondenciaServicio desc";
         

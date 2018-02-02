@@ -146,6 +146,7 @@ public class RegistroController {
             java.util.Date date = Date.from(Instant.now());
             SerieCorrelativo seriecorrelativo = serieCorrelativoService.readNextSerieCorrelativo("REG", date);
             registro.setIdRegistro(seriecorrelativo.getId().getIdSerie() + seriecorrelativo.getUltimoUsado());
+            registro.setEquivalenciaCorrelativo(registro.getIdRegistro());
             registroService.create(registro);
             seriecorrelativo.setFechaModificacion(date);
             serieCorrelativoService.update(seriecorrelativo);

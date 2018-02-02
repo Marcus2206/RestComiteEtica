@@ -422,7 +422,7 @@ public class FileResourceController {
 
             /*Revisado por: */
             parrafo = new Paragraph();
-            parrafo.add(new Chunk("Revisador por:                        Fecha", BOLD));
+            parrafo.add(new Chunk("Revisado por:                        Fecha", BOLD));
             parrafo.setAlignment(Element.ALIGN_RIGHT);
             addNewRectangulo(writer, d, 15f, 220f, 260f, 10f, parrafo);
 
