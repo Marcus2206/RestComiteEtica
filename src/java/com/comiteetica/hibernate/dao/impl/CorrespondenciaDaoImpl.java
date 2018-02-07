@@ -191,6 +191,7 @@ where IdCorrespondencia='CRP1707098'
                 + "                 		coalesce(c.fechaCorrespondencia,'') fechaCorrespondencia,\n"
                 + "                 		coalesce(c.fechaCarta,'') fechaCarta,\n"
                 + "                 		coalesce(c.idRegistro,'') idRegistro,\n"
+                
                 + "                 		coalesce(c.equivalenciaCorrelativo,'') equivalenciaCorrelativo,\n"
                 + "                 		coalesce(b.Descripcion,'') paramTipoServicio,\n"
                 + "                 		coalesce(c.otro,'') otro,\n"

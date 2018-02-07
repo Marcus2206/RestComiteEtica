@@ -5,5 +5,12 @@
         <group name="ComiteGit">
             <file>file:/C:/Users/rasec/Documents/NetBeansProjects/ComiteGit/RestComiteEtica/web/index.html</file>
         </group>
+        <group name="Prisma">
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/controller/CorrespondenciaController.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/service/CorrespondenciaService.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/CorrespondenciaDao.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/impl/CorrespondenciaDaoImpl.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/service/impl/CorrespondenciaServiceImpl.java</file>
+        </group>
     </open-files>
 </project-private>
