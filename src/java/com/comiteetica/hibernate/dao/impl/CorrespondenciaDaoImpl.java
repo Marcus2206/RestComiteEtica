@@ -184,24 +184,26 @@ where IdCorrespondencia='CRP1707098'
     @Override
     public List<Object> getAllCorrespondenciaList() {
 
-        String sqlQuery = "select 	c.idCorrespondencia,\n"
-                + "                 		coalesce(c.correlativoInterno,'') correlativoInterno,\n"
-//                + "	replace(replace(replace(replace(coalesce(protocolo,''),CHAR(10),', '),CHAR(13),', '),'/','-'),':','.-') protocolo,\n"
-                + "                 		coalesce(c.protocolo,'') protocolo,\n"
-                + "                 		coalesce(c.fechaCorrespondencia,'') fechaCorrespondencia,\n"
-                + "                 		coalesce(c.fechaCarta,'') fechaCarta,\n"
-                + "                 		coalesce(c.idRegistro,'') idRegistro,\n"
-                + "                 		coalesce(c.equivalenciaCorrelativo,'') equivalenciaCorrelativo,\n"
-                + "                 		coalesce(b.Descripcion,'') paramTipoServicio,\n"
-                + "                 		coalesce(c.otro,'') otro,\n"
-                + "                 		coalesce(a.Descripcion,'') paramDistribucion,\n"
-                + "                 		coalesce(convert(varchar(10),c.fechaSesion,103),'') fechaSesion,\n"
-                + "                 		cast(coalesce(c.enviarCorreo,0) as int)enviarCorreo,\n"
-                + "                 		cast(coalesce(c.enviado,0) as int )enviado\n"
-                + "from	Correspondencia c\n"
-                + "left join ParametroDetalle a on a.IdParametro='P002' and a.IdParametroDetalle=paramDistribucion \n"
-                + "left join ParametroDetalle b on a.IdParametro='P001' and a.IdParametroDetalle=paramTipoServicio \n"
-                + "order by idCorrespondencia";
+        String sqlQuery = "select 		c.idCorrespondencia,\n" +
+                                        "			coalesce(c.correlativoInterno,'') correlativoInterno,\n" +
+                                        "			coalesce(e.ApePaterno,'')+' '+coalesce(e.ApeMaterno,'')+''+coalesce(e.Nombres,'') nombreInvestigador,\n" +
+                                        "			coalesce(c.protocolo,'') protocolo,\n" +
+                                        "			coalesce(c.fechaCorrespondencia,'') fechaCorrespondencia,\n" +
+                                        "			coalesce(c.fechaCarta,'') fechaCarta,\n" +
+                                        "			coalesce(c.idRegistro,'') idRegistro,    \n" +
+                                        "			coalesce(c.equivalenciaCorrelativo,'') equivalenciaCorrelativo,\n" +
+                                        "			coalesce(b.Descripcion,'') paramTipoServicio,\n" +
+                                        "			coalesce(c.otro,'') otro,\n" +
+                                        "			coalesce(a.Descripcion,'') paramDistribucion,\n" +
+                                        "			coalesce(convert(varchar(10),c.fechaSesion,103),'') fechaSesion,\n" +
+                                        "			cast(coalesce(c.enviarCorreo,0) as int)enviarCorreo,\n" +
+                                        "			cast(coalesce(c.enviado,0) as int )enviado\n" +
+                                        "from		Correspondencia c\n" +
+                                        "left join	ParametroDetalle a on a.IdParametro='P002' and a.IdParametroDetalle=paramDistribucion \n" +
+                                        "left join	ParametroDetalle b on a.IdParametro='P001' and a.IdParametroDetalle=paramTipoServicio \n" +
+                                        "left join	Registro d on c.IdRegistro=d.IdRegistro\n" +
+                                        "left join	Investigador e on e.IdInvestigador=d.IdInvestigador\n" +
+                                        "order by	idCorrespondencia";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
@@ -238,10 +240,61 @@ where IdCorrespondencia='CRP1707098'
                 .setDate("fechaSesion", fechaSesion);
         List<Correspondencia> correspondencias = query.list();
         return correspondencias;
+    }
+    
+    @Override
+    public List<Object> getAllcorrespondenciaByFechaSesion(Date fechaSesion) {
 
-//        Correspondencia correspondencia = (Correspondencia) sessionFactory.getCurrentSession().get(Correspondencia.class, idCorrespondencia);
-//        Hibernate.initialize(correspondencia.getRegistro());
-//        return correspondencia;
+        String sfecha="";
+        
+         sfecha=fechaSesion.getDate()+"/"+(fechaSesion.getMonth()+1)+"/"+(fechaSesion.getYear()+1900);
+         System.out.println("fecha: "+sfecha);
+        String sqlQuery = "select 		c.idCorrespondencia,\n" +
+                                        "			coalesce(c.correlativoInterno,c.idCorrespondencia,'') correlativoInterno,\n" +
+                                        "			coalesce(e.ApePaterno,'')+' '+coalesce(e.ApeMaterno,'')+''+coalesce(e.Nombres,'') nombreInvestigador,\n" +
+                                        "			coalesce(c.protocolo,'') protocolo,\n" +
+                                        "			coalesce(c.fechaCorrespondencia,'') fechaCorrespondencia,\n" +
+                                        "			coalesce(c.fechaCarta,'') fechaCarta,\n" +
+                                        "			coalesce(c.idRegistro,'') idRegistro,    \n" +
+                                        "			coalesce(c.equivalenciaCorrelativo,'') equivalenciaCorrelativo,\n" +
+                                        "			coalesce(b.Descripcion,'') paramTipoServicio,\n" +
+                                        "			coalesce(c.otro,'') otro,\n" +
+                                        "			coalesce(a.Descripcion,'') paramDistribucion,\n" +
+                                        "			coalesce(convert(varchar(10),c.fechaSesion,103),'') fechaSesion,\n" +
+                                        "			coalesce(c.otro,'') otro \n" +
+                                        "from		Correspondencia c\n" +
+                                        "left join	ParametroDetalle a on a.IdParametro='P002' and a.IdParametroDetalle=paramDistribucion \n" +
+                                        "left join	ParametroDetalle b on a.IdParametro='P001' and a.IdParametroDetalle=paramTipoServicio \n" +
+                                        "left join	Registro d on c.IdRegistro=d.IdRegistro\n" +
+                                        "left join	Investigador e on e.IdInvestigador=d.IdInvestigador\n" +
+                                        "where            c.fechaSesion=cast('"+sfecha+"' as datetime)  \n"+
+                                        "order by	idCorrespondencia";
+
+        List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
+            @Override
+            public List<Object> execute(Connection connection) throws SQLException {
+                CallableStatement statement = null;
+                List<Object> obj = new ArrayList<Object>();
+                String sqlString = "{call uspGetJsonFromQuery(?)}";
+                statement = connection.prepareCall(sqlString);
+                statement.setString(1, sqlQuery);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    obj.add(resultSet.getString(1));
+                }
+                return obj;
+            }
+        });
+
+        if (list != null) {
+            if (list.size() > 0) {
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override

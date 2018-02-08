@@ -43,4 +43,6 @@ public interface CorrespondenciaService {
     public List<Correspondencia> readByFechaSesion(Date fechaSesion) throws BussinessException;
 
     public List<Object> readCorrespondenciasValidas(String idRegistro) throws BussinessException;
+    
+    public List<Object> getAllcorrespondenciaByFechaSesion(Date fechaSesion)  throws BussinessException;
 }

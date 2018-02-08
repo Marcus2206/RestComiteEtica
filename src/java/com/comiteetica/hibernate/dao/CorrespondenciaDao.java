@@ -42,4 +42,6 @@ public interface CorrespondenciaDao {
     public List<Correspondencia> readByFechaSesion(Date fechaSesion);
 
     public List<Object> readCorrespondenciasValidas(String idRegistro);
+    
+    public List<Object> getAllcorrespondenciaByFechaSesion(Date fechaSesion);
 }

@@ -235,6 +235,7 @@ public class FileResourceController {
 
     String ruta = "C:/Repositorio/Correspondencia/";
     String rutaActa = "C:/Repositorio/Actas";
+    String rutaActaCierre = "C:/Repositorio/ActasCierre";
     @Autowired
     CorrespondenciaFileService correspondenciaFileService;
 
@@ -249,7 +250,7 @@ public class FileResourceController {
 
     @Autowired
     private SerieCorrelativoService serieCorrelativoService;
-    
+
     @Autowired
     private FechaSesionService fechaSesionService;
 
@@ -724,6 +725,65 @@ public class FileResourceController {
         }
     }
 
+    @RequestMapping(value = "/ActaCierre", method = RequestMethod.POST)
+    public void createActaCierre(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse, @RequestParam("idRegistro") String idRegistro) throws DocumentException, IOException {
+
+        try {
+            serieCorrelativoService.beginTransaction();
+
+            String dirHojaRuta;
+            dirHojaRuta = rutaActaCierre;
+            File directorio = new File(dirHojaRuta);
+            ServletContext context = httpServletRequest.getServletContext();
+            String appPath = context.getRealPath("");
+            /*Se valida si existe, si no existe, se crea.*/
+            if (!directorio.exists()) {
+                try {
+                    directorio.mkdir();
+                } catch (SecurityException se) {
+                }
+            }
+            
+            java.util.Date date = Date.from(Instant.now());
+            SerieCorrelativo serieCorrelativo = serieCorrelativoService.readNextSerieCorrelativo("CEI", date);
+
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                correspondenciaFileService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(FileResourceController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+            }
+            System.out.println("catch 1" + ex.getMessage());
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                correspondenciaFileService.rollback();
+                System.out.println("try 3" + ex.getMessage());
+            } catch (IOException ex1) {
+                Logger.getLogger(FileResourceController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("catch 4" + ex1.getMessage());
+            } catch (Exception ee) {
+
+            }
+            System.out.println("catch 3" + ex.getMessage());
+        } finally {
+            try {
+                correspondenciaFileService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+    }
+
     @RequestMapping(value = "/CartaObservacion", method = RequestMethod.POST)
     public void createCartaObservacion(HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse, @RequestParam("idCorrespondencia") String idCorrespondencia) throws DocumentException, IOException {
@@ -909,14 +969,14 @@ public class FileResourceController {
             }
         }
     }
-    
+
     @RequestMapping(value = "/ActaSesion", method = RequestMethod.POST)
     public void createActaSesion(HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse, @RequestParam("idSesion") int idSesion) throws DocumentException, IOException {
         try {
-            
+
             serieCorrelativoService.beginTransaction();
-            
+
             String dirHojaRuta;
             dirHojaRuta = rutaActa;
             File directorio = new File(dirHojaRuta);
@@ -929,13 +989,13 @@ public class FileResourceController {
                 } catch (SecurityException se) {
                 }
             }
-            
-            List<FechaSesion> fechaSesions =fechaSesionService.getAllFechaSesion();
-            Date ffss= new Date();
-            
+
+            List<FechaSesion> fechaSesions = fechaSesionService.getAllFechaSesion();
+            Date ffss = new Date();
+
             for (FechaSesion fechaSesion : fechaSesions) {
-                if(fechaSesion.getIdFechaSesion() == idSesion){
-                 ffss = fechaSesion.getFechaSesion();
+                if (fechaSesion.getIdFechaSesion() == idSesion) {
+                    ffss = fechaSesion.getFechaSesion();
                 }
             }
 
@@ -945,35 +1005,46 @@ public class FileResourceController {
             String nombreArchivo = serieCorrelativo.getId().getIdSerie() + "(Borrador).doc";
             dirHojaRuta = dirHojaRuta + "/" + nombreArchivo;
 
-            
-              List<Correspondencia> list = correspondenciaService.readByFechaSesion(ffss);
-            
-//            List<Object> list = correspondenciaService.getDatosCarta(idSesion);
+            List<Correspondencia> list = correspondenciaService.readByFechaSesion(ffss);
 
+//            List<Object> list = correspondenciaService.getDatosCarta(idSesion);
 //            ArrayList item = (ArrayList) list.get(0);
 //            String investigador = item.get(1) != null ? item.get(1).toString() : "";
 //            String protocolo = item.get(2) != null ? item.get(2).toString() : "";
 //            String titulo = item.get(3) != null ? item.get(3).toString() : "";
 //            String sede = item.get(4) != null ? item.get(4).toString() : "";
-
             FormatosController controller = new FormatosController();
 
             Date date1 = new Date();
-            
+
             int diasemana = date1.getDay();
 
             String dia = "" + date1.getDate();
             String mes = "";
             String nombredia = "";
-            
-            switch(diasemana){
-                case 0 : nombredia = "Domingo";break;
-                case 1 : nombredia = "Lunes";break;
-                case 2 : nombredia = "Martes";break;
-                case 3 : nombredia = "Miercoles";break;
-                case 4 : nombredia = "Jueves";break;
-                case 5 : nombredia = "Viernes";break;
-                case 6 : nombredia = "Sabado";break;
+
+            switch (diasemana) {
+                case 0:
+                    nombredia = "Domingo";
+                    break;
+                case 1:
+                    nombredia = "Lunes";
+                    break;
+                case 2:
+                    nombredia = "Martes";
+                    break;
+                case 3:
+                    nombredia = "Miercoles";
+                    break;
+                case 4:
+                    nombredia = "Jueves";
+                    break;
+                case 5:
+                    nombredia = "Viernes";
+                    break;
+                case 6:
+                    nombredia = "Sabado";
+                    break;
             }
 
             switch (date1.getMonth()) {
@@ -1023,13 +1094,13 @@ public class FileResourceController {
                 ArrayList linea = (ArrayList) formatoLinea.get(x);
                 if (linea.get(0) != null) {
                     String nuevalinea = linea.get(0).toString();
-                    
+
                     if (nuevalinea.contains("{nombredia}")) {
                         nuevalinea = nuevalinea.replace("{nombredia}", nombredia);
                         linea.remove(0);
                         linea.add(0, nuevalinea);
                     }
-                    
+
                     if (nuevalinea.contains("{dia}")) {
                         nuevalinea = nuevalinea.replace("{dia}", dia);
                         linea.remove(0);
@@ -1075,8 +1146,7 @@ public class FileResourceController {
                 }
             }
 
-            controller.GenerarActa(formatoLinea, dirHojaRuta,list);
-
+            controller.GenerarActa(formatoLinea, dirHojaRuta, list);
 
             String jsonSalida = jsonTransformer.toJson(dirHojaRuta);
             serieCorrelativo.setFechaModificacion(date);
@@ -1120,5 +1190,5 @@ public class FileResourceController {
             }
         }
     }
-    
+
 }

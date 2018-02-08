@@ -109,4 +109,9 @@ public class CorrespondenciaServiceImpl implements CorrespondenciaService {
     public List<Object> readCorrespondenciasValidas(String idRegistro) throws BussinessException {
         return correspondenciaDao.readCorrespondenciasValidas(idRegistro);
     }
+        @Transactional
+    @Override
+        public List<Object> getAllcorrespondenciaByFechaSesion(Date fechaSesion)  throws BussinessException{
+            return correspondenciaDao.getAllcorrespondenciaByFechaSesion(fechaSesion);
+        }
 }
