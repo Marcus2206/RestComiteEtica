@@ -120,6 +120,8 @@ public class CorrespondenciaServicioDaoImpl implements CorrespondenciaServicioDa
                 + "		d.idInvestigacion,\n"
                 + "		d.protocolo,\n"
                 + "		d.titulo,\n"
+                + "             convert(varchar(10),b.fechaCorrespondencia,103) as fechaCorrespondencia,\n"
+                + "             convert(varchar(10),b.fechaCarta,103) as fechaCarta,\n"
                 + "		(select Descripcion from ParametroDetalle where IdParametro='P001' and IdParametroDetalle=a.paramTipoServicio)nparamTipoServicio,\n"
                 + "		a.paramTipoServicio,\n"
                 + "		a.costo,\n"

@@ -262,7 +262,7 @@ public class CorrespondenciaController {
         try {
 
             correspondeciaService.beginTransaction();
-            Correspondencia correspondencia =correspondeciaService.read(idCorrespondencia);
+            Correspondencia correspondencia = correspondeciaService.read(idCorrespondencia);
             correspondeciaService.delete(correspondencia);
             correspondeciaService.commit();
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -363,10 +363,6 @@ public class CorrespondenciaController {
             List<Correspondencia> correspondencias = correspondeciaService.readByFechaSesion(fecha);
             correspondencias.stream().forEach((c) -> {
                 Hibernate.initialize(c.getRegistro());
-                System.out.println("Protocolo: " + c.getRegistro().getInvestigacion().getProtocolo());
-                System.out.println("Titulo: " + c.getRegistro().getInvestigacion().getTitulo());
-                System.out.println("Correspondencia: " + c.getIdCorrespondencia());
-                System.out.println("Fecha Carta Correspondencia: " + c.getFechaCarta());
                 try {
                     List<CorrespondenciaServicio> correspondenciaServicio = correspondeciaServicioService.readByIdCorrespondencia(c.getIdCorrespondencia());
                     correspondenciaServicio.stream().forEach((cs) -> {
@@ -374,7 +370,6 @@ public class CorrespondenciaController {
                             /*Servicios son IdParametro: P001, se efectúa la lectura con ese IdParametro*/
                             ParametroDetalleId id = new ParametroDetalleId("P001", cs.getParamTipoServicio());
                             ParametroDetalle parametroDetalle = parametroDetalleService.read(id);
-                            System.out.println("Tipo de Servicio:" + parametroDetalle.getDescripcion());
                         } catch (BussinessException ex) {
                             Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -421,11 +416,61 @@ public class CorrespondenciaController {
             }
         }
     }
-    
-    
-            
+
+    @RequestMapping(value = "/CorrespondenciaAllByFechaSesion", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+    public void correspondenciaAllByFechaSesion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("fechaSesion") String fechaSesion) {
+        try {
+            correspondeciaService.beginTransaction();
+            java.util.Date fecha = Date.from(Instant.ofEpochMilli(Long.parseLong(fechaSesion)));
+
+            String jsonSalida = "[]";
+            List<Object> correspondencias = correspondeciaService.getAllcorrespondenciaByFechaSesion(fecha);
+            if (correspondencias != null) {
+                if (correspondencias.size() > 0) {
+                    if (correspondencias.get(0) != null) {
+                        jsonSalida = "[" + ((String) correspondencias.get(0)) + "]";
+                    }
+                }
+            }
+
+            correspondeciaService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                correspondeciaService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(CorrespondenciaController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+
+            }
+
+        } catch (Exception ex) {
+            try {
+                correspondeciaService.rollback();
+            } catch (Exception ee) {
+
+            }
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            System.out.println("catch " + ex.getMessage());
+        } finally {
+            try {
+                correspondeciaService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+    }
+
     @RequestMapping(value = "/CorrespondenciasValidasRead", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
-    public void readCorrespondenciasValidas(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,@RequestParam("idRegistro") String idRegistro) {
+    public void readCorrespondenciasValidas(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestParam("idRegistro") String idRegistro) {
         try {
 
             correspondeciaService.beginTransaction();
@@ -478,5 +523,5 @@ public class CorrespondenciaController {
             }
         }
     }
-    
+
 }

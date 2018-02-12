@@ -106,7 +106,7 @@ public class RegistroDaoImpl implements RegistroDao {
                 + "            coalesce(Protocolo,'')protocolo,\n"
                 + "            coalesce(Titulo,'') titulo,\n"
                 + "            coalesce(r.nombreSede,'')nombreSede,\n"
-                + "            rtrim(ltrim(coalesce(iv.ApePaterno,'')+' '+coalesce(iv.ApeMaterno,'')+', '+coalesce(iv.Nombres,''))) nombreInvestigador,\n"
+                + "            rtrim(ltrim(coalesce(iv.ApePaterno,'')+' '+coalesce(iv.ApeMaterno,'')+' '+coalesce(iv.Nombres,''))) nombreInvestigador,\n"
                 + "            pe.Descripcion paramEstado,\n"
                 + "            per.Descripcion paramEstadoRegistro,\n"
                 + "            r.observacion,\n"

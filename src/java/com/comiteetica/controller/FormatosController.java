@@ -214,9 +214,9 @@ public class FormatosController {
             String cadFecha = corre.getFechaCorrespondencia().getDate() + " de " + mes;
             ParagraphPiece lineaParrafo
                     = ParagraphPiece.with((x + 1) + ".- "
-                            + corre.getRegistro().getInvestigador().getNombres() + ", carta recibida el  "
+                            + (corre.getRegistro().getInvestigador().getNombres() == null ? "":corre.getRegistro().getInvestigador().getNombres()) + ", carta recibida el  "
                             + cadFecha + ", nos hace llegar el informe de "
-                            + corre.getOtro() + " "
+                            + (corre.getOtro() == null ? "":corre.getOtro()) + " "
                             + corre.getProtocolo() + "."
                     );
 

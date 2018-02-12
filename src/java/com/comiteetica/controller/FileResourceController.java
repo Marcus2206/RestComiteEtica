@@ -748,6 +748,8 @@ public class FileResourceController {
             java.util.Date date = Date.from(Instant.now());
             SerieCorrelativo serieCorrelativo = serieCorrelativoService.readNextSerieCorrelativo("CEI", date);
 
+            
+            
         } catch (BussinessException ex) {
             List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
             String jsonSalida = jsonTransformer.toJson(bussinessMessage);

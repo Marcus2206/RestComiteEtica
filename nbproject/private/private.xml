@@ -2,12 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="ComiteGit">
-            <file>file:/C:/Users/rasec/Documents/NetBeansProjects/ComiteGit/RestComiteEtica/web/index.html</file>
-        </group>
+        <group name="ComiteGit"/>
         <group name="Prisma">
             <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/controller/FileResourceController.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/controller/CorrespondenciaController.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/controller/FechaSesionController.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/service/CorrespondenciaService.java</file>
             <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/dao/impl/CorrespondenciaDaoImpl.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/controller/FormatosController.java</file>
+            <file>file:/D:/Felix/Documentos/NetBeansProjects/Comite%20de%20Etica/RestComiteEtica/src/java/com/comiteetica/hibernate/service/impl/CorrespondenciaServiceImpl.java</file>
         </group>
     </open-files>
 </project-private>
