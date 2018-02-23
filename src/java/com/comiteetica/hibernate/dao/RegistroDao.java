@@ -40,4 +40,11 @@ public interface RegistroDao {
     public List<Correspondencia> validateRegistroEnCorrespondencia(String idRegistro);
 
     public String getCorrespondenciasByRegistro(String idRegistro);
+    
+    public List<Object> getDatosCierre(String idRegistro);
+    
+    public List<Object> getDatosVisita(String idRegistro);
+    
+    public List<Object> getDocumentosRegistro(String idRegistro);
+    
 }

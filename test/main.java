@@ -1,5 +1,8 @@
 
+import com.comiteetica.controller.FileResourceController;
+import com.itextpdf.text.DocumentException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /*
@@ -13,7 +16,10 @@ import java.util.ArrayList;
  * @author Felix
  */
 public class main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, DocumentException, IOException {
+        
+        
+        
 //        CreadorPDF creadorPDF = new CreadorPDF();
 //        String[] listaDocs = new String[2];
 //        listaDocs[0]="Protocolo enmienda 3 de fecha 17-mar-2017 (versión en español).";

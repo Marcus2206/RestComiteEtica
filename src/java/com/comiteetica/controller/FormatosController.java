@@ -18,6 +18,8 @@ import word.w2004.Document2004;
 import word.w2004.elements.BreakLine;
 import word.w2004.elements.Paragraph;
 import word.w2004.elements.ParagraphPiece;
+import word.w2004.elements.Table;
+import word.w2004.elements.tableElements.TableEle;
 import word.w2004.style.Font;
 import word.w2004.style.ParagraphStyle;
 
@@ -90,6 +92,189 @@ public class FormatosController {
                 }
             }
         }
+        String myWord = myDoc.getContent();
+        File fileObj = new File(Nombre);
+
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(fileObj);
+        } catch (FileNotFoundException e) {
+        }
+
+        writer.println(myWord);
+        writer.close();
+
+    }
+
+    public void GenerarCierre(List<Object> detalleFormato, String Nombre) throws UnsupportedEncodingException {
+        IDocument myDoc = new Document2004();
+        // myDoc.setPageOrientationLandscape();
+        // default is Portrait be can be changed.
+        myDoc.encoding(Document2004.Encoding.ISO8859_1); //or ISO8859-1. Default is UTF-8
+        for (int x = 0; x < detalleFormato.size(); x++) {
+            ArrayList linea = (ArrayList) detalleFormato.get(x);
+            if (null != linea.get(3)) {
+                switch (linea.get(3).toString()) {
+                    case "BreakLine": {
+                        myDoc.addEle(BreakLine.times(1).create());
+                    }
+                    break;
+                    case "List": {
+
+                    }
+                    break;
+                    case "linea": {
+                        ParagraphPiece lineaParrafo = ParagraphPiece.with(linea.get(0).toString());
+                        lineaParrafo.withStyle().font(Font.CALIBRI);
+                        lineaParrafo.withStyle().fontSize("11");
+                        if (null != linea.get(1)) {
+                            StringTokenizer stilo = new StringTokenizer(linea.get(1).toString(), "-");
+                            while (stilo.hasMoreElements()) {
+                                switch (stilo.nextToken()) {
+                                    case "n":
+                                        lineaParrafo.withStyle().bold();
+                                        break;
+                                    case "c":
+                                        lineaParrafo.withStyle().italic();
+                                        break;
+                                    case "s":
+                                        lineaParrafo.withStyle().underline();
+                                        break;
+                                }
+                            }
+                        }
+                        Paragraph parrafo = new Paragraph(lineaParrafo);
+                        if (null != linea.get(2)) {
+                            switch (linea.get(2).toString()) {
+                                case "izq":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.LEFT);
+                                    break;
+                                case "cen":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.CENTER);
+                                    break;
+                                case "der":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.RIGHT);
+                                    break;
+                                case "jus":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.JUSTIFIED);
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        myDoc.addEle(parrafo.create());
+                    }
+                    break;
+                }
+            }
+        }
+
+        String myWord = myDoc.getContent();
+        File fileObj = new File(Nombre);
+
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(fileObj);
+        } catch (FileNotFoundException e) {
+        }
+
+        writer.println(myWord);
+        writer.close();
+
+    }
+
+    public void GenerarActaInspeccion(List<Object> detalleFormato, String Nombre,List<Object> documentos) throws UnsupportedEncodingException {
+        IDocument myDoc = new Document2004();
+        // myDoc.setPageOrientationLandscape();
+        // default is Portrait be can be changed.
+        myDoc.encoding(Document2004.Encoding.ISO8859_1); //or ISO8859-1. Default is UTF-8
+        for (int x = 0; x < detalleFormato.size(); x++) {
+            ArrayList linea = (ArrayList) detalleFormato.get(x);
+            if (null != linea.get(3)) {
+                switch (linea.get(3).toString()) {
+                    case "BreakLine": {
+                        myDoc.addEle(BreakLine.times(1).create());
+                    }
+                    break;
+                    case "lista": {
+
+                        if (linea.get(0).toString().equals("lista_desviaciones")) {
+                            
+                            Table tbl = new Table();
+                            tbl.addTableEle(TableEle.TH, "item", "PACIENTE #", "FECHA","DESVIACIONES","Accion Correctiva");
+                            tbl.setRepeatTableHeaderOnEveryPage();
+
+                            tbl.addTableEle(TableEle.TD, "1", "1329", "12/12/12","Fue screen failure- en la vsita de screening no se encontró el suficiente soporte para evaular los criterios de inclusión, exclusión y medicación concomitante requeridos.","Ninguna");
+                            
+
+                            myDoc.addEle(tbl);
+                        } else if (linea.get(0).toString().equals("correspondencia_revisada")) {
+
+                            Table tbl = new Table();
+                            tbl.addTableEle(TableEle.TH, "DOCUMENTOS", "FECHA DE PRESENTACIÓN", "FECHA DE APROBACIÓN ");
+                            tbl.setRepeatTableHeaderOnEveryPage();
+                            
+                            for(int d = 0 ; d<documentos.size();d++){
+                                    ArrayList documento = (ArrayList) documentos.get(d);
+                                tbl.addTableEle(TableEle.TD, documento.get(0).toString(), documento.get(1).toString(), documento.get(2).toString());
+                            
+                            }
+                            
+
+                            myDoc.addEle(tbl);
+
+                        }
+
+                    }
+                    break;
+                    case "linea": {
+                        ParagraphPiece lineaParrafo = ParagraphPiece.with(linea.get(0).toString());
+                        lineaParrafo.withStyle().font(Font.CALIBRI);
+                        lineaParrafo.withStyle().fontSize("11");
+                        if (null != linea.get(1)) {
+                            StringTokenizer stilo = new StringTokenizer(linea.get(1).toString(), "-");
+                            while (stilo.hasMoreElements()) {
+                                switch (stilo.nextToken()) {
+                                    case "n":
+                                        lineaParrafo.withStyle().bold();
+                                        break;
+                                    case "c":
+                                        lineaParrafo.withStyle().italic();
+                                        break;
+                                    case "s":
+                                        lineaParrafo.withStyle().underline();
+                                        break;
+                                }
+                            }
+                        }
+                        Paragraph parrafo = new Paragraph(lineaParrafo);
+                        if (null != linea.get(2)) {
+                            switch (linea.get(2).toString()) {
+                                case "izq":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.LEFT);
+                                    break;
+                                case "cen":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.CENTER);
+                                    break;
+                                case "der":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.RIGHT);
+                                    break;
+                                case "jus":
+                                    parrafo.withStyle().align(ParagraphStyle.Align.JUSTIFIED);
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        myDoc.addEle(parrafo.create());
+                    }
+                    break;
+                }
+            }
+        }
+
         String myWord = myDoc.getContent();
         File fileObj = new File(Nombre);
 
@@ -214,9 +399,9 @@ public class FormatosController {
             String cadFecha = corre.getFechaCorrespondencia().getDate() + " de " + mes;
             ParagraphPiece lineaParrafo
                     = ParagraphPiece.with((x + 1) + ".- "
-                            + (corre.getRegistro().getInvestigador().getNombres() == null ? "":corre.getRegistro().getInvestigador().getNombres()) + ", carta recibida el  "
+                            + (corre.getRegistro().getInvestigador().getNombres() == null ? "" : corre.getRegistro().getInvestigador().getNombres()) + ", carta recibida el  "
                             + cadFecha + ", nos hace llegar el informe de "
-                            + (corre.getOtro() == null ? "":corre.getOtro()) + " "
+                            + (corre.getOtro() == null ? "" : corre.getOtro()) + " "
                             + corre.getProtocolo() + "."
                     );
 

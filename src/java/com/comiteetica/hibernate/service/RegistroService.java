@@ -41,4 +41,11 @@ public interface RegistroService {
     public List<Correspondencia> validateRegistroEnCorrespondencia(String idRegistro) throws BussinessException;
 
     public String getCorrespondenciasByRegistro(String idRegistro) throws BussinessException;
+    
+    public List<Object> getDatosCierre(String idRegistro) throws BussinessException;
+    
+    public List<Object> getDatosVisita(String idRegistro) throws BussinessException;
+    
+    public List<Object> getDocumentosRegistro(String idRegistro) throws BussinessException;
+    
 }

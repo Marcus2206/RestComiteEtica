@@ -111,13 +111,13 @@ public class RegistroDaoImpl implements RegistroDao {
                 + "            per.Descripcion paramEstadoRegistro,\n"
                 + "            r.observacion,\n"
                 + "            r.farmacoExperimental,\n"
-                + "            (case when r.placebo=0 then 'NO' when r.placebo=0 then 'SI' end)placebo,\n"
+                + "            (case when r.placebo=0 then 'NO' when r.placebo=1 then 'SI' end)placebo,\n"
                 + "            r.pacienteEas,\n"
                 + "            r.easLocal,\n"
                 + "            noti.Descripcion paramNotificacion,\n"
                 + "            CONVERt(varchar(10),r.fechaEas,103)fechaEas,\n"
                 + "            r.visitaInspeccion,\n"
-                + "            (case when r.estudioNinos=0 then 'NO' when r.estudioNinos=0 then 'SI' end)estudioNinos,\n"
+                + "            (case when r.estudioNinos=0 then 'NO' when r.estudioNinos=1 then 'SI' end)estudioNinos,\n"
                 + "            r.visitaInspeccionIns,\n"
                 + "            r.equivalenciaCorrelativo,\n"
                 + "			coalesce(ti.Descripcion,'')paramTipoInvestigacion,\n"
@@ -236,6 +236,111 @@ public class RegistroDaoImpl implements RegistroDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<Object> getDatosCierre(String idRegistro) {
+
+        Query query = sessionFactory.getCurrentSession()
+                .createSQLQuery("select a.idRegistro as registro, \n"
+                        + "	   b.Titulo as titulo, \n"
+                        + "	   b.Protocolo as protocolo, \n"
+                        + "	   concat(d.Nombres,' ', d.ApePaterno,'',d.ApeMaterno) as investigador,\n"
+                        + "	   e.Nombre as patrocinador,\n"
+                        + "	   f.Descripcion as Fase,\n"
+                        + "	   c.Nombre as Sede\n"
+                        + "from Registro a \n"
+                        + "	left join Investigacion b on a.IdInvestigacion = b.IdInvestigacion\n"
+                        + "	left join Investigador d on a.IdInvestigador = d.IdInvestigador\n"
+                        + "	left join Sede c on a.IdSede = c.IdSede\n"
+                        + "	left join Patrocinador e on b.IdPatrocinador = e.IdPatrocinador  \n"
+                        + "	left join ParametroDetalle f on b.ParamFase = f.IdParametroDetalle and f.IdParametro = 'P005'\n"
+                        + "where a.IdRegistro = :idRegistro")
+                .setString("idRegistro", idRegistro);
+
+        List<Object[]> list = query.list();
+        List<Object> l = new ArrayList();
+        list.stream().forEach((lista) -> {
+            List<Object> obj = new ArrayList();
+            obj.add((String) lista[0]);
+            obj.add((String) lista[1]);
+            obj.add((String) lista[2]);
+            obj.add((String) lista[3]);
+            obj.add((String) lista[4]);
+            obj.add((String) lista[5]);
+            obj.add((String) lista[6]);
+            l.add(obj);
+        });
+        return l;
+
+    }
+
+    @Override
+    public List<Object> getDatosVisita(String idRegistro) {
+
+        Query query = sessionFactory.getCurrentSession()
+                .createSQLQuery("select a.idRegistro as registro, \n"
+                        + "	   b.Titulo as titulo, \n"
+                        + "	   b.Protocolo as protocolo, \n"
+                        + "	   concat(d.Nombres,' ', d.ApePaterno,'',d.ApeMaterno) as investigador,\n"
+                        + "	   e.Nombre as patrocinador,\n"
+                        + "	   f.Descripcion as Fase,\n"
+                        + "	   c.Nombre as Sede,\n"
+                        + "	   a.FarmacoExperimental as farmaco,\n"
+                        + "	   g.Nombre as cro\n"
+                        + "from Registro a \n"
+                        + "	 left join Investigacion b on a.IdInvestigacion = b.IdInvestigacion\n"
+                        + "	 left join Investigador d on a.IdInvestigador = d.IdInvestigador\n"
+                        + "	 left join Sede c on a.IdSede = c.IdSede\n"
+                        + "	 left join Patrocinador e on b.IdPatrocinador = e.IdPatrocinador  \n"
+                        + "	 left join ParametroDetalle f on b.ParamFase = f.IdParametroDetalle and f.IdParametro = 'P005'\n"
+                        + "	 left join Cro g on g.IdCro = b.IdCro \n"
+                        + "where a.IdRegistro = :idRegistro")
+                .setString("idRegistro", idRegistro);
+
+        List<Object[]> list = query.list();
+        List<Object> l = new ArrayList();
+        list.stream().forEach((lista) -> {
+            List<Object> obj = new ArrayList();
+            obj.add((String) lista[0]);
+            obj.add((String) lista[1]);
+            obj.add((String) lista[2]);
+            obj.add((String) lista[3]);
+            obj.add((String) lista[4]);
+            obj.add((String) lista[5]);
+            obj.add((String) lista[6]);
+            obj.add((String) lista[7]);
+            obj.add((String) lista[8]);
+            l.add(obj);
+        });
+        return l;
+
+    }
+
+    @Override
+    public List<Object> getDocumentosRegistro(String idRegistro) {
+
+        Query query = sessionFactory.getCurrentSession()
+                .createSQLQuery("select b.NombreArchivo as documento,\n"
+                        + "	   Convert(char, a.FechaCarta, 103) as fecha_presentacion, \n"
+                        + "	   Convert(char, a.FechaSesion, 103) as fecha_aprobacion \n"
+                        + "from Correspondencia a\n"
+                        + "	right join CorrespondenciaFile b on a.IdCorrespondencia = b.IdCorrespondencia\n"
+                        + "where a.IdRegistro = :idRegistro \n"
+                        + "  and a.ParamDistribucion = 'PD04'")
+                .setString("idRegistro", idRegistro);
+
+        List<Object[]> list = query.list();
+        List<Object> l = new ArrayList();
+        list.stream().forEach((lista) -> {
+            List<Object> obj = new ArrayList();
+            obj.add((String) lista[0]);
+            obj.add((String) lista[1]);
+            obj.add((String) lista[2]);
+            l.add(obj);
+        });
+        return l;
+
     }
 
     /*

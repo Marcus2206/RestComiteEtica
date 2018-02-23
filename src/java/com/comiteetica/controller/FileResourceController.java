@@ -15,6 +15,7 @@ import com.comiteetica.hibernate.service.CorrespondenciaFileService;
 import com.comiteetica.hibernate.service.CorrespondenciaService;
 import com.comiteetica.hibernate.service.FechaSesionService;
 import com.comiteetica.hibernate.service.FormatoLineaService;
+import com.comiteetica.hibernate.service.RegistroService;
 import com.comiteetica.hibernate.service.SerieCorrelativoService;
 import com.comiteetica.json.JsonTransformer;
 import com.comiteetica.persistencia.BussinessException;
@@ -236,11 +237,15 @@ public class FileResourceController {
     String ruta = "C:/Repositorio/Correspondencia/";
     String rutaActa = "C:/Repositorio/Actas";
     String rutaActaCierre = "C:/Repositorio/ActasCierre";
+    String rutaActaInspeccion = "C:/Repositorio/ActasInspeccion";
     @Autowired
     CorrespondenciaFileService correspondenciaFileService;
 
     @Autowired
     FormatoLineaService formatoLineaService;
+    
+    @Autowired
+    RegistroService registroService;
 
     @Autowired
     CorrespondenciaService correspondenciaService;
@@ -735,6 +740,7 @@ public class FileResourceController {
             String dirHojaRuta;
             dirHojaRuta = rutaActaCierre;
             File directorio = new File(dirHojaRuta);
+            dirHojaRuta = rutaActaCierre+ "/PruebaCierre.doc";
             ServletContext context = httpServletRequest.getServletContext();
             String appPath = context.getRealPath("");
             /*Se valida si existe, si no existe, se crea.*/
@@ -745,10 +751,73 @@ public class FileResourceController {
                 }
             }
             
+            FormatosController controller = new FormatosController();
+            
             java.util.Date date = Date.from(Instant.now());
             SerieCorrelativo serieCorrelativo = serieCorrelativoService.readNextSerieCorrelativo("CEI", date);
-
             
+            List<Object> formatoLinea = formatoLineaService.getLineaFormatoByIdFormato("4");
+            
+            List<Object> datosCierre = registroService.getDatosCierre(idRegistro);
+            
+            ArrayList item = (ArrayList) datosCierre.get(0);
+            String registro = item.get(0) != null ? item.get(0).toString():"";
+            String titulo = item.get(1) != null ? item.get(1).toString():"";
+            String protocolo = item.get(2) != null ? item.get(2).toString():"";
+            String investigador = item.get(3) != null ? item.get(3).toString():"";
+            String patrocinador = item.get(4) != null ? item.get(4).toString():"";
+            String fase = item.get(5) != null ? item.get(5).toString():"";
+            String sede = item.get(6) != null ? item.get(6).toString():"";
+           
+            for(int x=0;x<formatoLinea.size();x++){
+                ArrayList linea = (ArrayList) formatoLinea.get(x);
+                if (linea.get(0) != null) {
+                    String nuevalinea = linea.get(0).toString();
+                    if (nuevalinea.contains("{titulo}")) {
+                        nuevalinea = nuevalinea.replace("{titulo}", titulo);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{protocolo}")) {
+                        nuevalinea = nuevalinea.replace("{protocolo}", protocolo);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{investigador}")) {
+                        nuevalinea = nuevalinea.replace("{investigador}", investigador);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{patrocinador}")) {
+                        nuevalinea = nuevalinea.replace("{patrocinador}", patrocinador);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{fase}")) {
+                        nuevalinea = nuevalinea.replace("{fase}", fase);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{centro_investigaciòn}")) {
+                        nuevalinea = nuevalinea.replace("{centro_investigaciòn}", sede);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    
+                    formatoLinea.remove(x);
+                    formatoLinea.add(x, linea);
+                }
+            };
+            
+            controller.GenerarCierre(formatoLinea, dirHojaRuta);
+
+            String jsonSalida = jsonTransformer.toJson(dirHojaRuta);
+            serieCorrelativo.setFechaModificacion(date);
+            serieCorrelativoService.update(serieCorrelativo);
+            correspondenciaFileService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
             
         } catch (BussinessException ex) {
             List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
@@ -786,6 +855,159 @@ public class FileResourceController {
         }
     }
 
+    @RequestMapping(value = "/ActaInspeccion", method = RequestMethod.POST)
+    public void createActaInspeccion(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse, @RequestParam("idRegistro") String idRegistro) throws DocumentException, IOException {
+        
+        try {
+            serieCorrelativoService.beginTransaction();
+
+            String dirHojaRuta;
+            dirHojaRuta = rutaActaInspeccion;
+            File directorio = new File(dirHojaRuta);
+            dirHojaRuta = rutaActaInspeccion+ "/PruebaVisita.doc";
+            ServletContext context = httpServletRequest.getServletContext();
+            String appPath = context.getRealPath("");
+            /*Se valida si existe, si no existe, se crea.*/
+            if (!directorio.exists()) {
+                try {
+                    directorio.mkdir();
+                } catch (SecurityException se) {
+                }
+            }
+            
+            FormatosController controller = new FormatosController();
+            
+            java.util.Date date = Date.from(Instant.now());
+            SerieCorrelativo serieCorrelativo = serieCorrelativoService.readNextSerieCorrelativo("CEI", date);
+            
+            List<Object> formatoLinea = formatoLineaService.getLineaFormatoByIdFormato("5");
+            
+            List<Object> datosVisita = registroService.getDatosVisita(idRegistro);
+            List<Object> documentos = registroService.getDocumentosRegistro(idRegistro);
+            
+            ArrayList item = (ArrayList) datosVisita.get(0);
+            String registro = item.get(0) != null ? item.get(0).toString():"";
+            String titulo = item.get(1) != null ? item.get(1).toString():"";
+            String protocolo = item.get(2) != null ? item.get(2).toString():"";
+            String investigador = item.get(3) != null ? item.get(3).toString():"";
+            String patrocinador = item.get(4) != null ? item.get(4).toString():"";
+            String fase = item.get(5) != null ? item.get(5).toString():"";
+            String sede = item.get(6) != null ? item.get(6).toString():"";
+            String farmaco = item.get(7) != null ? item.get(7).toString():"";
+            String cro = item.get(8) != null ? item.get(8).toString():"";
+            
+            
+            for(int x=0;x<formatoLinea.size();x++){
+                ArrayList linea = (ArrayList) formatoLinea.get(x);
+                if (linea.get(0) != null) {
+                    String nuevalinea = linea.get(0).toString();
+                    if (nuevalinea.contains("{{titulo_investigacion}}")) {
+                        nuevalinea = nuevalinea.replace("{{titulo_investigacion}}", titulo);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{{protocolo}}")) {
+                        nuevalinea = nuevalinea.replace("{{protocolo}}", protocolo);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{{investigador}}")) {
+                        nuevalinea = nuevalinea.replace("{{investigador}}", investigador);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{{patrocinador}}")) {
+                        nuevalinea = nuevalinea.replace("{{patrocinador}}", patrocinador);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{{fase}}")) {
+                        nuevalinea = nuevalinea.replace("{{fase}}", fase);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    if (nuevalinea.contains("{{centro_investigacion}}")) {
+                        nuevalinea = nuevalinea.replace("{{centro_investigacion}}", sede);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    
+                    if (nuevalinea.contains("{{centro_investigaciòn}}")) {
+                        nuevalinea = nuevalinea.replace("{{centro_investigaciòn}}", sede);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    
+                    if (nuevalinea.contains("{{farmaco}}")) {
+                        nuevalinea = nuevalinea.replace("{{farmaco}}", farmaco);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    
+                    if (nuevalinea.contains("{{cro}}")) {
+                        nuevalinea = nuevalinea.replace("{{cro}}", cro);
+                        linea.remove(0);
+                        linea.add(0, nuevalinea);
+                    }
+                    
+                    formatoLinea.remove(x);
+                    formatoLinea.add(x, linea);
+                }
+            };
+            
+            formatoLinea.forEach(linea ->{
+                System.out.println(linea);
+            });
+            
+            
+            controller.GenerarActaInspeccion(formatoLinea, dirHojaRuta,documentos);
+
+            String jsonSalida = jsonTransformer.toJson(dirHojaRuta);
+            serieCorrelativo.setFechaModificacion(date);
+            serieCorrelativoService.update(serieCorrelativo);
+            correspondenciaFileService.commit();
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+            
+        } catch (BussinessException ex) {
+            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+            String jsonSalida = jsonTransformer.toJson(bussinessMessage);
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+                correspondenciaFileService.rollback();
+            } catch (IOException ex1) {
+                Logger.getLogger(FileResourceController.class.getName()).log(Level.SEVERE, null, ex1);
+            } catch (Exception ee) {
+            }
+            System.out.println("catch 1" + ex.getMessage());
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex.printStackTrace(httpServletResponse.getWriter());
+                correspondenciaFileService.rollback();
+                System.out.println("try 3" + ex.getMessage());
+            } catch (IOException ex1) {
+                Logger.getLogger(FileResourceController.class.getName()).log(Level.SEVERE, null, ex1);
+                System.out.println("catch 4" + ex1.getMessage());
+            } catch (Exception ee) {
+
+            }
+            System.out.println("catch 3" + ex.getMessage());
+        } finally {
+            try {
+                correspondenciaFileService.close();
+            } catch (Exception ee) {
+
+            }
+        }
+        
+    }
+    
     @RequestMapping(value = "/CartaObservacion", method = RequestMethod.POST)
     public void createCartaObservacion(HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse, @RequestParam("idCorrespondencia") String idCorrespondencia) throws DocumentException, IOException {

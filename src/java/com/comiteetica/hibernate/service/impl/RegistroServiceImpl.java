@@ -102,5 +102,23 @@ public class RegistroServiceImpl implements RegistroService {
     public String getCorrespondenciasByRegistro(String idRegistro) throws BussinessException {
         return registroDao.getCorrespondenciasByRegistro(idRegistro);
     }
+    
+    @Transactional
+    @Override
+    public List<Object> getDatosCierre(String idRegistro) throws BussinessException{
+        return registroDao.getDatosCierre(idRegistro);
+    }
+    
+    @Transactional
+    @Override
+    public List<Object> getDatosVisita(String idRegistro) throws BussinessException{
+        return registroDao.getDatosVisita(idRegistro);
+    }
+    
+    @Transactional
+    @Override
+    public List<Object> getDocumentosRegistro(String idRegistro) throws BussinessException{
+        return registroDao.getDocumentosRegistro(idRegistro);
+    }
 
 }
