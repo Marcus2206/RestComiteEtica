@@ -735,6 +735,7 @@ public class FileResourceController {
             HttpServletResponse httpServletResponse, @RequestParam("idRegistro") String idRegistro) throws DocumentException, IOException {
 
         try {
+            System.out.println("ActaCierre: "+idRegistro);
             serieCorrelativoService.beginTransaction();
 
             String dirHojaRuta;
@@ -757,9 +758,9 @@ public class FileResourceController {
             SerieCorrelativo serieCorrelativo = serieCorrelativoService.readNextSerieCorrelativo("CEI", date);
             
             List<Object> formatoLinea = formatoLineaService.getLineaFormatoByIdFormato("4");
-            
+            System.out.println("Tam form linea: "+formatoLinea.size());
             List<Object> datosCierre = registroService.getDatosCierre(idRegistro);
-            
+            System.out.println("Tam form cierre: "+datosCierre.size());
             ArrayList item = (ArrayList) datosCierre.get(0);
             String registro = item.get(0) != null ? item.get(0).toString():"";
             String titulo = item.get(1) != null ? item.get(1).toString():"";
@@ -768,7 +769,7 @@ public class FileResourceController {
             String patrocinador = item.get(4) != null ? item.get(4).toString():"";
             String fase = item.get(5) != null ? item.get(5).toString():"";
             String sede = item.get(6) != null ? item.get(6).toString():"";
-           
+            System.out.println("Tam form linea: "+formatoLinea.size());
             for(int x=0;x<formatoLinea.size();x++){
                 ArrayList linea = (ArrayList) formatoLinea.get(x);
                 if (linea.get(0) != null) {
