@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -45,6 +46,7 @@ public class Registro implements java.io.Serializable {
     private Boolean estudioNinos;
     private String visitaInspeccionIns;
     private String equivalenciaCorrelativo;
+    private String datosBitacora;
     private String usuarioIngresa;
     private Date fechaIngreso;
     private String usuarioModifica;
@@ -263,6 +265,16 @@ public class Registro implements java.io.Serializable {
         this.equivalenciaCorrelativo = equivalenciaCorrelativo;
     }
 
+     @Lob
+    @Column(name = "DatosBitacora")
+    public String getDatosBitacora() {
+        return this.datosBitacora;
+    }
+
+    public void setDatosBitacora(String datosBitacora) {
+        this.datosBitacora = datosBitacora;
+    }
+    
     @Column(name = "UsuarioIngresa", length = 50)
     public String getUsuarioIngresa() {
         return this.usuarioIngresa;

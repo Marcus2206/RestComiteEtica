@@ -108,7 +108,7 @@ public class PagoDaoImpl implements PagoDao {
                 + "		pd.Descripcion paramEstadoPago\n"
                 + "from	pago \n"
                 +"left join ParametroDetalle pd on IdParametro='P009' and IdParametroDetalle=paramEstadoPago \n"
-                + "order by IdPago";
+                + "order by IdPago desc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override

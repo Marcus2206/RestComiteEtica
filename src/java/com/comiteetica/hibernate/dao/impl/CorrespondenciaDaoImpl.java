@@ -203,7 +203,7 @@ where IdCorrespondencia='CRP1707098'
                                         "left join	ParametroDetalle b on a.IdParametro='P001' and a.IdParametroDetalle=paramTipoServicio \n" +
                                         "left join	Registro d on c.IdRegistro=d.IdRegistro\n" +
                                         "left join	Investigador e on e.IdInvestigador=d.IdInvestigador\n" +
-                                        "order by	idCorrespondencia";
+                                        "order by	idCorrespondencia desc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override

@@ -103,6 +103,7 @@ public class RegistroDaoImpl implements RegistroDao {
 
         String sqlQuery = "select		r.idRegistro,\n"
                 + "            coalesce(CONVERt(varchar(10),r.fechaAprobacion,103),'')fechaAprobacion,\n"
+                +"             coalesce(fas.Descripcion,'') fase,\n"
                 + "            coalesce(Protocolo,'')protocolo,\n"
                 + "            coalesce(Titulo,'') titulo,\n"
                 + "            coalesce(r.nombreSede,'')nombreSede,\n"
@@ -121,7 +122,8 @@ public class RegistroDaoImpl implements RegistroDao {
                 + "            r.visitaInspeccionIns,\n"
                 + "            r.equivalenciaCorrelativo,\n"
                 + "			coalesce(ti.Descripcion,'')paramTipoInvestigacion,\n"
-                + "			coalesce(e.Descripcion,'')paramEspecialidad\n"
+                + "			coalesce(e.Descripcion,'')paramEspecialidad,\n"
+                + "             r.datosBitacora \n"
                 + "from		Registro r\n"
                 + "left join	Investigacion i on r.IdInvestigacion=i.IdInvestigacion\n"
                 + "left join	Sede s on s.IdSede=r.IdSede\n"
@@ -131,7 +133,8 @@ public class RegistroDaoImpl implements RegistroDao {
                 + "left join	ParametroDetalle noti on noti.IdParametro='P007' and noti.IdParametroDetalle=r.paramNotificacion\n"
                 + "left join	ParametroDetalle ti on ti.IdParametro='P004' and ti.IdParametroDetalle=i.paramTipoInvestigacion\n"
                 + "left join	ParametroDetalle e on e.IdParametro='P003' and e.IdParametroDetalle=i.ParamEspecialidad\n"
-                + "order by	idRegistro asc";
+                + "left join	ParametroDetalle fas on fas.IdParametro='P005' and fas.IdParametroDetalle=i.ParamFase\n"
+                + "order by	idRegistro desc";
 
         List<Object> list = sessionFactory.openSession().doReturningWork(new ReturningWork<List<Object>>() {
             @Override
