@@ -51,6 +51,7 @@ public class Registro implements java.io.Serializable {
     private Date fechaIngreso;
     private String usuarioModifica;
     private Date fechaModificacion;
+    private Date fechaTrabajo;
     private Set<RegistroBitacora> registroBitacoras = new HashSet<RegistroBitacora>(0);
     private Set<Correspondencia> correspondencias = new HashSet<Correspondencia>(0);
 
@@ -311,6 +312,16 @@ public class Registro implements java.io.Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "FechaTrabajo", length = 23)
+    public Date getFechaTrabajo() {
+        return this.fechaTrabajo;
+    }
+
+    public void setFechaTrabajo(Date fechaTrabajo) {
+        this.fechaTrabajo = fechaTrabajo;
     }
 
     @JsonIgnore

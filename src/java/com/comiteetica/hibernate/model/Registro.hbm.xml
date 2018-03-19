@@ -77,6 +77,9 @@
         <property name="fechaModificacion" type="timestamp">
             <column name="FechaModificacion" length="23" />
         </property>
+        <property name="fechaTrabajo" type="timestamp">
+            <column name="FechaTrabajo" length="23" />
+        </property>
         <set name="registroBitacoras" table="RegistroBitacora" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="IdRegistro" length="10" not-null="true" />
