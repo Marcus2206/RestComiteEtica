@@ -143,7 +143,7 @@ public class RegistroController {
         try {
             registroService.beginTransaction();
             Registro registro = (Registro) jsonTransformer.fromJson(jsonEntrada, Registro.class);
-            java.util.Date date = Date.from(Instant.now());
+            java.util.Date date = registro.getFechaTrabajo();
             SerieCorrelativo seriecorrelativo = serieCorrelativoService.readNextSerieCorrelativo("REG", date);
             registro.setIdRegistro(seriecorrelativo.getId().getIdSerie() + seriecorrelativo.getUltimoUsado());
             registro.setEquivalenciaCorrelativo(registro.getIdRegistro());
